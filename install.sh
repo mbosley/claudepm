@@ -60,3 +60,10 @@ echo "   - PROJECT_ROADMAP.md (from template)"
 echo "   - CLAUDE_LOG.md (start with first entry)"
 echo
 echo "Templates: $PROJECTS_DIR/.claude/templates/"
+
+echo
+echo "Note: When claudepm CLI is ready, install it to:"
+echo "  ~/.claudepm/bin/claudepm (recommended)"
+echo "  or /usr/local/bin/claudepm (requires sudo)"
+echo
+echo "Claude will be taught to check both locations."

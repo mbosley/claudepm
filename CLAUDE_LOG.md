@@ -215,3 +215,101 @@ Next: Commit these updates, then start testing v0.1 on real projects
 Notes: Smart prioritization - get single project memory perfect before scaling to multi-project orchestration. The within-project experience is the foundation everything else builds on.
 
 ---
+
+### 2025-06-29 18:35 - Added robust installation features to roadmap
+Did:
+- Added v0.3 for installation & discovery features
+- claudepm adopt command for existing projects (with sub-agent analysis)
+- claudepm doctor for health checks
+- Enhanced installer with configurable root directory
+- Renumbered subsequent versions
+Next: Commit and push these roadmap additions
+Notes: Key insight - adopting existing projects needs intelligence. Sub-agent can analyze repo to pre-populate roadmap with discovered info. Doctor command helps debug installations.
+
+---
+
+### 2025-06-29 18:40 - Added Manager Claude slash commands to roadmap
+Did:
+- Added slash commands for common manager-level tasks
+- /daily-standup - What's on deck across projects
+- /daily-review - What got done, what's blocked
+- /weekly-review - Week summary and priorities
+- /project-health - Which projects need attention
+- /start-work - Quick briefing before diving in
+Next: Commit these final roadmap additions
+Notes: These slash commands turn repetitive intelligence tasks into single commands. Manager Claude becomes your project orchestrator, not just a status checker.
+
+---
+
+### 2025-06-29 18:43 - Added log search as critical feature
+Did:
+- Promoted log search to v0.7 as critical feature
+- Within-project search: "Have I seen this error before?"
+- Cross-project search: "How did I solve auth in other projects?"
+- Smart search by type (errors, solutions) and sections
+- Emphasized this transforms memory → knowledge system
+Next: Commit these roadmap updates
+Notes: This is THE killer feature - turns accumulated logs into searchable knowledge base. Every problem solved becomes findable. Claude can search before attempting, avoiding repeated mistakes.
+
+---
+
+### 2025-06-29 18:47 - Reordered roadmap for better progression
+Did:
+- Moved log search to v0.3 (right after perfecting single-project) - critical for value
+- Installation/adoption to v0.4 (before multi-project features)
+- Cross-project basics to v0.5 (simple status/list commands)
+- Advanced search to v0.6 (builds on basic search)
+- Manager commands to v0.7 (sophisticated orchestration)
+- Git features to v0.8-0.9 (nice to have, not critical early)
+- Beta at v1.0 with log management
+Next: Commit this improved roadmap
+Notes: Key insight - search makes logs useful, so it must come early. Installation must be solid before scaling. Git features are advanced, not foundational.
+
+---
+
+### 2025-06-29 18:55 - Designed search-optimized log format
+Did:
+- Added structured patterns: Error: [category] - "message"
+- Added solution pattern: Solved: [what] by [how]
+- Added tagging system: #error #solution #decision
+- Created example showing all patterns in use
+Next: Commit roadmap with search optimization
+Notes: Key insight - logs need consistent patterns for effective search. Tags enable filtering, structured formats enable extraction. 'Error:' and 'Solved:' become grep-able markers.
+
+---
+
+### 2025-06-29 18:57 - Planned claudepm command accessibility
+Did:
+- Designed two-part strategy for Claude access to claudepm
+- Installation locations: /usr/local/bin (sudo) or ~/.claudepm/bin (no sudo)
+- CLAUDE.md templates will include claudepm usage instructions
+- Claude will check with 'which claudepm' and use fallback paths
+- Updated install.sh to mention future CLI locations
+Next: Commit all roadmap improvements
+Notes: Key insight - Claude needs explicit instruction on where to find claudepm. Templates must include command examples and fallback paths. This enables 'claudepm search' from any Claude session.
+
+---
+
+### 2025-06-29 19:00 - Added git branching strategy to roadmap
+Did:
+- Mapped each roadmap version to a feature branch
+- Defined workflow: branch → work → PR → tag → next
+- Each version gets clear git scope
+- PRs will document version changes
+- Sets foundation for future automation (auto-branch creation)
+Next: Commit this complete roadmap
+Notes: This connects roadmap structure directly to git workflow. Eventually 'claudepm feature start v0.2' could read roadmap and create the right branch automatically.
+
+---
+
+### 2025-06-29 19:03 - Updated templates with roadmap best practices
+Did:
+- Added roadmap principles to CLAUDE_PROJECT_TEMPLATE.md
+- Updated PROJECT_ROADMAP_TEMPLATE.md with versioned structure
+- Added roadmap guidance to CLAUDE_MANAGER.md
+- Emphasized: version features, make actionable, enable automation
+- Connected roadmap structure to git branching
+Next: Commit all updates
+Notes: Teaching Claude to write better roadmaps - structured for search, versioned for branches, clear enough for automation. Roadmaps become executable specs, not just wishlists.
+
+---

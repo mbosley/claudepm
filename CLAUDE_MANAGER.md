@@ -88,6 +88,17 @@ When creating a new project:
 4. Create initial CLAUDE_LOG.md entry
 5. Update roadmap with initial goals
 
+## Roadmap Best Practices
+
+When updating any PROJECT_ROADMAP.md:
+- **Version features**: Group into v0.1, v0.2, etc. (future git branches)
+- **Make actionable**: "Add auth" → "Add JWT authentication with refresh tokens"
+- **Include why**: Brief rationale for each feature
+- **Think PR-sized**: Each version should be one coherent pull request
+- **Enable automation**: Clear enough that "work on v0.2" is unambiguous
+
+Remember: Roadmaps aren't just plans - they're executable specifications for future work.
+
 ## Project CLAUDE.md Template
 
 ```markdown

@@ -8,23 +8,37 @@
 - [ ] Next immediate priority
 
 ## Upcoming
-- [ ] Near-term goals
-- [ ] Features to implement
-- [ ] Technical debt to address
+
+### v0.2 - [Theme Name]
+- [ ] Specific actionable feature
+- [ ] Another clear deliverable
+- [ ] Include rationale in description
+
+### v0.3 - [Next Theme]
+- [ ] Group related features
+- [ ] Think "what could be one PR?"
+- [ ] Enable future branching
+
+### Future Versions
+- [ ] Less detailed but captured
+- [ ] Can be refined when closer
 
 ## Completed
 - [x] Initial setup
 - [x] Basic functionality
-- [x] Move completed items here
+- [x] Move completed items here with date
 
 ## Blocked
 - [ ] Items waiting on external dependencies
 - [ ] Decisions needed
+- [ ] Include what would unblock
 
 ## Notes
 - Key decisions made
-- Important constraints
+- Important constraints  
 - Links to relevant resources
+- This roadmap drives development - each version can become a git branch
+- Structure enables future automation: "work on v0.2 features"
 
 ---
 Last updated: YYYY-MM-DD HH:MM

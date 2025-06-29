@@ -21,11 +21,16 @@ Next: [Immediate next task - specific and actionable]
 Blocked: [Any blockers - only include if blocked]
 ```
 
-2. Update PROJECT_ROADMAP.md:
+2. Update PROJECT_ROADMAP.md following these principles:
 - Check off completed items
 - Update status of in-progress work
 - Add any new tasks discovered
-- Keep it concise and scannable
+- **Structure for searchability**: Use consistent headings
+- **Version your features**: Group by v0.1, v0.2, etc.
+- **Make items actionable**: "Add search" → "Add claudepm search command for logs"
+- **Include context**: Not just what, but why
+- **Think git branches**: Each version could be a feature branch
+- **Enable automation**: Clear enough that future Claude could execute
 
 ## Project Context
 Type: [Web app, CLI tool, library, etc.]
