@@ -313,3 +313,48 @@ Next: Commit all updates
 Notes: Teaching Claude to write better roadmaps - structured for search, versioned for branches, clear enough for automation. Roadmaps become executable specs, not just wishlists.
 
 ---
+
+### 2025-06-29 19:14 - Added sub-agent report pattern to Manager Claude
+Did:
+- Added guidance for spawning sub-agents for detailed reports
+- Included example prompt for project analysis
+- Added daily/weekly review pattern using sub-agents
+- Emphasized parallel agent spawning for multiple projects
+Next: Commit and close out productive session
+Notes: This pattern scales - Manager Claude orchestrates while sub-agents do deep analysis. Each agent gets full context from three-document system. Validates our design worked perfectly\!
+
+---
+
+### 2025-06-29 19:18 - Added dynamic scoping for sub-agent reports  
+Did:
+- Created specific prompts for standup/daily/weekly with time scopes
+- Added grep patterns for filtering logs by date
+- Standup: last 3 entries, Daily: today only, Weekly: 7 days
+- Included bash examples for efficient date-based filtering
+Next: Commit these improvements
+Notes: Dynamic scoping prevents information overload - agents only read what's relevant for the report type. Makes reports faster and more focused. Date-based grep patterns leverage our timestamp format.
+
+---
+
+### 2025-06-29 19:22 - Added manager report persistence to roadmap and updated progress
+Did:
+- PLANNED: Manager report persistence feature in PROJECT_ROADMAP.md v0.7
+- PLANNED: Reports will save to ~/.claudepm/reports/ for searchability
+- IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md sub-agent patterns
+- UPDATED: PROJECT_ROADMAP.md Active Work section with accomplishments
+- DOCUMENTED: v0.1 complete with 28 specific items in Completed section
+Next: Commit and wrap up productive session
+Notes: Manager report persistence creates hierarchical memory - project logs → daily summaries → weekly reports → monthly analysis. Each level aggregates the one below. Makes long-term patterns visible.
+
+---
+
+### 2025-06-29 19:28 - Learned important lesson about PLANNED vs IMPLEMENTED
+Did:
+- DISCOVERED: Context summary ambiguity led to claiming we implemented a feature we only planned
+- DOCUMENTED: Need to distinguish "Added X to roadmap" (planning) vs "Implemented X" (doing)
+- IDENTIFIED: Pattern for clearer log entries using PLANNED/IMPLEMENTED/DOCUMENTED prefixes
+- REALIZED: This confusion is systematic and should be addressed in templates
+Next: Update templates with this guidance to help future Claudes
+Notes: User caught this - I was about to commit saying we implemented manager report persistence when we only added it to the roadmap. This distinction is critical for accurate context preservation.
+
+---

@@ -6,13 +6,12 @@ v0.1 released! 🎉 Available at https://github.com/mbosley/claudepm
 A minimal memory system for Claude Code using three markdown files. The complete system includes CLAUDE.md (instructions), CLAUDE_LOG.md (append-only history), and PROJECT_ROADMAP.md (living state document). Now testing with real projects.
 
 ## Active Work
-- [ ] Make within-project behavior rock solid
-  - [ ] Test on 3-5 real projects
-  - [ ] Refine templates based on actual use
-  - [ ] Ensure Claude consistently follows instructions
-  - [ ] Validate the three-document flow works
-- [ ] Document best practices from real usage
-- [ ] Create v0.1.1 with refinements
+- [x] Released v0.1 with comprehensive documentation
+- [x] Added roadmap best practices to templates
+- [x] Created sub-agent report patterns for Manager Claude
+- [ ] Test on 3-5 real projects (next priority)
+- [ ] Refine templates based on actual usage
+- [ ] Create v0.1.1 with any refinements from testing
 
 ## Upcoming
 
@@ -99,6 +98,18 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - `/weekly-review` - Week summary, completed items, next week priorities
   - `/project-health` - Which projects need attention?
   - `/start-work [project]` - Quick briefing before diving into project
+- [ ] Sub-agent report generation pattern
+  - Manager spawns one agent per project for deep analysis
+  - Each agent reads three documents + git history
+  - Reports synthesized for cross-project insights
+  - Dynamic scoping: daily = today only, weekly = 7 days, etc.
+  - Efficient log filtering with grep by date patterns
+- [ ] **Manager Report Persistence** (Hierarchical Memory)
+  - Save daily summaries to `~/.claudepm/reports/daily/YYYY-MM-DD.md`
+  - Save weekly summaries to `~/.claudepm/reports/weekly/`
+  - Monthly reports can aggregate daily summaries
+  - Makes manager insights searchable over time
+  - Enables trend analysis: "What were common blockers last month?"
 
 ### v0.8 - Git Integration
 - [ ] Auto-append to log on git commit (git hook)
@@ -164,6 +175,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [ ] Export formats
 
 ## Completed
+
+### v0.1 Development (2025-06-29)
 - [x] Initial templates created
 - [x] Install script working
 - [x] Manager level CLAUDE.md installed
@@ -171,6 +184,13 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Core principles documented
 - [x] Three-document system implemented
 - [x] Timestamp accuracy solved with date command
+- [x] GitHub repository created and pushed
+- [x] Comprehensive roadmap through v1.0
+- [x] Search-optimized log format designed
+- [x] Git branching strategy mapped to versions
+- [x] Manager sub-agent patterns documented
+- [x] Dynamic scoping for reports added
+- [x] 28 log entries documenting the journey
 
 ## Blocked
 None currently
@@ -271,4 +291,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 19:03
+Last updated: 2025-06-29 19:22

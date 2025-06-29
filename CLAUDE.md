@@ -21,6 +21,12 @@ Next: [Immediate next task - specific and actionable]
 Blocked: [Any blockers - only include if blocked]
 ```
 
+**Be precise about PLANNED vs IMPLEMENTED:**
+- `IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md` (code written)
+- `PLANNED: Manager report persistence in roadmap` (added to roadmap)
+- `DOCUMENTED: Sub-agent patterns in templates` (docs updated)
+- `FIXED: Timestamp accuracy with date command` (bug resolved)
+
 2. Update PROJECT_ROADMAP.md:
 - Check off completed items
 - Move items between sections as needed

@@ -63,6 +63,45 @@ for dir in */; do
 done
 ```
 
+## Generating Detailed Project Reports
+
+For comprehensive project summaries, spawn sub-agents with dynamic scope:
+
+### Daily Standup (Morning)
+```bash
+claude -p "You are in [project] directory. For DAILY STANDUP:
+1. Read PROJECT_ROADMAP.md Active Work section
+2. Read CLAUDE_LOG.md - only last 3 entries or yesterday's entries
+3. Identify: What's planned for today based on 'Next:' items
+4. Report: 1-2 sentences on today's focus"
+```
+
+### Daily Review (Evening)
+```bash
+claude -p "You are in [project] directory. For DAILY REVIEW:
+1. Read PROJECT_ROADMAP.md for context
+2. Read CLAUDE_LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
+3. Check git commits from today
+4. Report: What got done, what's blocked, what's next"
+```
+
+### Weekly Review
+```bash
+claude -p "You are in [project] directory. For WEEKLY REVIEW:
+1. Read PROJECT_ROADMAP.md - note completed items
+2. Read CLAUDE_LOG.md - entries from last 7 days
+3. Check git commits from: $(date -d '7 days ago' +%Y-%m-%d) to today
+4. Report: Major accomplishments, patterns, next week priorities"
+```
+
+### Dynamic Scoping Pattern
+- **Standup**: Last 3 log entries + active roadmap items
+- **Daily**: Today's logs only (grep by date)
+- **Weekly**: Last 7 days of logs
+- **Monthly**: Last 30 days + roadmap evolution
+
+This prevents agents from reading entire history when only recent context is needed.
+
 ## Status Indicators
 
 When showing project status:
@@ -135,3 +174,36 @@ Every Claude session is ephemeral. The logs are permanent. Write logs as if you'
 3. **PROJECT_ROADMAP.md** - What's next (current state, plans, features)
 
 That's it. Don't create other planning/tracking documents.
+
+## Daily/Weekly Review Pattern
+
+For comprehensive reviews across all projects:
+
+1. **Quick scan** - Use bash loop for basic status
+2. **Deep dive** - Spawn sub-agents with appropriate scope:
+   - Daily: Today's entries only
+   - Weekly: Last 7 days
+   - Monthly: Last 30 days
+3. **Synthesize** - Look for patterns across projects:
+   - Which projects are blocked?
+   - Common technical challenges?
+   - Resource conflicts?
+   - Stale projects needing attention?
+
+### Efficient Log Filtering
+
+Teach sub-agents to filter logs by date:
+```bash
+# Today's entries only
+grep "^### $(date +%Y-%m-%d)" CLAUDE_LOG.md -A 20
+
+# This week's entries
+for i in {0..6}; do
+  date -d "$i days ago" +%Y-%m-%d
+done | xargs -I {} grep "^### {}" CLAUDE_LOG.md -A 20
+
+# Last N entries
+tail -n 100 CLAUDE_LOG.md | awk '/^###/{p=1} p'
+```
+
+This ensures sub-agents read only relevant portions, making reports faster and more focused.
