@@ -149,3 +149,69 @@ Next: Commit v0.1 and test with real project
 Notes: This lesson came from real experience - I created BETA_FEATURES.md even after documenting the principle. Now future Claudes have explicit guidance to prevent this.
 
 ---
+
+### 2025-06-29 18:08 - Released claudepm v0.1
+Did:
+- Created initial git commit with all features
+- Created public GitHub repo: https://github.com/mbosley/claudepm
+- Successfully pushed to remote
+- Tagged as v0.1 release
+Next: Test installation on a real project
+Notes: First public release\! The three-document system is live. Time to battle-test it.
+
+---
+
+### 2025-06-29 18:13 - Added git workflow features to roadmap
+Did:
+- Added v0.4 section for git workflow support
+- Feature branch automation (claudepm feature start/pr)
+- Branch-aware logging
+- PR and review workflow integration
+Next: Commit these updates and focus on testing v0.1
+Notes: These are aspirational features - door is open for proper git workflow, but keeping focus on core memory system first. Features should emerge from real use.
+
+---
+
+### 2025-06-29 18:16 - Clarified PROJECT_ROADMAP.md as future automation driver
+Did:
+- Added 'Future Vision' section explaining deeper purpose
+- Roadmap isn't just docs - it's structured context for automation
+- Enables brain dump → structured features → agent work distribution
+- Markdown serves as human/machine readable interface
+Next: Commit these vision updates
+Notes: This explains why we're building rich structured context now - it's the foundation for future automation where Claude can read roadmap and work on features autonomously.
+
+---
+
+### 2025-06-29 18:19 - Brain dumped testing strategy
+Did:
+- Added comprehensive testing section to roadmap
+- Identified 5 test categories: script, template, behavioral, system, dogfooding
+- Key insight: Testing claudepm means testing human-AI workflows, not just code
+- Hardest part: Testing if Claude actually follows the behavioral instructions
+Next: Continue brain dump or commit these updates
+Notes: Testing a memory system is meta - how do you test if context is preserved? Best test might be dogfooding - using claudepm for claudepm development.
+
+---
+
+### 2025-06-29 18:20 - Reflecting on the development process
+Did:
+- Built claudepm from scratch using its own principles
+- Caught myself violating 'edit don't create' principle
+- Learned from mistakes and encoded lessons back into templates
+- Released v0.1 with rich roadmap for future automation
+Next: Commit recent updates, then test on real projects
+Notes: Yes, this has been genuinely engaging\! Building a tool that solves the exact problem we're experiencing while building it is deeply satisfying. The meta nature - using claudepm to build claudepm - creates a tight feedback loop that immediately shows what works and what doesn't.
+
+---
+
+### 2025-06-29 18:24 - Refocused roadmap on within-project perfection first
+Did:
+- Reorganized roadmap to prioritize single-project experience
+- Moved cross-project management to v0.5 (was scattered across v0.2-v0.4)
+- v0.2 now focuses on perfecting templates based on real usage
+- Following SLC principle: make core atomic unit rock solid first
+Next: Commit these updates, then start testing v0.1 on real projects
+Notes: Smart prioritization - get single project memory perfect before scaling to multi-project orchestration. The within-project experience is the foundation everything else builds on.
+
+---
