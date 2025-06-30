@@ -21,6 +21,11 @@ Next: [Immediate next task - specific and actionable]
 Blocked: [Any blockers - only include if blocked]
 ```
 
+If working on a feature branch, include branch name:
+```
+### YYYY-MM-DD HH:MM - [feature/search] - Added log search functionality
+```
+
 **Be precise about PLANNED vs IMPLEMENTED:**
 - `IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md` (code written)
 - `PLANNED: Manager report persistence in roadmap` (added to roadmap)
@@ -87,5 +92,20 @@ Purpose: Simple memory system for Claude Code sessions
 - **Work history** → CLAUDE_LOG.md
 
 Examples of files NOT to create: BETA_FEATURES.md, ARCHITECTURE.md, DESIGN.md, TODO.md
+
+## Handling Parallel Work
+
+When merging CLAUDE_LOG.md conflicts from branches/worktrees:
+1. Keep BOTH sections (yours and theirs)
+2. Add a merge marker entry
+3. Continue from the most recent Next: entry
+
+Example merge marker:
+```
+### YYYY-MM-DD HH:MM - Merged parallel work
+Did: Merged logs from feature/v0.2 and feature/v0.3 branches
+Next: Continue v0.3 search implementation
+Notes: Parallel work on template improvements and search feature
+```
 
 Remember: The log is our shared memory. Write clearly for your future self.

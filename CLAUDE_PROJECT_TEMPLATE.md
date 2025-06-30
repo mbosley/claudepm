@@ -21,6 +21,11 @@ Next: [Immediate next task - specific and actionable]
 Blocked: [Any blockers - only include if blocked]
 ```
 
+If working on a feature branch, include branch name:
+```
+### YYYY-MM-DD HH:MM - [feature/auth] - Implemented JWT tokens
+```
+
 **Be precise about PLANNED vs IMPLEMENTED:**
 - `IMPLEMENTED: User authentication with JWT tokens` (code written)
 - `PLANNED: User authentication feature in roadmap` (added to roadmap)
@@ -141,5 +146,24 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
    ```
 
 Remember: Your "work session" might be 2 minutes or 2 hours - log based on tasks completed, not time elapsed
+
+## Handling Parallel Work (Branches/Worktrees)
+
+### When merging CLAUDE_LOG.md conflicts:
+1. **Keep BOTH sections** - Never delete parallel work history
+2. **Preserve chronological order** if easy, but don't stress about it
+3. **Add a merge marker entry**:
+```
+### YYYY-MM-DD HH:MM - Merged parallel work
+Did: Merged logs from feature/auth and feature/payments branches
+Next: Continue from most recent Next: entry
+Notes: Parallel work included auth implementation and payment integration
+```
+
+### Tips for parallel work:
+- Include branch name in log entries when not on main
+- Each worktree maintains its own log timeline
+- Conflicts are good - they show parallel progress
+- The merge marker helps explain any timeline jumps
 
 Remember: The log is our shared memory. Write clearly for your future self.

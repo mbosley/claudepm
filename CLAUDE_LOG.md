@@ -524,3 +524,15 @@ Next: Test the updated installer on a fresh setup
 Notes: The installer now creates a complete manager-level environment including the activity log. This ensures users start with proper logging from day one.
 
 ---
+
+
+### 2025-06-29 21:10 - Added parallel work guidance
+Did:
+- ADDED: Branch name pattern for log entries when not on main
+- DOCUMENTED: Simple merge conflict resolution for CLAUDE_LOG.md
+- IMPLEMENTED: Merge marker pattern to explain timeline jumps
+- UPDATED: Both CLAUDE.md and CLAUDE_PROJECT_TEMPLATE.md
+Next: Test with actual parallel branches/worktrees
+Notes: This solves the inevitable log conflicts from parallel work. The 'keep both' approach preserves all history while merge markers explain any timeline confusion.
+
+---
