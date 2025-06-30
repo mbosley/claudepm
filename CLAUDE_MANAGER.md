@@ -43,27 +43,47 @@ Adding sections to existing files = ✅ Right!
 
 ## On Session Start
 
-Run this status check:
-```bash
-# Find all projects with logs
-for dir in */; do
-  if [ -f "$dir/CLAUDE_LOG.md" ]; then
-    echo "=== $dir ==="
-    # Check roadmap for current status
-    if [ -f "$dir/PROJECT_ROADMAP.md" ]; then
-      echo "Current Status:"
-      grep -A 3 "## Current Status" "$dir/PROJECT_ROADMAP.md" 2>/dev/null | tail -n +2
-    fi
-    # Show recent log entries
-    tail -n 20 "$dir/CLAUDE_LOG.md" | grep -E "^###|Next:|Blocked:" | tail -n 3
-    # Git status
-    (cd "$dir" && git status -s 2>/dev/null | head -n 3)
-    echo
-  fi
-done
+1. Read CLAUDE_LOG.md at manager level (if exists)
+2. Check for recent manager-level activities
+3. Run quick status check or use /orient
+
+## After Each Manager Work Session
+
+Add to CLAUDE_LOG.md at this level:
+```
+### YYYY-MM-DD HH:MM - [Manager activity]
+Did: [What coordination/analysis/routing was done]
+Projects affected: [List projects touched]
+Next: [What manager-level work is needed]
+```
+
+Example:
+```
+### 2025-06-29 21:00 - Processed brain dump and weekly review
+Did:
+- ROUTED: 3 updates to auth-service, 2 to blog project
+- IDENTIFIED: payment-api blocked on Stripe keys
+- GENERATED: Weekly review showing 80% velocity
+Projects affected: auth-service, blog, payment-api
+Next: Follow up on Stripe key blocker with client
 ```
 
 ## Generating Detailed Project Reports
+
+**IMPORTANT: Use parallel sub-agents to avoid context overload**
+
+When analyzing multiple projects, spawn agents IN PARALLEL:
+```python
+# Good - Parallel execution
+Task: "Daily review for auth-service" 
+Task: "Daily review for blog"
+Task: "Daily review for payment-api"
+# All three run simultaneously
+
+# Bad - Sequential loading
+for project in projects:
+    read_entire_project_history()  # Context overload!
+```
 
 For comprehensive project summaries, spawn sub-agents with dynamic scope:
 
@@ -370,17 +390,18 @@ For comprehensive reviews across all projects:
 
 ### Multi-Project Report Aggregation
 
-When running reports across multiple projects, use this structure:
+When running reports across multiple projects, use PARALLEL execution:
 
-```bash
-# For each project, spawn focused sub-agent
-for project in project1 project2 project3; do
-  claude -p "Run [REPORT TYPE] for $project directory"
-done
+```python
+# Spawn all agents AT ONCE (parallel)
+Task: "Generate daily review for auth-service"
+Task: "Generate daily review for blog"  
+Task: "Generate daily review for payment-api"
+# Wait for all to complete, then synthesize
 
 # Then synthesize results
-claude -p "Given these individual project reports:
-[paste reports]
+"Given these individual project reports:
+[results from parallel tasks]
 
 Create an executive summary with:
 ## Multi-Project Summary - [Date]

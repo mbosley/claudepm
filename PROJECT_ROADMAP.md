@@ -20,6 +20,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Created .claudepm marker for claudepm itself
 - [x] Designed Kanban module and Work Item ID system (future enhancement)
 - [x] Created /orient command for instant context awareness
+- [x] Added manager-level logging pattern
+- [x] Documented parallel sub-agent pattern for efficiency
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
@@ -244,7 +246,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Claude Code best practices link added as resource
 - [x] Project adoption functionality with /adopt-project command
 - [x] .claudepm marker file specification
-- [x] 46 log entries documenting the journey
+- [x] 48 log entries documenting the journey
 
 ## Blocked
 None currently
@@ -392,4 +394,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 20:52
+Last updated: 2025-06-29 21:00

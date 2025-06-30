@@ -501,3 +501,15 @@ Next: Test the orient command in different contexts
 Notes: The /orient command solves the "where am I?" problem instantly. It detects if you're at manager level or in a project, reads relevant files, and provides role-specific guidance. Perfect for new Claude sessions or after context switches.
 
 ---
+
+### 2025-06-29 20:55 - Added manager-level logging and parallel patterns
+Did:
+- CREATED: Manager-level CLAUDE_LOG.md in ~/projects
+- DOCUMENTED: Manager Claude should maintain its own activity log
+- EMPHASIZED: Use parallel Task execution for multi-project analysis
+- ADDED: "Projects affected" field to manager log format
+- WARNED: Against sequential loading that causes context overload
+Next: Test parallel execution patterns with real projects
+Notes: Two key insights: (1) Logging should be universal at all levels, including manager level. (2) Manager Claude must use parallel sub-agents to avoid loading entire project histories into one context. This scales much better.
+
+---

@@ -1,8 +1,6 @@
-Orient yourself to the current directory and role
+I'll orient myself to understand my current directory and role.
 
-Quickly understand where you are, what your role is, and what you should focus on based on claudepm structure.
-
-## Instructions:
+First, let me check where I am and what claudepm structure exists here.
 
 1. **Detect current location**:
    ```bash
