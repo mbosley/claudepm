@@ -464,3 +464,40 @@ Next: Update cv-scraping with proper template content
 Notes: The original /adopt-project was creating minimal files. Now it properly uses the full templates while adding discovered project-specific content. This ensures adopted projects get all claudepm principles and guidance.
 
 ---
+
+### 2025-06-29 20:35 - Added Kanban module to future roadmap
+Did:
+- PLANNED: Kanban-style project organization as optional module
+- DESIGNED: Simple markdown-based board (Backlog/Ready/In Progress/Review/Done)
+- PROPOSED: Integration with existing PROJECT_ROADMAP.md structure
+- ENVISIONED: /kanban slash command for visual project state
+- MAINTAINED: Keep it simple - just markdown, no complex tooling
+Next: Continue testing adoption functionality
+Notes: Kanban would be an optional enhancement that builds on the existing roadmap structure. Active Work items naturally map to "In Progress", completed items to "Done". Could auto-move items based on log entries.
+
+---
+
+### 2025-06-29 20:45 - Fleshed out Kanban and Work Item ID system design
+Did:
+- REFINED: Kanban as a VIEW of PROJECT_ROADMAP.md, not new storage
+- DESIGNED: Work Item ID system (TYPE-## format) for full traceability
+- PLANNED: IDs flow through roadmap → logs → git commits
+- ENVISIONED: Cross-referencing enables "Show me everything about AUTH-01"
+- PROPOSED: HTML comments for metadata to keep roadmaps readable
+- DETAILED: Worker Claude rules for state transitions
+Next: Test existing functionality before implementing new features
+Notes: Key insight - PROJECT_ROADMAP.md already IS a kanban board, we just need to surface it differently. The ID system would enable powerful queries like feature timelines, velocity tracking, and cross-project pattern analysis. Keeping this as future enhancement to avoid feature creep.
+
+---
+
+### 2025-06-29 20:50 - Created /orient command for instant context
+Did:
+- IMPLEMENTED: /orient slash command for quick orientation
+- DESIGNED: Different outputs for Manager vs Worker Claude roles
+- ADDED: Auto-detection of current location and available files
+- INCLUDED: Quick status summary and next actions
+- COVERED: Edge case when no claudepm structure exists
+Next: Test the orient command in different contexts
+Notes: The /orient command solves the "where am I?" problem instantly. It detects if you're at manager level or in a project, reads relevant files, and provides role-specific guidance. Perfect for new Claude sessions or after context switches.
+
+---

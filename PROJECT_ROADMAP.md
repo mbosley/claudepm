@@ -18,6 +18,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Designed .claudepm marker file specification
 - [x] Fixed /adopt-project to use full template content
 - [x] Created .claudepm marker for claudepm itself
+- [x] Designed Kanban module and Work Item ID system (future enhancement)
+- [x] Created /orient command for instant context awareness
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
@@ -199,6 +201,25 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [ ] GitHub Actions integration
 - [ ] Project templates by type
 - [ ] Export formats
+- [ ] **Kanban Module** (Optional Enhancement)
+  - Visual project state using markdown-based boards
+  - Core insight: PROJECT_ROADMAP.md already IS a kanban board (Upcoming=Backlog, Active=In Progress)
+  - Kanban as a VIEW of existing data, not new storage
+  - `/kanban` command renders roadmap as board
+  - `/kanban-all` shows cross-project board
+  
+- [ ] **Work Item ID System** (Enables Kanban & Traceability)
+  - Structured IDs: [TYPE-##] (FEAT-01, BUG-15, TASK-03)
+  - Metadata in HTML comments: <!--- ID: AUTH-01 | STARTED: 2025-06-29 -->
+  - IDs flow through roadmap → logs → git commits
+  - Enables full traceability: "Show me everything about AUTH-01"
+  - Worker Claude rules for state transitions
+  - Cross-referencing pattern:
+    - Roadmap: <!--- ID: AUTH-01 | STARTED: date -->
+    - Logs: "Working on: AUTH-01 - Description"
+    - Commits: "feat(AUTH-01): Add JWT token generation"
+  - Powerful queries: timeline per feature, velocity tracking, bottleneck detection
+  - Manager Claude can show cross-project patterns (e.g., all AUTH work across projects)
 
 ## Completed
 
@@ -216,14 +237,14 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Git branching strategy mapped to versions
 - [x] Manager sub-agent patterns documented
 - [x] Dynamic scoping for reports added
-- [x] Slash commands properly implemented in .claude/commands/ (7 commands)
+- [x] Slash commands properly implemented in .claude/commands/ (8 commands)
 - [x] Brain dump processing pattern documented and tested
 - [x] Structured report formats for all report types
 - [x] PLANNED vs IMPLEMENTED distinction documented
 - [x] Claude Code best practices link added as resource
 - [x] Project adoption functionality with /adopt-project command
 - [x] .claudepm marker file specification
-- [x] 43 log entries documenting the journey
+- [x] 46 log entries documenting the journey
 
 ## Blocked
 None currently
@@ -237,9 +258,10 @@ None currently
 - Features should emerge from real usage patterns, not speculation
 
 ### What Already Works (No CLI Needed)
-- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project
+- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project, /orient
 - **Brain dump processing**: Manager Claude follows documented patterns to parse and route updates
 - **Project adoption**: Manager Claude can analyze and adopt existing projects
+- **Quick orientation**: /orient instantly tells Claude their role and context
 - **Deadline scanning**: Simple bash loops + grep find all [DUE:] dates
 - **Sub-agent reports**: Claude's Task tool spawns focused agents for each project
 - **Log searching**: grep commands work for finding patterns
@@ -370,4 +392,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 20:31
+Last updated: 2025-06-29 20:52
