@@ -1,13 +1,32 @@
 Generate comprehensive weekly review across all projects
 
-Analyze the past week's progress, identify patterns, and set priorities for next week.
+Analyze the past week's progress using PARALLEL sub-agents for speed and accuracy.
 
 ## Instructions:
-1. For each project, analyze the past 7 days:
-   - Read PROJECT_ROADMAP.md for completed items and progress
-   - Extract log entries from the past week
-   - Check git commits: `git log --since="7 days ago" --oneline`
-   - Note any items moved to/from Blocked section
+
+1. **First, identify all projects to review**:
+   ```bash
+   # Get list of active projects
+   for dir in */; do
+     if [ -f "$dir/CLAUDE_LOG.md" ]; then
+       echo "Will review: $dir"
+     fi
+   done
+   ```
+
+2. **Spawn PARALLEL analysis tasks for ALL projects**:
+   ```python
+   # CRITICAL: Launch all reviews simultaneously!
+   Task: "Weekly review auth-service",
+     prompt: "In auth-service/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from PROJECT_ROADMAP.md"
+   
+   Task: "Weekly review blog",
+     prompt: "In blog/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from PROJECT_ROADMAP.md"
+   
+   # ... one Task per project - ALL AT ONCE
+   ```
+
+3. **While sub-agents work, prepare the report structure**
 
 2. Create a detailed weekly review:
 

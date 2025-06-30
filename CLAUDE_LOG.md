@@ -587,3 +587,16 @@ Next: Test logging patterns with real manager operations
 Notes: Manager Claude needs more frequent logging than Worker Claude because coordination activities are ephemeral. Added explicit triggers and examples to ensure manager-level context is preserved.
 
 ---
+
+
+### 2025-06-30 16:10 - Enhanced parallel execution patterns and examples
+Did:
+- EMPHASIZED: Parallel Tasks as the DEFAULT, not exception
+- ADDED: Concrete examples showing parallel vs sequential (✅ vs ❌)
+- PROVIDED: Speed comparisons (30 seconds parallel vs 5 minutes sequential)
+- UPDATED: /doctor, /weekly-review, /brain-dump with explicit parallel patterns
+- CREATED: Golden Rule - "If checking more than ONE project, parallelize!"
+Next: Monitor if Manager Claude adopts parallel patterns more readily
+Notes: The documentation now strongly encourages parallel Task execution with clear examples of GOOD vs BAD patterns. Each major slash command shows exactly how to spawn parallel sub-agents. This should overcome the tendency to process projects sequentially.
+
+---

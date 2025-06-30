@@ -106,20 +106,75 @@ Next: Create summary report of external blockers for client
 
 ## Generating Detailed Project Reports
 
-**IMPORTANT: Use parallel sub-agents to avoid context overload**
+**CRITICAL: DEFAULT TO PARALLEL SUB-AGENTS**
 
-When analyzing multiple projects, spawn agents IN PARALLEL:
+Manager Claude should ALWAYS use parallel Tasks when dealing with multiple projects. This is faster and prevents context overload.
+
+### When to Use Parallel Sub-Agents (Almost Always!)
+
+**1. Status Checks - ALWAYS parallelize:**
 ```python
-# Good - Parallel execution
-Task: "Daily review for auth-service" 
-Task: "Daily review for blog"
-Task: "Daily review for payment-api"
-# All three run simultaneously
+# ✅ GOOD - Parallel execution (takes 30 seconds)
+Task: "Check git status", prompt: "Run git status in auth-service/"
+Task: "Check git status", prompt: "Run git status in blog/"  
+Task: "Check git status", prompt: "Run git status in payment-api/"
+# All three complete simultaneously
 
-# Bad - Sequential loading
-for project in projects:
-    read_entire_project_history()  # Context overload!
+# ❌ BAD - Sequential (takes 90 seconds)
+Check auth-service, then blog, then payment-api...
 ```
+
+**2. Project Analysis - ALWAYS parallelize:**
+```python
+# ✅ GOOD - Each agent focuses on one project
+Task: "Analyze auth-service", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in auth-service/"
+Task: "Analyze blog", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in blog/"
+Task: "Analyze payments", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in payment-api/"
+
+# ❌ BAD - Loading everything into Manager's context
+Reading all logs myself and trying to remember everything...
+```
+
+**3. Brain Dump Routing - ALWAYS parallelize updates:**
+```python
+# ✅ GOOD - After parsing brain dump, route in parallel
+Task: "Update auth roadmap", prompt: "In auth-service/, add 'Deploy by Friday [DUE: 2025-07-05]' to PROJECT_ROADMAP.md"
+Task: "Update blog roadmap", prompt: "In blog/, move 'Publish announcement' to Active Work"
+Task: "Update payment roadmap", prompt: "In payment-api/, move 'Stripe integration' to Blocked section"
+
+# ❌ BAD - Doing updates sequentially
+First update auth, wait for completion, then blog, wait, then payments...
+```
+
+### Parallel Patterns for Common Commands
+
+**/doctor command should use:**
+```python
+# Spawn parallel health checks
+Task: "Check project health", prompt: "In auth-service/, check for: 1) CLAUDE.md exists, 2) .claudepm version, 3) git status, 4) last log date"
+Task: "Check project health", prompt: "In blog/, check for: 1) CLAUDE.md exists, 2) .claudepm version, 3) git status, 4) last log date"
+# ... one task per project
+```
+
+**/weekly-review should use:**
+```python
+# Parallel weekly analysis
+Task: "Weekly review", prompt: "In auth-service/, read last 7 days of CLAUDE_LOG.md and summarize: accomplishments, blockers, patterns"
+Task: "Weekly review", prompt: "In blog/, read last 7 days of CLAUDE_LOG.md and summarize: accomplishments, blockers, patterns"
+# Aggregate results after all complete
+```
+
+### Why Parallel is Essential
+
+1. **Speed**: 10 projects checked in parallel = 30 seconds. Sequential = 5 minutes.
+2. **Memory**: Each sub-agent gets fresh context. Manager stays light.
+3. **Accuracy**: Sub-agents can deep-dive without contaminating Manager's context.
+4. **Scalability**: Works the same for 3 projects or 30 projects.
+
+### The Golden Rule
+
+> If you're about to check/read/update more than ONE project, use parallel Tasks.
+> If you find yourself thinking "first I'll check X, then Y" - STOP and parallelize!
 
 For comprehensive project summaries, spawn sub-agents with dynamic scope:
 

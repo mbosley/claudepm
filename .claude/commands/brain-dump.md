@@ -14,14 +14,21 @@ $ARGUMENTS
    - Bugs: "bug in", "broken", "not working" → Add to Active Work
    - Context: "client said", "team decided" → Add to Notes section
 
-4. For each identified project, spawn a sub-agent:
-   ```bash
-   claude -p "You are in [project]/ directory.
-   Update PROJECT_ROADMAP.md based on these items:
-   - [Extracted items for this project]
-   Add [DUE: YYYY-MM-DD] for any deadlines.
-   Move items to Blocked section if blockers identified.
-   Add context to Notes if important background provided."
+4. **Route updates to ALL projects IN PARALLEL**:
+   ```python
+   # CRITICAL: Spawn all updates simultaneously!
+   # After parsing brain dump and identifying which projects need updates:
+   
+   Task: "Update auth roadmap",
+     prompt: "In auth-service/, update PROJECT_ROADMAP.md: Add 'JWT implementation [DUE: 2025-07-01]' to Active Work"
+   
+   Task: "Update payment roadmap", 
+     prompt: "In payment-api/, update PROJECT_ROADMAP.md: Move 'Stripe integration' to Blocked section with note 'Waiting for API keys'"
+   
+   Task: "Update blog roadmap",
+     prompt: "In blog/, update PROJECT_ROADMAP.md: Add 'Publish claudepm article [DUE: this week]' to Active Work"
+   
+   # ALL tasks launch together - don't wait between them!
    ```
 
 5. Create a summary report showing:

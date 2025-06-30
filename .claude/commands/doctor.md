@@ -10,17 +10,29 @@ First, let me check the overall claudepm environment:
    - Slash commands installed?
    - Current template version?
 
-2. **Scan all projects**:
+2. **Scan all projects** (get list first):
    ```bash
    # Find all projects with claudepm
+   PROJECTS=()
    for dir in */; do
      if [ -f "$dir/CLAUDE.md" ] || [ -f "$dir/.claudepm" ]; then
-       echo "Checking $dir..."
+       PROJECTS+=("$dir")
      fi
    done
+   echo "Found ${#PROJECTS[@]} projects to check"
    ```
 
-3. **For each claudepm project, check**:
+3. **Check all projects IN PARALLEL using Tasks**:
+   ```python
+   # IMPORTANT: Spawn all checks simultaneously!
+   for project in PROJECTS:
+     Task: "Health check {project}", 
+       prompt: "Check {project}: 1) All 3 files exist? 2) Template version from .claudepm 3) Git status 4) Last activity from CLAUDE_LOG.md"
+   
+   # Wait for all to complete, then aggregate results
+   ```
+
+4. **For each claudepm project, the sub-agent checks**:
    - CLAUDE.md exists and readable
    - PROJECT_ROADMAP.md exists
    - CLAUDE_LOG.md exists
