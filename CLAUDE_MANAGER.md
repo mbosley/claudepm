@@ -213,6 +213,91 @@ When creating a new project:
 3. Create PROJECT_ROADMAP.md from template
 4. Create initial CLAUDE_LOG.md entry
 5. Update roadmap with initial goals
+6. Create .claudepm marker file (see below)
+
+## Adopting Existing Projects
+
+To add claudepm to an existing project:
+
+### 1. Check if already initialized
+```bash
+# Look for claudepm marker
+if [ -f "project/.claudepm" ]; then
+  echo "Already initialized with claudepm"
+  exit
+fi
+```
+
+### 2. Analyze the project
+Examine the project to understand:
+- Project type (check package.json, requirements.txt, Cargo.toml, etc.)
+- Existing documentation (README.md, docs/)
+- Current TODOs (grep for TODO/FIXME comments, look for TODO.md)
+- Recent activity (git log --oneline -10)
+- Test/build commands (from package.json scripts, Makefile, etc.)
+
+### 3. Generate initial files
+**CLAUDE.md**: Include discovered commands and project-specific info
+```markdown
+# Project: [Name from package.json/README]
+
+## Start Every Session
+[Standard template content]
+
+## Project Context
+Type: [Discovered type - Node.js app, Python CLI, etc.]
+Language: [Primary language]
+Purpose: [From README or package.json description]
+
+## Discovered Commands
+- Test: [npm test, pytest, cargo test, etc.]
+- Build: [npm run build, make, etc.]
+- Run: [npm start, python main.py, etc.]
+```
+
+**PROJECT_ROADMAP.md**: Import existing TODOs and infer from recent commits
+```markdown
+## Current Status
+[Summarize from README and recent commits]
+
+## Active Work
+[Import any TODO/FIXME comments found]
+[Infer from recent commit messages]
+
+## Upcoming
+[Any roadmap/TODO files content]
+```
+
+**CLAUDE_LOG.md**: First entry documenting adoption
+```markdown
+### YYYY-MM-DD HH:MM - Adopted project into claudepm
+Did:
+- ANALYZED: Project structure and discovered [type] project
+- FOUND: [X] existing TODOs imported to roadmap
+- DISCOVERED: Test command: [command], Build: [command]
+- CREATED: Initial claudepm files based on analysis
+Next: Review imported items and update roadmap
+Notes: Adoption found [interesting discoveries]. Existing documentation preserved in roadmap Notes section.
+```
+
+### 4. Create .claudepm marker
+```json
+{
+  "claudepm": {
+    "version": "0.1",
+    "initialized": "YYYY-MM-DD HH:MM:SS"
+  },
+  "adoption": {
+    "adopted_from_existing": true,
+    "discovered_type": "node-web-app",
+    "imported_todos": 5,
+    "found_commands": ["npm test", "npm run build"]
+  }
+}
+```
+
+### 5. Update .gitignore
+Add `.claudepm` to the project's .gitignore to keep it local
 
 ## Roadmap Best Practices
 

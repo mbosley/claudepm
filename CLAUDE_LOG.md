@@ -439,3 +439,28 @@ Next: Commit all improvements and push to GitHub
 Notes: This prevents the common issue of commits not reflecting roadmap state. Now Claude will always check: Are completed items moved? New tasks added? Status current? This maintains accurate project state.
 
 ---
+
+### 2025-06-29 20:20 - Implemented project adoption functionality
+Did:
+- IMPLEMENTED: Adoption instructions in CLAUDE_MANAGER.md
+- CREATED: /adopt-project slash command with full analysis logic
+- DESIGNED: .claudepm marker file specification for tracking
+- ADDED: Metadata architecture for managed project discovery
+- DOCUMENTED: JSON structure for project metadata
+- UPDATED: Templates to mention .claudepm file (gitignored)
+Next: Test adoption on a real project
+Notes: Adoption works TODAY through Manager Claude! The /adopt-project command analyzes existing projects, imports TODOs, discovers commands, and creates appropriate claudepm files. The .claudepm marker prevents re-initialization and tracks adoption metadata.
+
+---
+
+### 2025-06-29 20:30 - Fixed /adopt-project to use full template content
+Did:
+- FIXED: /adopt-project now includes complete CLAUDE.md template content
+- IMPROVED: Clear instructions to preserve ALL template sections
+- ADDED: Proper PROJECT_ROADMAP.md generation with template structure
+- ENHANCED: Initial CLAUDE_LOG.md with header and detailed first entry
+- DOCUMENTED: Guidance for future log entries in the initial log
+Next: Update cv-scraping with proper template content
+Notes: The original /adopt-project was creating minimal files. Now it properly uses the full templates while adding discovered project-specific content. This ensures adopted projects get all claudepm principles and guidance.
+
+---

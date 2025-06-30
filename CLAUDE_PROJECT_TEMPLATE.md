@@ -88,6 +88,12 @@ Next: Continue working
 
 Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROADMAP.md, not new files!
 
+### claudepm Files
+- **CLAUDE.md** - Project-specific instructions (check in to git)
+- **CLAUDE_LOG.md** - Append-only work history (check in to git)  
+- **PROJECT_ROADMAP.md** - Living state document (check in to git)
+- **.claudepm** - Local metadata marker (add to .gitignore)
+
 ## Git Commits vs Logs (Claude-specific)
 
 ### When to add a log entry:

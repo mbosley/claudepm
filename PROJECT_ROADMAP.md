@@ -13,7 +13,13 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Implemented 6 slash commands as proper .claude/commands/ files
 - [x] Added structured report formats for consistency
 - [x] Documented PLANNED vs IMPLEMENTED distinction
+- [x] Implemented project adoption functionality
+- [x] Created /adopt-project slash command
+- [x] Designed .claudepm marker file specification
+- [x] Fixed /adopt-project to use full template content
+- [x] Created .claudepm marker for claudepm itself
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
+- [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
 - [ ] Create v0.1.1 with any refinements from testing
 
@@ -57,11 +63,19 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Install at root projects directory (configurable)
   - Interactive wizard with directory selection
   - Detect existing claudepm installation
-- [ ] Existing project adaptation
-  - `claudepm adopt [project]` - Add claudepm to existing project
+- [ ] **Existing project adaptation**
+  - ALREADY WORKS: Manual adoption via Manager Claude instructions
+  - ALREADY WORKS: /adopt-project slash command
+  - IMPLEMENTED: .claudepm marker file specification
+  - FUTURE: `claudepm adopt [project]` CLI command
   - Sub-agent analyzes repo (tech stack, recent commits, README)
   - Generate initial PROJECT_ROADMAP.md based on analysis
   - Show summary for user confirmation before creating files
+- [ ] **Metadata tracking**
+  - .claudepm marker file in each project (local-only)
+  - Central registry at ~/.claudepm/projects.json
+  - Track initialization status and versions
+  - Support for checking if projects need updates
 - [ ] Doctor command
   - `claudepm doctor` - Health check for installation
   - List all projects in directory
@@ -202,12 +216,14 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Git branching strategy mapped to versions
 - [x] Manager sub-agent patterns documented
 - [x] Dynamic scoping for reports added
-- [x] Slash commands properly implemented in .claude/commands/
+- [x] Slash commands properly implemented in .claude/commands/ (7 commands)
 - [x] Brain dump processing pattern documented and tested
 - [x] Structured report formats for all report types
 - [x] PLANNED vs IMPLEMENTED distinction documented
 - [x] Claude Code best practices link added as resource
-- [x] 37 log entries documenting the journey
+- [x] Project adoption functionality with /adopt-project command
+- [x] .claudepm marker file specification
+- [x] 43 log entries documenting the journey
 
 ## Blocked
 None currently
@@ -221,14 +237,50 @@ None currently
 - Features should emerge from real usage patterns, not speculation
 
 ### What Already Works (No CLI Needed)
-- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work
+- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project
 - **Brain dump processing**: Manager Claude follows documented patterns to parse and route updates
+- **Project adoption**: Manager Claude can analyze and adopt existing projects
 - **Deadline scanning**: Simple bash loops + grep find all [DUE:] dates
 - **Sub-agent reports**: Claude's Task tool spawns focused agents for each project
 - **Log searching**: grep commands work for finding patterns
 - **Multi-project status**: Bash loops show overview across all projects
 
 The power is in Claude's intelligence + simple markdown patterns, not complex tooling!
+
+### .claudepm Marker File Specification
+
+Each claudepm-managed project contains a `.claudepm` file (gitignored) that tracks:
+
+```json
+{
+  "claudepm": {
+    "version": "0.1",              // claudepm version that created this
+    "initialized": "2025-06-29T20:30:00Z",
+    "last_template_update": "2025-06-29T20:30:00Z"
+  },
+  "project": {
+    "adopted": true,               // false if created new, true if adopted
+    "type": "node-web-api",        // discovered project type
+    "language": "javascript",      // primary language
+    "discovered_commands": {
+      "test": "npm test",
+      "build": "npm run build",
+      "run": "npm start"
+    }
+  },
+  "metadata": {
+    "imported_todos": 5,           // if adopted
+    "has_roadmap": true,           // found existing roadmap
+    "last_activity_check": "2025-06-29T20:30:00Z"
+  }
+}
+```
+
+This enables:
+- Quick identification of managed projects
+- Version tracking for updates
+- Adoption history and discovered features
+- Future migration support
 
 ### Git Branching Strategy for Roadmap
 
@@ -318,4 +370,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 20:12
+Last updated: 2025-06-29 20:31
