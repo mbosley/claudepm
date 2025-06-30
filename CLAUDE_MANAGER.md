@@ -46,8 +46,20 @@ Adding sections to existing files = ✅ Right!
 1. Read CLAUDE_LOG.md at manager level (if exists)
 2. Check for recent manager-level activities
 3. Run quick status check or use /orient
+4. **Log that you've started a manager session**
 
-## After Each Manager Work Session
+## When to Log (IMPORTANT)
+
+Manager Claude should log MORE frequently than project Claude because coordination activities are easy to forget:
+
+- **After ANY slash command** - Log what you ran and what you found
+- **After routing updates** - Log which projects received updates
+- **After status checks** - Log the overall health snapshot
+- **After spawning sub-agents** - Log what analyses you requested
+- **When blocked or waiting** - Log what you're waiting for
+- **Before session ends** - Log any pending items
+
+## Log Entry Format
 
 Add to CLAUDE_LOG.md at this level:
 ```
@@ -57,15 +69,39 @@ Projects affected: [List projects touched]
 Next: [What manager-level work is needed]
 ```
 
-Example:
+Examples of when to log:
+
+**After /doctor command:**
 ```
-### 2025-06-29 21:00 - Processed brain dump and weekly review
+### 2025-06-30 15:10 - Ran health check across all projects
+Did:
+- CHECKED: 8 projects total, 5 healthy, 2 outdated templates, 1 stale
+- IDENTIFIED: auth-service and blog need template updates (v0.1 → v0.1.1)
+- FOUND: payment-api stale for 10 days
+Projects affected: All (system scan)
+Next: Update outdated templates, check on payment-api blockage
+```
+
+**After /brain-dump processing:**
+```
+### 2025-06-29 21:00 - Processed brain dump from client meeting
 Did:
 - ROUTED: 3 updates to auth-service, 2 to blog project
 - IDENTIFIED: payment-api blocked on Stripe keys
-- GENERATED: Weekly review showing 80% velocity
+- ADDED: Hard deadline to auth-service roadmap [DUE: 2025-07-01]
 Projects affected: auth-service, blog, payment-api
 Next: Follow up on Stripe key blocker with client
+```
+
+**After parallel sub-agent tasks:**
+```
+### 2025-06-30 16:00 - Generated weekly review reports
+Did:
+- SPAWNED: 5 parallel sub-agents for project analysis
+- COMPLETED: All weekly reviews in 2 minutes (vs 10 sequential)
+- IDENTIFIED: Common pattern - 3 projects blocked on external dependencies
+Projects affected: All active projects
+Next: Create summary report of external blockers for client
 ```
 
 ## Generating Detailed Project Reports

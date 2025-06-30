@@ -93,3 +93,5 @@ Run /update [project] to refresh templates
 ### Projects with Issues
 ❌ payment-api: Missing PROJECT_ROADMAP.md
 ```
+
+**IMPORTANT**: After running doctor, add an entry to ~/projects/CLAUDE_LOG.md documenting what was found!

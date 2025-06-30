@@ -41,3 +41,8 @@ Processed 4 items from brain dump:
 - blog: Added "Publish claudepm post" [DUE: this week]
 - Unmatched: "bug in CSV export" - no clear project context
 ```
+
+**REMINDER**: After processing a brain dump, log to ~/projects/CLAUDE_LOG.md:
+- Which projects were affected
+- What updates were routed
+- Any items that couldn't be matched

@@ -574,3 +574,16 @@ Next: Create LICENSE file and test full installation flow
 Notes: The README now clearly explains that claudepm is installed at the projects root and uses slash commands to manage individual projects. This should prevent confusion about the two-level architecture.
 
 ---
+
+
+### 2025-06-30 15:15 - Enhanced manager-level logging guidance
+Did:
+- ADDED: "When to Log" section emphasizing frequent manager logging
+- DOCUMENTED: Log after ANY slash command, routing, or status check
+- PROVIDED: Specific examples for /doctor, /brain-dump, and parallel tasks
+- ADDED: Logging reminders directly in slash command outputs
+- EMPHASIZED: Manager activities are easier to forget than project work
+Next: Test logging patterns with real manager operations
+Notes: Manager Claude needs more frequent logging than Worker Claude because coordination activities are ephemeral. Added explicit triggers and examples to ensure manager-level context is preserved.
+
+---
