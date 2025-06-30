@@ -1,6 +1,6 @@
-# Daily Review
+Generate evening review of work completed across all projects
 
-Generate an evening review of work completed across all projects.
+Create a comprehensive daily review showing what got done, what's blocked, and tomorrow's priorities.
 
 ## Instructions:
 1. For each project with today's activity:

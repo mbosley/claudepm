@@ -104,27 +104,35 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
 - When reaching a working state
 - Before risky changes
 
-### Writing accurate commit messages:
-**Check your message for these common mistakes:**
-- Claiming to "implement" features that were only added to roadmap
-- Using "add" when you mean "plan" or "document"
-- Being vague about what was actually done vs what was planned
+### Before committing - ALWAYS check:
+1. **Update PROJECT_ROADMAP.md first**:
+   - Move completed items from Active Work to Completed
+   - Update progress on any in-progress items
+   - Add any new work discovered
+   - Check if version milestones are complete
+   - Update the "Last updated" timestamp
 
-**Good commit message:**
-```
-Add dynamic scoping to manager reports and plan persistence feature
-
-- IMPLEMENTED: Dynamic date filtering in CLAUDE_MANAGER.md
-- PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
-- UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
-```
-
-**Bad commit message:**
-```
-Implement manager report persistence
-
-[When you actually just added it to the roadmap]
-```
+2. **Then write accurate commit messages**:
+   - Check for these common mistakes:
+     - Claiming to "implement" features only added to roadmap
+     - Using "add" when you mean "plan" or "document"
+     - Being vague about what was done vs planned
+   
+   **Good commit message:**
+   ```
+   Add dynamic scoping to manager reports and plan persistence feature
+   
+   - IMPLEMENTED: Dynamic date filtering in CLAUDE_MANAGER.md
+   - PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
+   - UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
+   ```
+   
+   **Bad commit message:**
+   ```
+   Implement manager report persistence
+   
+   [When you actually just added it to the roadmap]
+   ```
 
 Remember: Your "work session" might be 2 minutes or 2 hours - log based on tasks completed, not time elapsed
 

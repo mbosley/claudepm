@@ -1,6 +1,6 @@
-# Start Work Briefing
+Get oriented before diving into project: $ARGUMENTS
 
-Get oriented before diving into a specific project: $ARGUMENTS
+Generate a briefing with current status, recent work, and immediate priorities for the specified project.
 
 ## Instructions:
 1. Navigate to the specified project directory

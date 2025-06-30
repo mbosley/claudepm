@@ -1,6 +1,6 @@
-# Brain Dump Processing
+Process unstructured updates and route to relevant projects
 
-Process this unstructured update and route items to relevant projects:
+Parse this brain dump and intelligently route items to appropriate project roadmaps:
 
 $ARGUMENTS
 

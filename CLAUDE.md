@@ -62,6 +62,13 @@ Purpose: Simple memory system for Claude Code sessions
 3. Make the smallest change possible
 4. Update our own CLAUDE_LOG.md
 
+### Before committing:
+1. **ALWAYS update PROJECT_ROADMAP.md first**
+2. Move completed items to Completed section
+3. Update Active Work with current state
+4. Check if any version milestones are complete
+5. Then write commit message that accurately reflects changes
+
 ### When something isn't working:
 1. Check if it's a behavioral issue (update CLAUDE.md)
 2. Check if it's a process issue (update README)

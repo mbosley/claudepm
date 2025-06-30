@@ -10,6 +10,9 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Added roadmap best practices to templates
 - [x] Created sub-agent report patterns for Manager Claude
 - [x] Added brain dump processing pattern for Manager Claude
+- [x] Implemented 6 slash commands as proper .claude/commands/ files
+- [x] Added structured report formats for consistency
+- [x] Documented PLANNED vs IMPLEMENTED distinction
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Refine templates based on actual usage
 - [ ] Create v0.1.1 with any refinements from testing
@@ -199,7 +202,12 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Git branching strategy mapped to versions
 - [x] Manager sub-agent patterns documented
 - [x] Dynamic scoping for reports added
-- [x] 28 log entries documenting the journey
+- [x] Slash commands properly implemented in .claude/commands/
+- [x] Brain dump processing pattern documented and tested
+- [x] Structured report formats for all report types
+- [x] PLANNED vs IMPLEMENTED distinction documented
+- [x] Claude Code best practices link added as resource
+- [x] 37 log entries documenting the journey
 
 ## Blocked
 None currently
@@ -213,6 +221,7 @@ None currently
 - Features should emerge from real usage patterns, not speculation
 
 ### What Already Works (No CLI Needed)
+- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work
 - **Brain dump processing**: Manager Claude follows documented patterns to parse and route updates
 - **Deadline scanning**: Simple bash loops + grep find all [DUE:] dates
 - **Sub-agent reports**: Claude's Task tool spawns focused agents for each project
@@ -309,4 +318,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 19:22
+Last updated: 2025-06-29 20:12

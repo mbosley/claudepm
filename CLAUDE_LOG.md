@@ -417,3 +417,25 @@ Next: Commit properly implemented slash commands
 Notes: Following Claude Code best practices, slash commands are now actual files in .claude/commands/, not just documentation. Each command has detailed instructions and output formats. This makes them actually usable when typing / in Claude.
 
 ---
+
+### 2025-06-29 20:10 - Improved slash command descriptors for better discoverability
+Did:
+- UPDATED: All 6 slash command files to have clear first-line descriptors
+- REMOVED: Markdown headers (#) that might interfere with command palette
+- IMPROVED: Each command now starts with concise description of its purpose
+- MAINTAINED: Detailed instructions and examples in command bodies
+Next: Commit all improvements and push to GitHub
+Notes: The first line of each command file now serves as the descriptor that shows when typing / in Claude. This makes commands more discoverable with descriptions like "Process unstructured updates and route to relevant projects".
+
+---
+
+### 2025-06-29 20:12 - Added pre-commit roadmap check guidance
+Did:
+- IMPLEMENTED: "Before committing" guidance in all templates
+- EMPHASIZED: Always update PROJECT_ROADMAP.md before creating commit
+- ADDED: Checklist for roadmap updates (completed items, new tasks, status)
+- UPDATED: PROJECT_ROADMAP.md timestamp as example of the practice
+Next: Commit all improvements and push to GitHub
+Notes: This prevents the common issue of commits not reflecting roadmap state. Now Claude will always check: Are completed items moved? New tasks added? Status current? This maintains accurate project state.
+
+---

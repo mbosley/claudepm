@@ -1,6 +1,6 @@
-# Weekly Review
+Generate comprehensive weekly review across all projects
 
-Generate a comprehensive weekly review across all projects.
+Analyze the past week's progress, identify patterns, and set priorities for next week.
 
 ## Instructions:
 1. For each project, analyze the past 7 days:

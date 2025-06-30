@@ -223,6 +223,12 @@ When updating any PROJECT_ROADMAP.md:
 - **Think PR-sized**: Each version should be one coherent pull request
 - **Enable automation**: Clear enough that "work on v0.2" is unambiguous
 
+**Before ANY commit**: Always check if PROJECT_ROADMAP.md needs updating:
+- Have you completed items that should move to Completed?
+- Are there new tasks discovered during work?
+- Has the Current Status changed?
+- Update "Last updated" timestamp
+
 Remember: Roadmaps aren't just plans - they're executable specifications for future work.
 
 ## Project CLAUDE.md Template

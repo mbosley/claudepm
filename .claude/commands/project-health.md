@@ -1,6 +1,6 @@
-# Project Health Check
+Analyze project health and identify which need attention
 
-Analyze the health of all projects and identify which need attention.
+Check all projects for blockers, overdue items, and stale work to prioritize interventions.
 
 ## Instructions:
 1. For each project directory, check:

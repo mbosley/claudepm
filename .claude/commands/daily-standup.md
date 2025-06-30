@@ -1,6 +1,6 @@
-# Daily Standup
+Generate morning standup report across all projects
 
-Generate a morning standup report across all projects in ~/projects.
+Create a consolidated morning overview showing today's priorities, active work, and upcoming deadlines.
 
 ## Instructions:
 1. For each project directory that contains CLAUDE_LOG.md:
