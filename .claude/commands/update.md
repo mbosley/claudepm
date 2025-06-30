@@ -29,15 +29,39 @@ Usage: /update [project-name]
    ```
 
 4. **Preserve project-specific content**:
-   - Extract "Project Context" section from existing CLAUDE.md
-   - Extract any custom sections added by user
-   - Note discovered commands and project metadata
+   ```bash
+   # Extract Project Context section
+   sed -n '/^## Project Context/,/^##/p' "$PROJECT/CLAUDE.md" > project_context.tmp
+   
+   # Look for any custom sections not in template
+   # (sections that exist in current file but not in template)
+   
+   # Extract discovered commands if present
+   sed -n '/^## Discovered Commands/,/^##/p' "$PROJECT/CLAUDE.md" > commands.tmp
+   
+   # Extract any content after standard template sections
+   # This catches user additions at the end
+   ```
 
 5. **Apply latest template**:
-   - Start with latest CLAUDE.md template
-   - Re-insert preserved project-specific content
+   ```bash
+   # Start with fresh template
+   cp ~/.claude/templates/CLAUDE.md "$PROJECT/CLAUDE.md.new"
+   
+   # Insert preserved content at appropriate locations
+   # Replace template's generic Project Context with actual content
+   sed -i '/^## Project Context/,/^##/{
+     /^## Project Context/r project_context.tmp
+     d
+   }' "$PROJECT/CLAUDE.md.new"
+   
+   # Add any custom sections before the final line
+   # Move new file into place
+   mv "$PROJECT/CLAUDE.md.new" "$PROJECT/CLAUDE.md"
+   ```
+   
    - Update template version in .claudepm
-   - Keep all existing log entries and roadmap items
+   - Keep all existing log entries and roadmap items unchanged
 
 6. **Report what was updated**:
    ```

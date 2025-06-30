@@ -549,3 +549,15 @@ Next: Test doctor and update commands on real projects
 Notes: This solves template drift - projects can check if they're outdated and update when needed. The update command preserves project-specific content while refreshing the template structure.
 
 ---
+
+
+### 2025-06-29 21:25 - Clarified content preservation in update commands
+Did:
+- IMPROVED: /update command with explicit bash examples for content extraction
+- CLARIFIED: How project-specific sections are preserved during updates
+- ENHANCED: /adopt-project to note it preserves existing CLAUDE.md content
+- DOCUMENTED: Specific sed commands for extracting custom sections
+Next: Test update command on a real project with customizations
+Notes: Both commands now clearly show they preserve project-specific content. The update command includes actual bash snippets showing how custom sections are extracted and reinserted.
+
+---

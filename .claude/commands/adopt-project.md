@@ -23,9 +23,10 @@ Set up claudepm for an existing project by analyzing its structure and generatin
    - Recent work: Check git log for activity patterns
 
 3. **Generate CLAUDE.md** using the full template:
+   - If CLAUDE.md already exists, back it up and extract Project Context
    - Start with the complete content from ~/.claude/templates/CLAUDE.md
    - Replace `[Project Name]` with the discovered project name
-   - In the "Project Context" section, add:
+   - In the "Project Context" section, either preserve existing or add:
      ```markdown
      ## Project Context
      Type: [Discovered type - Web app, CLI tool, library, etc.]
