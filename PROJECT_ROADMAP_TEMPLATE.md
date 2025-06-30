@@ -6,6 +6,7 @@
 ## Active Work
 - [ ] Current task being worked on
 - [ ] Next immediate priority
+- [ ] Task with deadline [DUE: 2025-07-01]
 
 ## Upcoming
 
@@ -39,6 +40,8 @@
 - Links to relevant resources
 - This roadmap drives development - each version can become a git branch
 - Structure enables future automation: "work on v0.2 features"
+- Optional: Add [DUE: YYYY-MM-DD] to any task with a deadline
+- Manager Claude can scan all projects for upcoming deadlines
 
 ---
 Last updated: YYYY-MM-DD HH:MM

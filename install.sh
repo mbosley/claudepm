@@ -47,19 +47,28 @@ cp CLAUDE_PROJECT_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/CLAUDE.md"
 cp PROJECT_ROADMAP_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/PROJECT_ROADMAP.md"
 echo "  ✓ Created $PROJECTS_DIR/.claude/templates/"
 
+# Install slash commands if they exist
+if [ -d ".claude/commands" ]; then
+    echo "Installing slash commands..."
+    mkdir -p "$PROJECTS_DIR/.claude/commands"
+    cp .claude/commands/*.md "$PROJECTS_DIR/.claude/commands/" 2>/dev/null
+    echo "  ✓ Installed $(ls .claude/commands/*.md | wc -l) slash commands"
+fi
+
 echo
 echo "Installation complete!"
 echo
 echo "Next steps:"
 echo "1. cd $PROJECTS_DIR"
 echo "2. code . (or your preferred editor)"
-echo "3. Ask Claude about project status"
+echo "3. Try slash commands: /daily-standup, /brain-dump, /project-health"
 echo "4. For each project, create:"
 echo "   - CLAUDE.md (from template)"
 echo "   - PROJECT_ROADMAP.md (from template)"
 echo "   - CLAUDE_LOG.md (start with first entry)"
 echo
 echo "Templates: $PROJECTS_DIR/.claude/templates/"
+echo "Commands: $PROJECTS_DIR/.claude/commands/"
 
 echo
 echo "Note: When claudepm CLI is ready, install it to:"

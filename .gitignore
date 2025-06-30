@@ -1,6 +1,5 @@
 .DS_Store
 *.backup
-.claude/
 # Don't ignore the templates
 !CLAUDE_MANAGER.md
 !CLAUDE_PROJECT_TEMPLATE.md

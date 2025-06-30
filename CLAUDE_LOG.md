@@ -358,3 +358,62 @@ Next: Update templates with this guidance to help future Claudes
 Notes: User caught this - I was about to commit saying we implemented manager report persistence when we only added it to the roadmap. This distinction is critical for accurate context preservation.
 
 ---
+
+### 2025-06-29 19:35 - Tested sub-agent functionality and added structured report formats
+Did:
+- TESTED: All 5 sub-agent report types (standup, daily, weekly, health, patterns)
+- VALIDATED: Dynamic scoping works perfectly - agents only read relevant timeframes
+- IMPLEMENTED: Structured report formats in CLAUDE_MANAGER.md for consistency
+- ADDED: Multi-project aggregation pattern for executive summaries
+- DOCUMENTED: Future report persistence paths (~/.claudepm/reports/)
+Next: Commit these improvements and wrap up session
+Notes: Sub-agent pattern works excellently! Each report type now has a specific format, making Manager Claude reports more consistent and valuable. The structured formats ensure key information isn't missed.
+
+---
+
+### 2025-06-29 19:50 - Added brain dump processing and lightweight deadline tracking
+Did:
+- IMPLEMENTED: Brain dump processing pattern in CLAUDE_MANAGER.md
+- DESIGNED: Intelligent inbox that routes unstructured updates to projects
+- ADDED: Simple [DUE: YYYY-MM-DD] deadline notation to templates
+- PLANNED: Brain dump processing feature in PROJECT_ROADMAP.md v0.7
+- DOCUMENTED: How Manager Claude extracts deadlines, blockers, and priorities
+Next: Commit these additions and close productive session
+Notes: This creates a powerful pattern - users can brain dump to Manager Claude, which parses the input and spawns sub-agents to update each affected project's roadmap. Keeps the core simple (just markdown patterns) while enabling sophisticated multi-project updates.
+
+---
+
+### 2025-06-29 19:55 - Clarified what works today vs future CLI features
+Did:
+- UPDATED: PROJECT_ROADMAP.md to distinguish current capabilities from future CLI
+- DOCUMENTED: Brain dump processing works TODAY through Claude's intelligence
+- CLARIFIED: Search, deadline scanning, and reports work with grep/bash + Claude
+- ADDED: "What Already Works" section highlighting no-CLI-needed features
+- REALIZED: The power is in patterns + Claude, not traditional code
+Next: Commit this clearer understanding
+Notes: Key insight - many "features" don't need code, just clear patterns for Claude to follow. Brain dumps, deadline scanning, and multi-project reports all work through Claude's Task tool and bash commands. Future CLI commands would just add convenience, not core functionality.
+
+---
+
+### 2025-06-29 19:58 - Added /brain-dump slash command for Manager Claude
+Did:
+- IMPLEMENTED: /brain-dump slash command in CLAUDE_MANAGER.md
+- ORGANIZED: All slash commands in one section for discoverability
+- LINKED: Brain dump processing section now references the slash command
+- MAINTAINED: Both slash command and detailed patterns available
+Next: Commit all updates and wrap up session
+Notes: The /brain-dump command makes this powerful feature more discoverable. Users can quickly dump updates with `/brain-dump [text]` and Manager Claude will parse and route to appropriate projects.
+
+---
+
+### 2025-06-29 20:05 - Properly implemented slash commands as files
+Did:
+- CREATED: .claude/commands/ directory with 6 slash command files
+- IMPLEMENTED: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work
+- ADDED: Claude Code best practices link as resource in CLAUDE.md
+- UPDATED: install.sh to copy slash commands during installation
+- DOCUMENTED: Commands use $ARGUMENTS for parameter passing
+Next: Commit properly implemented slash commands
+Notes: Following Claude Code best practices, slash commands are now actual files in .claude/commands/, not just documentation. Each command has detailed instructions and output formats. This makes them actually usable when typing / in Claude.
+
+---

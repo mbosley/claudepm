@@ -9,7 +9,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Released v0.1 with comprehensive documentation
 - [x] Added roadmap best practices to templates
 - [x] Created sub-agent report patterns for Manager Claude
-- [ ] Test on 3-5 real projects (next priority)
+- [x] Added brain dump processing pattern for Manager Claude
+- [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Refine templates based on actual usage
 - [ ] Create v0.1.1 with any refinements from testing
 
@@ -34,19 +35,19 @@ A minimal memory system for Claude Code using three markdown files. The complete
 
 ### v0.3 - Basic Log Search (Critical for Usefulness)
 - [ ] **Within-project search**
-  - Simple grep-based search to start
-  - `claudepm search [term]` in current project
+  - ALREADY WORKS: `grep "pattern" CLAUDE_LOG.md` via Claude
+  - FUTURE: `claudepm search [term]` CLI command
   - "Have I seen this error before?"
   - Return relevant log entries with context
 - [ ] **Search integration in CLAUDE.md**
   - Teach Claude to search before solving
   - Add search examples to templates
 - [ ] **Search-optimized log format**
-  - Add tags: #error #solution #decision #blocker
+  - ALREADY WORKS: Consistent patterns in our templates
   - Error format: `Error: [category] - detailed message`
   - Solution format: `Solved: [what] by [how]`
   - Decision format: `Decided: [choice] because [reasoning]`
-  - Make patterns consistent for better grep
+  - Tags for filtering: #error #solution #decision #blocker
 
 ### v0.4 - Robust Installation & Discovery
 - [ ] Enhanced installer
@@ -98,12 +99,20 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - `/weekly-review` - Week summary, completed items, next week priorities
   - `/project-health` - Which projects need attention?
   - `/start-work [project]` - Quick briefing before diving into project
+  - `/brain-dump` - Process unstructured updates and route to projects
 - [ ] Sub-agent report generation pattern
   - Manager spawns one agent per project for deep analysis
   - Each agent reads three documents + git history
   - Reports synthesized for cross-project insights
   - Dynamic scoping: daily = today only, weekly = 7 days, etc.
   - Efficient log filtering with grep by date patterns
+- [ ] **Brain Dump Processing** (Intelligent Inbox)
+  - ALREADY WORKS: Manager Claude can manually process brain dumps using documented patterns
+  - ALREADY WORKS: Sub-agent spawning via Task tool to update roadmaps
+  - FUTURE: CLI command `claudepm inbox "update text"` for convenience
+  - FUTURE: Automated report saving after processing
+  - FUTURE: Batch processing of multiple updates
+  - NOTE: Core functionality works today through Claude's intelligence, not code
 - [ ] **Manager Report Persistence** (Hierarchical Memory)
   - Save daily summaries to `~/.claudepm/reports/daily/YYYY-MM-DD.md`
   - Save weekly summaries to `~/.claudepm/reports/weekly/`
@@ -202,6 +211,15 @@ None currently
 - Everything is just markdown - no tools, no complexity
 - Git workflow features (v0.4) are aspirational - focus on core memory system first
 - Features should emerge from real usage patterns, not speculation
+
+### What Already Works (No CLI Needed)
+- **Brain dump processing**: Manager Claude follows documented patterns to parse and route updates
+- **Deadline scanning**: Simple bash loops + grep find all [DUE:] dates
+- **Sub-agent reports**: Claude's Task tool spawns focused agents for each project
+- **Log searching**: grep commands work for finding patterns
+- **Multi-project status**: Bash loops show overview across all projects
+
+The power is in Claude's intelligence + simple markdown patterns, not complex tooling!
 
 ### Git Branching Strategy for Roadmap
 

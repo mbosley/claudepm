@@ -50,6 +50,10 @@ Purpose: Simple memory system for Claude Code sessions
 3. Only add features we've needed multiple times
 4. Keep the core under 200 lines total
 
+## Useful Resources
+- Claude Code Best Practices: https://www.anthropic.com/engineering/claude-code-best-practices
+- Especially see sections on slash commands and project memory
+
 ## Common Patterns to Follow
 
 ### When asked to add a feature:

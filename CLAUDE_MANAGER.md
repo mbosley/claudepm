@@ -73,7 +73,10 @@ claude -p "You are in [project] directory. For DAILY STANDUP:
 1. Read PROJECT_ROADMAP.md Active Work section
 2. Read CLAUDE_LOG.md - only last 3 entries or yesterday's entries
 3. Identify: What's planned for today based on 'Next:' items
-4. Report: 1-2 sentences on today's focus"
+4. Report using this format:
+   **[Project Name] - Daily Standup**
+   Today's Focus: [1-2 sentences on priorities]
+   Key Items: [List 2-3 specific tasks from Next: entries]"
 ```
 
 ### Daily Review (Evening)
@@ -82,7 +85,16 @@ claude -p "You are in [project] directory. For DAILY REVIEW:
 1. Read PROJECT_ROADMAP.md for context
 2. Read CLAUDE_LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
 3. Check git commits from today
-4. Report: What got done, what's blocked, what's next"
+4. Report using this format:
+   ## Daily Review - [Project Name] - [Date]
+   ### Completed
+   - [List what got done]
+   ### Blocked
+   - [Any blockers, or 'None']
+   ### Next Steps
+   - [Immediate priorities]
+   ### Key Insights
+   - [Any lessons learned or patterns noticed]"
 ```
 
 ### Weekly Review
@@ -91,7 +103,49 @@ claude -p "You are in [project] directory. For WEEKLY REVIEW:
 1. Read PROJECT_ROADMAP.md - note completed items
 2. Read CLAUDE_LOG.md - entries from last 7 days
 3. Check git commits from: $(date -d '7 days ago' +%Y-%m-%d) to today
-4. Report: Major accomplishments, patterns, next week priorities"
+4. Report using this format:
+   ## Weekly Review - [Project Name]
+   ### Major Accomplishments
+   - [Completed features/milestones]
+   ### Patterns & Insights
+   - [Recurring themes, lessons learned]
+   ### Next Week Priorities
+   1. [Most important]
+   2. [Second priority]
+   3. [Third priority]
+   ### Metrics
+   - Log entries: [count]
+   - Commits: [count]
+   - Roadmap progress: [e.g., v0.1 complete, v0.2 started]"
+```
+
+### Project Health Check
+```bash
+claude -p "You are in [project] directory. For PROJECT HEALTH:
+1. Check PROJECT_ROADMAP.md Blocked section
+2. Search CLAUDE_LOG.md for recent 'Blocked:' entries
+3. Run git status for uncommitted changes
+4. Report using this format:
+   **[Project Name] Health: [🟢/🟠/🔴/⚫]**
+   - Blockers: [count and brief description, or 'None']
+   - Git status: [Clean/X uncommitted changes]
+   - Last activity: [date from most recent log]
+   - Recommendation: [Continue/Needs attention/Review blockers]"
+```
+
+### Cross-Project Pattern Analysis
+```bash
+claude -p "You are in [project] directory. For PATTERN ANALYSIS:
+1. Read CLAUDE_LOG.md focusing on Error:, Solved:, and Notes: sections
+2. Look for recurring themes and lessons learned
+3. Report using this format:
+   ## Pattern Analysis - [Project Name]
+   ### Common Errors
+   - [Pattern]: [How it was solved]
+   ### Key Lessons
+   - [Lesson]: [Why it matters]
+   ### Reusable Solutions
+   - [Problem type]: [Solution approach]"
 ```
 
 ### Dynamic Scoping Pattern
@@ -109,6 +163,39 @@ When showing project status:
 - 🟠 Blocked - has blockers noted
 - 🔴 Uncommitted - has git changes
 - ⚫ Stale - no activity >7 days
+
+## Slash Commands for Manager Claude
+
+These commands are implemented as files in `.claude/commands/` following Claude Code best practices.
+When you type `/` in Claude, these commands become available:
+
+### /brain-dump
+Process unstructured updates and route to appropriate projects:
+```
+/brain-dump
+Had a client call. They need auth system deployed by July 1st. 
+Payment integration is blocked on Stripe keys.
+Blog post about claudepm should go out this week.
+Found a bug in the CSV export feature.
+```
+
+### /daily-standup
+Quick morning check across all projects - what's on deck today?
+
+### /daily-review  
+Evening wrap-up - what got done, what's blocked?
+
+### /weekly-review
+Comprehensive week summary with patterns and priorities
+
+### /project-health
+Which projects need attention? Check for blockers and stale work
+
+### /start-work [project]
+Quick briefing before diving into a specific project
+
+**Note**: These commands are stored in `.claude/commands/*.md` and can be customized or extended.
+See https://www.anthropic.com/engineering/claude-code-best-practices for more on slash commands.
 
 ## Starting Work on a Project
 
@@ -190,6 +277,39 @@ For comprehensive reviews across all projects:
    - Resource conflicts?
    - Stale projects needing attention?
 
+### Multi-Project Report Aggregation
+
+When running reports across multiple projects, use this structure:
+
+```bash
+# For each project, spawn focused sub-agent
+for project in project1 project2 project3; do
+  claude -p "Run [REPORT TYPE] for $project directory"
+done
+
+# Then synthesize results
+claude -p "Given these individual project reports:
+[paste reports]
+
+Create an executive summary with:
+## Multi-Project Summary - [Date]
+### Projects Overview
+- 🟢 Active: [list]
+- 🟠 Blocked: [list]
+- 🔴 Needs attention: [list]
+- ⚫ Stale: [list]
+
+### Cross-Project Patterns
+- Common blockers: [identify themes]
+- Shared solutions: [reusable patterns]
+- Resource conflicts: [competing priorities]
+
+### Recommended Actions
+1. [Highest priority across all projects]
+2. [Second priority]
+3. [Third priority]"
+```
+
 ### Efficient Log Filtering
 
 Teach sub-agents to filter logs by date:
@@ -207,3 +327,95 @@ tail -n 100 CLAUDE_LOG.md | awk '/^###/{p=1} p'
 ```
 
 This ensures sub-agents read only relevant portions, making reports faster and more focused.
+
+### Saving Manager Reports (Future Feature)
+
+Once manager report persistence is implemented (v0.7), reports will be saved:
+```bash
+# Daily summaries
+~/.claudepm/reports/daily/2025-06-29.md
+
+# Weekly summaries  
+~/.claudepm/reports/weekly/2025-W26.md
+
+# Monthly aggregations
+~/.claudepm/reports/monthly/2025-06.md
+```
+
+This creates searchable manager-level memory:
+- "What were common blockers last month?"
+- "When did we last work on auth issues?"
+- "Show me all weekly reviews mentioning performance"
+
+## Brain Dump Processing (Inbox Pattern)
+
+Manager Claude can parse unstructured updates and route them to appropriate projects. 
+Use the `/brain-dump` slash command for quick access, or follow these patterns:
+
+### Basic Brain Dump
+```bash
+claude -p "BRAIN DUMP PROCESSING:
+I need to process this update and route items to relevant projects:
+
+[Your brain dump here - can be messy notes, meeting outcomes, random thoughts]
+
+For each item:
+1. Identify which project it relates to (check */ directories)
+2. Extract any deadlines, blockers, or priority changes
+3. Spawn sub-agent to update that project's PROJECT_ROADMAP.md
+4. Report what was updated and what couldn't be matched"
+```
+
+### Structured Brain Dump (Easier to Parse)
+```
+project-name: Update or deadline or blocker
+auth-system: Deploy by July 1st - hard deadline from client
+blog: Publish claudepm article this week 
+payment-app: BLOCKED - waiting on Stripe API keys
+ml-project: Prioritize data pipeline over model work
+general: Team wants to move standup to 10am
+```
+
+### Processing Example
+```bash
+claude -p "BRAIN DUMP from client meeting:
+
+'Client wants auth system live by July 1st, that's non-negotiable. 
+The payment integration is blocked until we get Stripe keys. 
+For the blog, we should publish the claudepm article to coincide with PyCon.
+Oh and someone reported a bug in the CSV export feature.'
+
+Process this:
+1. Find matching projects
+2. Update roadmaps with deadlines [DUE: YYYY-MM-DD]
+3. Move blocked items to Blocked section
+4. Add bugs to Active Work
+5. Show me what was updated"
+```
+
+### Sub-Agent Routing Pattern
+Manager Claude spawns focused updates:
+```bash
+# For each identified project
+claude -p "You are in auth-system/ directory.
+Update PROJECT_ROADMAP.md:
+- Add to Active Work: Deploy to production [DUE: 2025-07-01]
+- Note in context: Hard deadline from client meeting 2025-06-29"
+```
+
+### What Gets Extracted
+- **Deadlines**: "by July 1st", "due Friday", "ship this week" → [DUE: YYYY-MM-DD]
+- **Blockers**: "blocked on", "waiting for", "need X first" → Move to Blocked section
+- **Priorities**: "focus on", "prioritize", "urgent" → Reorder in roadmap
+- **Bugs**: "bug in", "broken", "not working" → Add to Active Work
+- **Context**: "client said", "team decided" → Add to Notes section
+
+### Unmatched Items
+Items that can't be matched to a project:
+```markdown
+## Inbox Pending - 2025-06-29
+- "Move weekly standup to 10am" - no project context
+- "Consider upgrading to Python 3.12" - which project?
+```
+
+This pattern scales from quick notes to meeting transcripts!
