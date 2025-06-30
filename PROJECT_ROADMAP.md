@@ -22,6 +22,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Created /orient command for instant context awareness
 - [x] Added manager-level logging pattern
 - [x] Documented parallel sub-agent pattern for efficiency
+- [x] Updated installer to create manager CLAUDE_LOG.md
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
@@ -394,4 +395,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 21:00
+Last updated: 2025-06-29 21:06

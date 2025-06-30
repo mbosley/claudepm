@@ -55,14 +55,40 @@ if [ -d ".claude/commands" ]; then
     echo "  ✓ Installed $(ls .claude/commands/*.md | wc -l) slash commands"
 fi
 
+# Create initial manager CLAUDE_LOG.md if it doesn't exist
+if [ ! -f "$PROJECTS_DIR/CLAUDE_LOG.md" ]; then
+    echo "Creating manager-level CLAUDE_LOG.md..."
+    cat > "$PROJECTS_DIR/CLAUDE_LOG.md" << 'EOF'
+# Manager Claude Activity Log
+
+## Overview
+This log tracks manager-level activities across all projects in ~/projects. It documents brain dump processing, cross-project analyses, adoption activities, and coordination work.
+
+---
+
+### $(date '+%Y-%m-%d %H:%M') - Installed claudepm
+Did: Set up claudepm for managing multiple projects
+Projects affected: All future projects
+Next: Try /orient to understand the system, then /adopt-project for existing projects
+
+---
+EOF
+    echo "  ✓ Created manager activity log"
+fi
+
 echo
 echo "Installation complete!"
 echo
 echo "Next steps:"
 echo "1. cd $PROJECTS_DIR"
 echo "2. code . (or your preferred editor)"
-echo "3. Try slash commands: /daily-standup, /brain-dump, /project-health"
-echo "4. For each project, create:"
+echo "3. Try these slash commands:"
+echo "   - /orient - Get instant context awareness"
+echo "   - /adopt-project - Add claudepm to existing projects"
+echo "   - /brain-dump - Process unstructured updates"
+echo "   - /daily-standup - Morning project overview"
+echo "   - /project-health - Find projects needing attention"
+echo "4. For new projects, create:"
 echo "   - CLAUDE.md (from template)"
 echo "   - PROJECT_ROADMAP.md (from template)"
 echo "   - CLAUDE_LOG.md (start with first entry)"

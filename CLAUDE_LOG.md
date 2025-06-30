@@ -513,3 +513,14 @@ Next: Test parallel execution patterns with real projects
 Notes: Two key insights: (1) Logging should be universal at all levels, including manager level. (2) Manager Claude must use parallel sub-agents to avoid loading entire project histories into one context. This scales much better.
 
 ---
+
+
+### 2025-06-29 21:05 - Updated installer with manager logging
+Did:
+- ADDED: Manager CLAUDE_LOG.md creation to install.sh
+- UPDATED: Slash command suggestions to include all 8 commands
+- IMPROVED: First-time setup experience with better guidance
+Next: Test the updated installer on a fresh setup
+Notes: The installer now creates a complete manager-level environment including the activity log. This ensures users start with proper logging from day one.
+
+---
