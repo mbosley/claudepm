@@ -45,7 +45,8 @@ echo "Creating templates directory..."
 mkdir -p "$PROJECTS_DIR/.claude/templates"
 cp CLAUDE_PROJECT_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/CLAUDE.md"
 cp PROJECT_ROADMAP_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/PROJECT_ROADMAP.md"
-echo "  ✓ Created $PROJECTS_DIR/.claude/templates/"
+cp TEMPLATE_VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
+echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat TEMPLATE_VERSION))"
 
 # Install slash commands if they exist
 if [ -d ".claude/commands" ]; then

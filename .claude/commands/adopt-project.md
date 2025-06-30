@@ -103,6 +103,7 @@ Set up claudepm for an existing project by analyzing its structure and generatin
    {
      "claudepm": {
        "version": "0.1",
+       "template_version": "0.1.1",
        "initialized": "[timestamp]"
      },
      "adoption": {

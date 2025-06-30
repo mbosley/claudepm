@@ -536,3 +536,16 @@ Next: Test with actual parallel branches/worktrees
 Notes: This solves the inevitable log conflicts from parallel work. The 'keep both' approach preserves all history while merge markers explain any timeline confusion.
 
 ---
+
+
+### 2025-06-29 21:20 - Implemented template version management
+Did:
+- IMPLEMENTED: /doctor command to check project health and template versions
+- IMPLEMENTED: /update command to refresh project templates
+- ADDED: template_version field to .claudepm marker files
+- CREATED: TEMPLATE_VERSION file and TEMPLATE_CHANGELOG.md
+- UPDATED: Installer to track template versions
+Next: Test doctor and update commands on real projects
+Notes: This solves template drift - projects can check if they're outdated and update when needed. The update command preserves project-specific content while refreshing the template structure.
+
+---

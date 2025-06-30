@@ -24,6 +24,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Documented parallel sub-agent pattern for efficiency
 - [x] Updated installer to create manager CLAUDE_LOG.md
 - [x] Added parallel work/merge conflict guidance
+- [x] Implemented template version management (/doctor and /update)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
@@ -241,7 +242,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Git branching strategy mapped to versions
 - [x] Manager sub-agent patterns documented
 - [x] Dynamic scoping for reports added
-- [x] Slash commands properly implemented in .claude/commands/ (8 commands)
+- [x] Slash commands properly implemented in .claude/commands/ (10 commands)
 - [x] Brain dump processing pattern documented and tested
 - [x] Structured report formats for all report types
 - [x] PLANNED vs IMPLEMENTED distinction documented
@@ -262,7 +263,7 @@ None currently
 - Features should emerge from real usage patterns, not speculation
 
 ### What Already Works (No CLI Needed)
-- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project, /orient
+- **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project, /orient, /doctor, /update
 - **Brain dump processing**: Manager Claude follows documented patterns to parse and route updates
 - **Project adoption**: Manager Claude can analyze and adopt existing projects
 - **Quick orientation**: /orient instantly tells Claude their role and context
@@ -281,6 +282,7 @@ Each claudepm-managed project contains a `.claudepm` file (gitignored) that trac
 {
   "claudepm": {
     "version": "0.1",              // claudepm version that created this
+    "template_version": "0.1.1",   // template version in use
     "initialized": "2025-06-29T20:30:00Z",
     "last_template_update": "2025-06-29T20:30:00Z"
   },
@@ -396,4 +398,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 21:11
+Last updated: 2025-06-29 21:22
