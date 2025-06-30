@@ -561,3 +561,16 @@ Next: Test update command on a real project with customizations
 Notes: Both commands now clearly show they preserve project-specific content. The update command includes actual bash snippets showing how custom sections are extracted and reinserted.
 
 ---
+
+
+### 2025-06-29 21:30 - Rewrote README.md to clarify architecture
+Did:
+- REPLACED: Old README with comprehensive architecture explanation
+- ADDED: Clear diagram showing manager vs project structure
+- DOCUMENTED: Install-once-use-everywhere pattern
+- EXPLAINED: How slash commands work at manager level
+- INCLUDED: Common workflows and examples
+Next: Create LICENSE file and test full installation flow
+Notes: The README now clearly explains that claudepm is installed at the projects root and uses slash commands to manage individual projects. This should prevent confusion about the two-level architecture.
+
+---

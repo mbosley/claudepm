@@ -25,6 +25,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Updated installer to create manager CLAUDE_LOG.md
 - [x] Added parallel work/merge conflict guidance
 - [x] Implemented template version management (/doctor and /update)
+- [x] Rewrote README.md with clear architecture explanation
+- [x] Created MIT LICENSE file
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
@@ -398,4 +400,4 @@ Key patterns for search:
 - Tags: #category #technology #concept
 
 ---
-Last updated: 2025-06-29 21:22
+Last updated: 2025-06-29 21:32

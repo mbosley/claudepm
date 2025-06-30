@@ -1,48 +1,134 @@
 # claudepm - Simple Project Memory for Claude
 
-A minimal system for maintaining context across Claude Code sessions.
+A minimal memory system that helps Claude maintain context across sessions using just three markdown files per project.
 
-## The Problem
-Every time you start a new Claude session, you lose context. You spend 15-30 minutes remembering what you were doing, what decisions you made, and what comes next.
+## What is claudepm?
 
-## The Solution
-Three simple markdown files per project:
-- `CLAUDE.md` - Instructions for Claude (how to work)
-- `CLAUDE_LOG.md` - Running log of work (what happened)
-- `PROJECT_ROADMAP.md` - Current state and plans (what's next)
+claudepm solves the "Claude has no memory" problem by creating a simple, persistent memory system using markdown files. It enables two levels of Claude operation:
 
-## Setup
+- **Manager Claude** - Orchestrates multiple projects from your root directory
+- **Worker Claude** - Focuses on individual project implementation
 
-### Quick Install
+## Quick Start
+
 ```bash
+# Clone claudepm
+git clone https://github.com/mbosley/claudepm.git
+cd claudepm
+
+# Install at your projects root
 ./install.sh
+# When prompted: ~/projects (or wherever you keep your projects)
+
+# Go to your projects directory
+cd ~/projects
+
+# Try these commands:
+/orient                    # Understand where you are
+/adopt-project my-app      # Add claudepm to existing project
+/doctor                    # Check health of all projects
 ```
 
-This will:
-1. Install manager CLAUDE.md to ~/projects
-2. Create templates in ~/.claude/templates/
-3. You're ready to go!
+## How It Works
 
-### Per-Project Setup
-For each project:
+### 1. Install Once at Projects Root
 ```bash
-cd ~/projects/myproject
-cp ~/.claude/templates/CLAUDE.md .
-cp ~/.claude/templates/PROJECT_ROADMAP.md .
-# Edit both to add project-specific context
-# Create CLAUDE_LOG.md with first entry
+cd ~/projects
+/path/to/claudepm/install.sh
 ```
 
-## Usage
+This installs:
+- Manager instructions (CLAUDE.md at root)
+- Slash commands in .claude/commands/
+- Project templates in .claude/templates/
 
-### Manager Claude (at ~/projects)
-- Ask "What's the status of my projects?"
-- Claude will scan for logs and show activity
+### 2. Use Manager Claude for Orchestration
+From `~/projects`, you have access to slash commands:
 
-### Project Claude (in each project)  
-- Claude reads CLAUDE_LOG.md on start
-- Claude adds log entries after work
-- You always know where you left off
+- `/adopt-project [name]` - Add claudepm to existing project
+- `/doctor` - Health check all projects, find outdated templates  
+- `/update [project]` - Update project to latest templates
+- `/brain-dump` - Process unstructured notes and route to projects
+- `/daily-standup` - Morning overview across all projects
+- `/weekly-review` - Week summary with patterns and priorities
+- `/project-health` - Find stale or blocked projects
+- `/orient` - Quick context check
+
+### 3. Use Worker Claude for Implementation
+```bash
+cd ~/projects/my-web-app
+# Claude now reads this project's CLAUDE.md and works at project level
+```
+
+## Architecture
+
+```
+~/projects/                    # Your projects root (where you install)
+├── CLAUDE.md                  # Manager-level instructions
+├── CLAUDE_LOG.md             # Manager activity log
+├── .claude/                  # claudepm installation
+│   ├── commands/            # Slash commands work here
+│   │   ├── brain-dump.md
+│   │   ├── adopt-project.md
+│   │   ├── doctor.md
+│   │   └── ... (10 total)
+│   └── templates/           # Project templates
+│
+├── my-web-app/              # Individual project
+│   ├── CLAUDE.md           # Project instructions
+│   ├── CLAUDE_LOG.md       # Project work history
+│   ├── PROJECT_ROADMAP.md  # Plans and current state
+│   └── .claudepm           # Metadata (gitignored)
+│
+└── another-project/         # Another project
+    └── ...                  # Same structure
+```
+
+## The Three Files
+
+Each project has three markdown files:
+
+1. **CLAUDE.md** - Instructions for how to work on this project
+2. **CLAUDE_LOG.md** - Append-only work history (your shared memory)
+3. **PROJECT_ROADMAP.md** - Current state, plans, and roadmap
+
+## Common Workflows
+
+### Adding claudepm to Existing Project
+```bash
+cd ~/projects
+/adopt-project my-existing-app
+```
+
+This analyzes your project and creates the three files with discovered information.
+
+### Processing Meeting Notes
+```bash
+/brain-dump
+Just had a call. Auth service needs JWT by Friday.
+Payment integration blocked on Stripe keys.
+Blog post about launch should go out next week.
+```
+
+Manager Claude will parse this and update the appropriate project roadmaps.
+
+### Checking Project Health
+```bash
+cd ~/projects
+/doctor
+
+## claudepm Doctor Report
+✅ System healthy
+⚠️ 2 projects have outdated templates
+❌ 1 project missing roadmap
+```
+
+### Updating Templates
+As claudepm evolves, update your projects:
+```bash
+/doctor                    # See which need updates
+/update my-web-app         # Update specific project
+```
 
 ## Example Log Entry
 ```markdown
@@ -53,12 +139,33 @@ Blocked: Need Firebase credentials from client
 ```
 
 ## Key Principles
-- **Three documents only** - CLAUDE.md, CLAUDE_LOG.md, PROJECT_ROADMAP.md
+
+- **Install once, use everywhere** - One installation at project root manages all projects
+- **Two Claude modes** - Manager (orchestration) and Worker (implementation)
+- **Three documents only** - CLAUDE.md, CLAUDE_LOG.md, PROJECT_ROADMAP.md per project
 - **Logs are append-only** - Never edit past entries
-- **Use timestamps** - Run `date '+%Y-%m-%d %H:%M'` for accuracy
-- **Edit, don't create** - Resist making new files
+- **Simple tooling** - Just markdown and slash commands
 
-## That's It
-No complex tooling. Just three markdown files that create a shared memory between you and Claude.
+## Template Versioning
 
-The magic is in the consistency, not the technology.
+claudepm tracks template versions to prevent drift:
+- Current version: v0.1.1 (see TEMPLATE_CHANGELOG.md)
+- Each project's `.claudepm` file tracks its template version
+- `/doctor` identifies outdated projects
+- `/update` refreshes templates while preserving customizations
+
+## Philosophy
+
+The magic isn't in the tool - it's in establishing consistent patterns that Claude can follow:
+- No daemon processes
+- No complex state management  
+- No external dependencies
+- Just markdown and git
+
+## Contributing
+
+claudepm uses itself for development! Check out our CLAUDE_LOG.md to see how it was built.
+
+## License
+
+MIT License - See LICENSE file for details
