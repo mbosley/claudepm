@@ -36,10 +36,13 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Meta-articulated separation in templates (v0.1.3)
 - [x] Better integrated template versioning into documentation (v0.1.4)
 - [x] Added commit reminders to workflow
+- [x] Created /architect-feature command for AI-powered planning
+- [ ] Implement formal git workflow (dev branch, worktrees)
+- [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
-- [ ] Create v0.1.4 release with all improvements
+- [ ] Create v0.2.0 release with git workflow and MCP features
 
 ## Upcoming
 
@@ -459,4 +462,4 @@ When adding features to claudepm, follow the checklist in CLAUDE.md:
 This ensures consistency and prevents missing components. The full checklist lives in CLAUDE.md under "When asked to add a feature" - keeping our three-document principle intact.
 
 ---
-Last updated: 2025-07-01 12:10
+Last updated: 2025-07-01 12:49
