@@ -600,3 +600,123 @@ Next: Monitor if Manager Claude adopts parallel patterns more readily
 Notes: The documentation now strongly encourages parallel Task execution with clear examples of GOOD vs BAD patterns. Each major slash command shows exactly how to spawn parallel sub-agents. This should overcome the tendency to process projects sequentially.
 
 ---
+
+
+### 2025-07-01 11:07 - Established MCP integration philosophy
+Did:
+- DISCUSSED: How to integrate macOS apps (Mail, Calendar, Notes) with claudepm
+- INSTALLED: apple-mcp server for primitive macOS app access
+- DOCUMENTED: Philosophy that MCP servers provide primitives, not workflows
+- ADDED: MCP Integration Philosophy section to PROJECT_ROADMAP.md
+Next: Create example slash commands for common integration patterns
+Notes: Key insight - orchestration intelligence belongs in Claude, not in MCP tools. Natural language + slash commands provide the workflow layer on top of MCP primitives.
+
+---
+
+
+### 2025-07-01 11:18 - Implemented safe append-only logging pattern
+Did:
+- DISCOVERED: I accidentally used Write tool which could have destroyed log history
+- RESTORED: Original log from git (no data was lost)
+- IMPLEMENTED: Safe append pattern using cat >> with heredoc
+- UPDATED: All templates (CLAUDE.md, CLAUDE_PROJECT_TEMPLATE.md, CLAUDE_MANAGER.md)
+- ADDED: Critical warnings to never use Write/Edit on CLAUDE_LOG.md
+Next: Update PROJECT_ROADMAP.md and test with other projects
+Notes: This pattern makes it mechanically impossible to overwrite logs. The >> operator only appends, and heredoc makes multi-line entries clean. This is a perfect example of "make the right thing easy and the wrong thing impossible."
+
+---
+
+
+### 2025-07-01 11:24 - Made CLAUDE_LOG.md truly append-only
+Did:
+- FIXED: Heredoc pattern to use proper multiline append
+- UPDATED: All templates with cleaner cat >> pattern  
+- APPLIED: macOS chflags uappnd to make file system-level append-only
+- TESTED: Write/Edit tools now fail with EPERM error
+- VERIFIED: Append with >> still works perfectly
+Next: Document this protection in templates and roadmap
+Notes: Now it's mechanically impossible to overwrite. The uappnd flag prevents any operation except append. To remove: chflags nouappnd CLAUDE_LOG.md
+
+---
+
+### 2025-07-01 11:25 - Testing clean multiline append pattern
+Did:
+- TESTED: Multiline append with heredoc
+- VERIFIED: No extra END_OF_LOG output
+Next: Update PROJECT_ROADMAP.md with append-only documentation
+Notes: This is a test entry to ensure clean output
+
+---
+
+
+### 2025-07-01 11:27 - Finalized append-only logging system
+Did:
+- IMPLEMENTED: Clean multiline append pattern using heredoc
+- DISCOVERED: System reminders show shell artifacts, not our commands
+- TESTED: Multiple variations to find cleanest approach
+- DOCUMENTED: Proper pattern in all templates
+Next: Re-apply uappnd flag and update PROJECT_ROADMAP.md
+Notes: The cat >> with unquoted heredoc is the cleanest pattern. Allows date substitution and multiline content.
+
+---
+
+### 2025-07-01 11:30 - Finalized clean append-only pattern
+Did:
+- SIMPLIFIED: Using command grouping with braces
+- AVOIDED: Heredoc quirks and shell artifacts
+- UPDATED: All templates with this cleaner pattern
+Next: Re-apply uappnd flag and update PROJECT_ROADMAP.md
+Notes: This pattern is simple, readable, and always works correctly
+
+---
+
+
+### 2025-07-01 11:35 - Systematized append-only protection in claudepm
+Did:
+- UPDATED: installer.sh to apply chflags uappnd on macOS
+- UPDATED: /adopt-project command to apply protection
+- DOCUMENTED: Protection in all templates with removal instructions
+- BUMPED: Template version to 0.1.2
+- ADDED: Changelog entry for this security enhancement
+Next: Commit these changes and test installation
+Notes: Now every claudepm project gets automatic log protection on macOS. The pattern is simple, the protection is automatic, and the documentation is clear.
+
+---
+
+
+### 2025-07-01 11:38 - Created development process documentation
+Did:
+- CREATED: CONTRIBUTING.md with comprehensive feature checklist
+- DOCUMENTED: What to update when adding features (code, templates, version, docs)
+- ADDED: Development process section to PROJECT_ROADMAP.md
+- UPDATED: CLAUDE.md to reference the checklist
+- PROVIDED: Example using append-only protection feature
+Next: Commit these improvements
+Notes: Now we have a systematic process for feature development. This prevents missing steps and ensures consistency across all claudepm components.
+
+---
+
+
+### 2025-07-01 11:50 - Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
+Did:
+- IDENTIFIED: Overlap caused by dogfooding (using claudepm to develop claudepm)
+- CLARIFIED: CLAUDE.md = HOW to act (behavioral), ROADMAP = WHAT/WHY (context)
+- MOVED: Project philosophy from CLAUDE.md to PROJECT_ROADMAP.md Notes
+- REPLACED: Philosophy with specific commands in CLAUDE.md
+- DOCUMENTED: Three-document architecture clearly in roadmap
+Next: Continue using this clearer separation
+Notes: The overlap was natural but confusing. Now each file has a clear purpose: CLAUDE.md instructs behavior, PROJECT_ROADMAP.md holds context and decisions, CLAUDE_LOG.md records history.
+
+---
+
+
+### 2025-07-01 11:52 - Meta-articulated the document separation in templates
+Did:
+- ADDED: HTML comments to both templates explaining HOW vs WHAT/WHY
+- STRUCTURED: PROJECT_ROADMAP_TEMPLATE.md Notes section with clear categories
+- BUMPED: Template version to 0.1.3
+- DOCUMENTED: Changes in TEMPLATE_CHANGELOG.md
+Next: Update roadmap and commit all improvements
+Notes: The templates now guide users to maintain the same clean separation we discovered through dogfooding. This prevents future confusion about where content belongs.
+
+---

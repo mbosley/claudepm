@@ -35,12 +35,26 @@
 - [ ] Include what would unblock
 
 ## Notes
-- Key decisions made
-- Important constraints  
+<!-- 
+PROJECT_ROADMAP.md is for WHAT & WHY - context, plans, decisions
+Put project philosophy, design rationale, and architecture decisions here
+Keep behavioral instructions (HOW to work) in CLAUDE.md
+-->
+
+### Design Decisions
+- Key technical choices and rationale
+- Important constraints and trade-offs
+- Architecture principles
+
+### Project Context  
+- Why this project exists
+- Problem it solves
 - Links to relevant resources
+
+### Development Notes
 - This roadmap drives development - each version can become a git branch
 - Structure enables future automation: "work on v0.2 features"
-- Optional: Add [DUE: YYYY-MM-DD] to any task with a deadline
+- Add [DUE: YYYY-MM-DD] to any task with a deadline
 - Manager Claude can scan all projects for upcoming deadlines
 
 ---

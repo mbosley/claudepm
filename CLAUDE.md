@@ -13,13 +13,26 @@
 3. Run git status - see uncommitted work
 
 ## After Each Work Block
-1. Add to CLAUDE_LOG.md (use `date '+%Y-%m-%d %H:%M'` for timestamp):
+1. Add to CLAUDE_LOG.md using append-only pattern:
+```bash
+# Simple, clean append that always works
+{
+echo ""
+echo ""
+echo "### $(date '+%Y-%m-%d %H:%M') - [Brief summary]"
+echo "Did:"
+echo "- [First accomplishment]"
+echo "- [Second accomplishment]"
+echo "Next: [Immediate next task]"
+echo "Blocked: [Any blockers - only if blocked]"
+echo ""
+echo "---"
+} >> CLAUDE_LOG.md
 ```
-### YYYY-MM-DD HH:MM - [Brief summary of what you did]
-Did: [Specific accomplishments - what actually got done]
-Next: [Immediate next task - specific and actionable]
-Blocked: [Any blockers - only include if blocked]
-```
+
+**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator. This prevents accidental history loss.
+
+**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
 
 If working on a feature branch, include branch name:
 ```
@@ -43,17 +56,10 @@ Type: Developer tool / Meta project management system
 Language: Bash, Markdown
 Purpose: Simple memory system for Claude Code sessions
 
-## Project Philosophy
-- **Start dead simple** - Just markdown files
-- **One feature at a time** - Add only after real need proven
-- **Test on ourselves** - claudepm manages claudepm development
-- **Resist complexity** - Every addition must justify itself
-
-## Development Approach
-1. Use claudepm to develop claudepm (meta!)
-2. Feel the friction points personally
-3. Only add features we've needed multiple times
-4. Keep the core under 200 lines total
+## Project-Specific Commands
+- Test: `./install.sh` (test installation)
+- Check: `ls -la ~/.claude/templates/` (verify templates)
+- Version: `cat TEMPLATE_VERSION` (current template version)
 
 ## Useful Resources
 - Claude Code Best Practices: https://www.anthropic.com/engineering/claude-code-best-practices
@@ -65,7 +71,46 @@ Purpose: Simple memory system for Claude Code sessions
 1. First try to modify existing templates
 2. Test with manual process before automating
 3. Make the smallest change possible
-4. Update our own CLAUDE_LOG.md
+4. Follow this comprehensive checklist:
+
+#### Feature Development Checklist
+
+**1. Code/Script Updates**
+- [ ] Update `install.sh` if feature affects installation
+- [ ] Update relevant slash commands in `.claude/commands/`
+- [ ] Create new slash commands if needed
+
+**2. Template Updates**
+- [ ] Update `CLAUDE.md` (this file!)
+- [ ] Update `CLAUDE_PROJECT_TEMPLATE.md` 
+- [ ] Update `CLAUDE_MANAGER.md` (if affects manager level)
+- [ ] Update `PROJECT_ROADMAP_TEMPLATE.md` (if affects roadmap structure)
+
+**3. Version Management**
+- [ ] Bump version in `TEMPLATE_VERSION`
+- [ ] Add entry to `TEMPLATE_CHANGELOG.md` with:
+  - Version number and date
+  - Added/Changed/Fixed sections
+  - Clear description of what changed
+
+**4. Documentation Updates**
+- [ ] Update `README.md` if feature is user-facing
+- [ ] Update `PROJECT_ROADMAP.md`:
+  - Move feature from Upcoming to Active Work
+  - Mark as completed when done
+  - Update "Last updated" timestamp
+- [ ] Add examples to relevant templates
+
+**5. Testing Protocol**
+- [ ] Test fresh installation
+- [ ] Test adoption on existing project
+- [ ] Test /update command with new templates
+- [ ] Verify slash commands work as expected
+
+**6. Logging and Commit**
+- [ ] Add CLAUDE_LOG.md entry using the append pattern
+- [ ] Update PROJECT_ROADMAP.md before committing
+- [ ] Commit with clear message referencing the feature
 
 ### Before committing:
 1. **ALWAYS update PROJECT_ROADMAP.md first**

@@ -2,6 +2,31 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.3 - 2025-07-01
+
+### Added
+- HTML comments in templates clarifying CLAUDE.md vs PROJECT_ROADMAP.md roles
+- Structured Notes section in PROJECT_ROADMAP_TEMPLATE.md
+
+### Changed
+- Clarified separation: CLAUDE.md = HOW, PROJECT_ROADMAP.md = WHAT & WHY
+- Added guidance for where to put philosophy vs instructions
+
+## v0.1.2 - 2025-07-01
+
+### Added
+- Append-only logging pattern with command grouping
+- Filesystem-level protection for CLAUDE_LOG.md (macOS)
+- Automatic `chflags uappnd` in installer and adopt-project
+- Documentation about append-only protection
+
+### Changed
+- Replaced heredoc pattern with cleaner `{ echo ... } >> file` pattern
+- Updated all templates with new append pattern
+
+### Security
+- CLAUDE_LOG.md now protected from accidental overwrites at OS level
+
 ## v0.1.1 - 2025-06-29
 
 ### Added

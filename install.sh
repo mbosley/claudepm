@@ -77,6 +77,16 @@ EOF
     echo "  ✓ Created manager activity log"
 fi
 
+# Apply append-only protection to CLAUDE_LOG.md (macOS only)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Applying append-only protection to log files..."
+    if [ -f "$PROJECTS_DIR/CLAUDE_LOG.md" ]; then
+        chflags uappnd "$PROJECTS_DIR/CLAUDE_LOG.md" 2>/dev/null && \
+            echo "  ✓ Protected CLAUDE_LOG.md (append-only)" || \
+            echo "  ⚠ Could not protect CLAUDE_LOG.md (requires macOS)"
+    fi
+fi
+
 echo
 echo "Installation complete!"
 echo

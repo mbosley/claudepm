@@ -29,10 +29,15 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Created MIT LICENSE file
 - [x] Enhanced manager-level logging guidance with examples
 - [x] Emphasized parallel Task execution with concrete examples
+- [x] Established MCP integration philosophy
+- [x] Implemented append-only logging protection (macOS)
+- [x] Added feature development checklist to CLAUDE.md
+- [x] Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
+- [x] Meta-articulated separation in templates (v0.1.3)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
-- [ ] Create v0.1.1 with any refinements from testing
+- [ ] Create v0.1.3 release with all improvements
 
 ## Upcoming
 
@@ -259,12 +264,29 @@ A minimal memory system for Claude Code using three markdown files. The complete
 None currently
 
 ## Notes
-- Keep it under 200 lines total
-- Resist adding features until proven necessary
-- The three-document system (instructions, history, roadmap) provides past/present/process
-- Everything is just markdown - no tools, no complexity
-- Git workflow features (v0.4) are aspirational - focus on core memory system first
+
+### Core Philosophy
+- **Start dead simple** - Just markdown files, no complex tooling
+- **One feature at a time** - Add only after real need proven  
+- **Test on ourselves** - claudepm manages claudepm development
+- **Resist complexity** - Every addition must justify itself
+- **Keep it small** - Core system under 200 lines total
+
+### Three-Document Architecture
+- **CLAUDE.md** = HOW (behavioral instructions for Claude)
+- **CLAUDE_LOG.md** = WHAT HAPPENED (append-only history)
+- **PROJECT_ROADMAP.md** = WHAT & WHY (state, plans, decisions)
+
+This separation keeps each file focused:
+- Instructions don't mix with history
+- Plans don't mix with behavioral rules
+- Context and rationale have a clear home
+
+### Design Principles
+- Everything is just markdown - no complex tools needed
+- Files are the product - every feature should improve the markdown files
 - Features should emerge from real usage patterns, not speculation
+- Git workflow features are aspirational - focus on core memory system first
 
 ### What Already Works (No CLI Needed)
 - **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project, /orient, /doctor, /update
@@ -401,5 +423,29 @@ Key patterns for search:
 - Command: `exact command used`
 - Tags: #category #technology #concept
 
+### MCP Integration Philosophy
+MCP servers should provide primitives, not workflows:
+- **MCP servers** (apple-mcp, llm-tools) = Low-level tool access
+- **Natural language** = Orchestrate tools to update claudepm files
+- **Slash commands** = Shortcut common integration patterns
+
+Example: Don't build "ingest_email_to_log()" in MCP. Instead:
+1. MCP provides "read_email()" primitive
+2. Claude orchestrates: read → extract → format → update CLAUDE_LOG.md
+3. Slash command `/ingest-email` makes it convenient
+
+This keeps MCP servers focused and claudepm workflows flexible. The intelligence lives in Claude's orchestration, not in the tools.
+
+### Development Process
+When adding features to claudepm, follow the checklist in CLAUDE.md:
+1. Update code/scripts (install.sh, slash commands)
+2. Update all affected templates
+3. Bump TEMPLATE_VERSION and update TEMPLATE_CHANGELOG.md
+4. Update documentation (README, roadmap)
+5. Test thoroughly (fresh install, adoption, updates)
+6. Log the work and update roadmap before committing
+
+This ensures consistency and prevents missing components. The full checklist lives in CLAUDE.md under "When asked to add a feature" - keeping our three-document principle intact.
+
 ---
-Last updated: 2025-06-30 16:12
+Last updated: 2025-07-01 11:54

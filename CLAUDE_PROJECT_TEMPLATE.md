@@ -13,17 +13,30 @@
 3. Run git status - see uncommitted work
 
 ## After Each Work Block
-1. Add to CLAUDE_LOG.md (use `date '+%Y-%m-%d %H:%M'` for timestamp):
-```
-### YYYY-MM-DD HH:MM - [Brief summary of what you did]
-Did: [Specific accomplishments - what actually got done]
-Next: [Immediate next task - specific and actionable]
-Blocked: [Any blockers - only include if blocked]
+1. Add to CLAUDE_LOG.md using append-only pattern:
+```bash
+# Simple, clean append that always works
+{
+echo ""
+echo ""
+echo "### $(date '+%Y-%m-%d %H:%M') - [Brief summary]"
+echo "Did:"
+echo "- [First accomplishment]"
+echo "- [Second accomplishment]"
+echo "Next: [Immediate next task]"
+echo "Blocked: [Any blockers - only if blocked]"
+echo ""
+echo "---"
+} >> CLAUDE_LOG.md
 ```
 
-If working on a feature branch, include branch name:
-```
-### YYYY-MM-DD HH:MM - [feature/auth] - Implemented JWT tokens
+**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator. This prevents accidental history loss.
+
+**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
+
+If working on a feature branch, include branch name in the summary:
+```bash
+### $(date '+%Y-%m-%d %H:%M') - [feature/auth] - Implemented JWT tokens
 ```
 
 **Be precise about PLANNED vs IMPLEMENTED:**
@@ -48,6 +61,12 @@ This prevents confusion when reading logs later!
 Type: [Web app, CLI tool, library, etc.]
 Language: [Python, JS, etc.]
 Purpose: [What this project does]
+
+<!-- 
+CLAUDE.md is for HOW - behavioral instructions
+Add project-specific workflows, commands, and conventions below
+Keep philosophy and design decisions in PROJECT_ROADMAP.md Notes
+-->
 
 ## Log Examples
 

@@ -120,6 +120,15 @@ Set up claudepm for an existing project by analyzing its structure and generatin
 7. **Update .gitignore**:
    Add `.claudepm` if not already present
 
+8. **Apply append-only protection** (macOS only):
+   ```bash
+   if [[ "$OSTYPE" == "darwin"* ]]; then
+       chflags uappnd "$ARGUMENTS/CLAUDE_LOG.md" 2>/dev/null && \
+           echo "✓ Protected CLAUDE_LOG.md (append-only)" || \
+           echo "⚠ Could not protect CLAUDE_LOG.md (non-macOS system)"
+   fi
+   ```
+
 ## Example Usage:
 ```
 /adopt-project auth-service

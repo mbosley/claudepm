@@ -61,13 +61,24 @@ Manager Claude should log MORE frequently than project Claude because coordinati
 
 ## Log Entry Format
 
-Add to CLAUDE_LOG.md at this level:
+Add to CLAUDE_LOG.md at this level using append-only pattern:
+```bash
+# Simple, clean append that always works
+{
+echo ""
+echo ""
+echo "### $(date '+%Y-%m-%d %H:%M') - [Manager activity]"
+echo "Did: [What coordination/analysis/routing was done]"
+echo "Projects affected: [List projects touched]"
+echo "Next: [What manager-level work is needed]"
+echo ""
+echo "---"
+} >> CLAUDE_LOG.md
 ```
-### YYYY-MM-DD HH:MM - [Manager activity]
-Did: [What coordination/analysis/routing was done]
-Projects affected: [List projects touched]
-Next: [What manager-level work is needed]
-```
+
+**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator
+
+**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
 
 Examples of when to log:
 
