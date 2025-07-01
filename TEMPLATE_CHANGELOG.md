@@ -2,6 +2,23 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.6 - 2025-07-01
+
+### Added
+- Comprehensive Task Agent Development Workflow section
+- Local worktrees pattern (worktrees/ instead of ../sibling-dirs)
+- /dispatch-task command for easy Task Agent creation
+- Security benefits explanation (Claude can't access ../dirs)
+
+### Changed
+- All Task Agent documentation now uses local worktrees
+- Git Workflow section updated to use worktrees/feature-name
+- Emphasized worktrees/ must be in .gitignore
+
+### Fixed
+- Claude's directory access limitation by using local worktrees
+- Clearer separation of Project Lead vs Task Agent responsibilities
+
 ## v0.1.5 - 2025-07-01
 
 ### Added

@@ -1,5 +1,7 @@
 # Project Roadmap - claudepm
 
+*Last updated: 2025-07-01*
+
 ## Current Status
 v0.1 released! 🎉 Available at https://github.com/mbosley/claudepm
 
@@ -39,6 +41,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Created /architect-feature command for AI-powered planning
 - [x] Reorganized templates into templates/ directory structure (v0.1.5)
 - [x] Codified architect-first development philosophy
+- [x] Implemented Task Agent workflow with local worktrees (v0.1.6)
+- [x] Added /dispatch-task command for Task Agent creation
 - [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
