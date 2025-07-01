@@ -63,6 +63,13 @@ Type: [Web app, CLI tool, library, etc.]
 Language: [Python, JS, etc.]
 Purpose: [What this project does]
 
+## Available Slash Commands
+
+When working in this project, these commands are available:
+
+### /email-check
+Process emails related to this specific project. Filters emails for project context and suggests updates to PROJECT_ROADMAP.md. Identifies action items, deadlines, decisions, and blockers without auto-updating files.
+
 <!-- 
 CLAUDE.md is for HOW - behavioral instructions
 Add project-specific workflows, commands, and conventions below
