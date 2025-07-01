@@ -720,3 +720,17 @@ Next: Update roadmap and commit all improvements
 Notes: The templates now guide users to maintain the same clean separation we discovered through dogfooding. This prevents future confusion about where content belongs.
 
 ---
+
+
+### 2025-07-01 12:03 - Better integrated template versioning (v0.1.4)
+Did:
+- UPDATED: README.md with comprehensive versioning explanation and current version
+- ADDED: Template versioning to core philosophy and design principles
+- ENHANCED: /orient command to show template version and outdated warning
+- ADDED: Changelog references in template HTML comments
+- EXPLAINED: Why versioning matters - evolution without disruption
+- BUMPED: Template version to 0.1.4
+Next: Commit and push these improvements
+Notes: Template versioning is now a first-class concept throughout claudepm, not just an implementation detail. Users understand why it exists and how to use it.
+
+---

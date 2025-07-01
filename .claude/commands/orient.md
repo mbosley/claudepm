@@ -42,10 +42,13 @@ First, let me check where I am and what claudepm structure exists here.
    ✓ CLAUDE.md found - reading project instructions
    ✓ PROJECT_ROADMAP.md found - checking current status
    ✓ CLAUDE_LOG.md found - reviewing recent work
+   ✓ .claudepm found - checking version
    
    Project: [name from CLAUDE.md]
    Type: [from Project Context section]
    Current Status: [from PROJECT_ROADMAP.md]
+   Template Version: [version from .claudepm]
+   [If outdated: "⚠️ Templates outdated (current: vX.X, latest: v0.1.4) - run /update to refresh"]
    
    Last Activity:
    [Show last log entry with Next: items]
@@ -117,6 +120,7 @@ Run /daily-standup for morning overview
 **Project Level Output**:
 ```
 You are Worker Claude for: auth-service
+Template Version: v0.1.2 ⚠️ (latest: v0.1.4)
 Last worked on: Implementing JWT tokens
 Next: Add refresh token support
 2 items in active work, 0 blocked

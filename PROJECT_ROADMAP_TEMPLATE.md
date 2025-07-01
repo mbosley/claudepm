@@ -39,6 +39,8 @@
 PROJECT_ROADMAP.md is for WHAT & WHY - context, plans, decisions
 Put project philosophy, design rationale, and architecture decisions here
 Keep behavioral instructions (HOW to work) in CLAUDE.md
+
+This template version: See TEMPLATE_CHANGELOG.md for version history
 -->
 
 ### Design Decisions

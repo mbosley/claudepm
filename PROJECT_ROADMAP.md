@@ -34,10 +34,11 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Added feature development checklist to CLAUDE.md
 - [x] Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
 - [x] Meta-articulated separation in templates (v0.1.3)
+- [x] Better integrated template versioning into documentation (v0.1.4)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
-- [ ] Create v0.1.3 release with all improvements
+- [ ] Create v0.1.4 release with all improvements
 
 ## Upcoming
 
@@ -271,6 +272,7 @@ None currently
 - **Test on ourselves** - claudepm manages claudepm development
 - **Resist complexity** - Every addition must justify itself
 - **Keep it small** - Core system under 200 lines total
+- **Evolution without disruption** - Template versioning lets us improve without breaking existing projects
 
 ### Three-Document Architecture
 - **CLAUDE.md** = HOW (behavioral instructions for Claude)
@@ -287,6 +289,14 @@ This separation keeps each file focused:
 - Files are the product - every feature should improve the markdown files
 - Features should emerge from real usage patterns, not speculation
 - Git workflow features are aspirational - focus on core memory system first
+
+### Template Versioning Design
+Template versioning (via TEMPLATE_VERSION and TEMPLATE_CHANGELOG.md) solves a fundamental tension:
+- We discover better patterns through dogfooding
+- But existing projects shouldn't break when we improve templates
+- Solution: Track versions, document changes, preserve customizations
+
+This enables continuous improvement while respecting project stability. Users can review what's new and decide if/when to update, rather than being forced to choose between staying current or staying stable.
 
 ### What Already Works (No CLI Needed)
 - **Slash commands**: /brain-dump, /daily-standup, /daily-review, /weekly-review, /project-health, /start-work, /adopt-project, /orient, /doctor, /update
@@ -448,4 +458,4 @@ When adding features to claudepm, follow the checklist in CLAUDE.md:
 This ensures consistency and prevents missing components. The full checklist lives in CLAUDE.md under "When asked to add a feature" - keeping our three-document principle intact.
 
 ---
-Last updated: 2025-07-01 11:54
+Last updated: 2025-07-01 12:10

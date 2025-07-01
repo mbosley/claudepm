@@ -66,6 +66,9 @@ Purpose: [What this project does]
 CLAUDE.md is for HOW - behavioral instructions
 Add project-specific workflows, commands, and conventions below
 Keep philosophy and design decisions in PROJECT_ROADMAP.md Notes
+
+This template version: See TEMPLATE_CHANGELOG.md for version history
+To check if outdated: /doctor or cat .claudepm | grep template_version
 -->
 
 ## Log Examples

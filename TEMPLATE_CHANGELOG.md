@@ -2,6 +2,18 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.4 - 2025-07-01
+
+### Added
+- Changelog references in template HTML comments
+- Version status in /orient command output
+- Template versioning explanation in README.md
+- Template versioning design rationale in PROJECT_ROADMAP.md
+
+### Changed
+- Enhanced integration of template versioning throughout documentation
+- Made template versioning a first-class concept rather than implementation detail
+
 ## v0.1.3 - 2025-07-01
 
 ### Added

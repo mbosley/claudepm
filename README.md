@@ -148,11 +148,30 @@ Blocked: Need Firebase credentials from client
 
 ## Template Versioning
 
-claudepm tracks template versions to prevent drift:
-- Current version: v0.1.1 (see TEMPLATE_CHANGELOG.md)
-- Each project's `.claudepm` file tracks its template version
-- `/doctor` identifies outdated projects
-- `/update` refreshes templates while preserving customizations
+claudepm's templates evolve as we discover better patterns, but your existing projects shouldn't break. Our versioning system ensures:
+
+- **Current version: v0.1.3** (see TEMPLATE_CHANGELOG.md for changes)
+- **No forced updates** - Projects continue working with their current templates
+- **Backward compatibility** - Updates preserve your customizations
+- **Informed decisions** - The changelog explains what you'd gain by updating
+
+### How it works:
+1. Each project's `.claudepm` file tracks its template version
+2. `/doctor` identifies which projects have outdated templates
+3. Review TEMPLATE_CHANGELOG.md to see what's new
+4. `/update [project]` refreshes templates while preserving your customizations
+
+### Why this matters:
+Without versioning, you'd face an impossible choice: miss out on improvements or risk breaking working projects. Template versioning gives you the best of both worlds - stability when you need it, improvements when you want them.
+
+### Check your version:
+```bash
+# Check a specific project
+cat my-project/.claudepm | grep template_version
+
+# Check all projects at once
+/doctor  # Shows which projects need updates
+```
 
 ## Philosophy
 
