@@ -38,6 +38,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Added commit reminders to workflow
 - [x] Created /architect-feature command for AI-powered planning
 - [x] Reorganized templates into templates/ directory structure (v0.1.5)
+- [x] Codified architect-first development philosophy
 - [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
