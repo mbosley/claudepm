@@ -6,6 +6,7 @@
 3. **Test immediately** - Verify each change before moving on
 4. **Preserve what works** - Don't break working features for elegance
 5. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
+6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
 1. Read PROJECT_ROADMAP.md - see current state and priorities

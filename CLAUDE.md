@@ -6,6 +6,7 @@
 3. **Test immediately** - Verify each change before moving on
 4. **Preserve what works** - Don't break working features for elegance
 5. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
+6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
 1. Read PROJECT_ROADMAP.md - see current state and priorities
@@ -110,7 +111,8 @@ Purpose: Simple memory system for Claude Code sessions
 **6. Logging and Commit**
 - [ ] Add CLAUDE_LOG.md entry using the append pattern
 - [ ] Update PROJECT_ROADMAP.md before committing
-- [ ] Commit with clear message referencing the feature
+- [ ] **COMMIT NOW** - Don't wait, commit completed work immediately
+- [ ] Push if appropriate (after testing or when requested)
 
 ### Before committing:
 1. **ALWAYS update PROJECT_ROADMAP.md first**

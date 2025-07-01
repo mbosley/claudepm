@@ -35,6 +35,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
 - [x] Meta-articulated separation in templates (v0.1.3)
 - [x] Better integrated template versioning into documentation (v0.1.4)
+- [x] Added commit reminders to workflow
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage

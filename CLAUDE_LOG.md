@@ -734,3 +734,14 @@ Next: Commit and push these improvements
 Notes: Template versioning is now a first-class concept throughout claudepm, not just an implementation detail. Users understand why it exists and how to use it.
 
 ---
+
+
+### 2025-07-01 12:08 - Added commit reminders to encourage timely commits
+Did:
+- ADDED: 'Commit completed work' as core principle #6
+- UPDATED: Feature checklist with explicit 'COMMIT NOW' step
+- APPLIED: Same changes to project template
+Next: Commit these changes immediately (practicing what we preach\!)
+Notes: I failed to commit after completing v0.1.4 work. This improvement makes committing more prominent in the workflow to prevent that oversight.
+
+---
