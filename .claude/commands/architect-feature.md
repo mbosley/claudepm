@@ -81,5 +81,6 @@ Now that Gemini has provided the architectural blueprint, here's how I (Claude) 
 - Type "proceed" to start implementation following this architecture
 - Type "adjust" to modify the plan
 - Type "cancel" to abandon this feature
+- Consider using `/dispatch-task` to create a Task Agent for isolated implementation
 
 This collaborative approach leverages Gemini's analytical capabilities for architecture and Claude's implementation skills for execution.

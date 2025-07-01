@@ -165,4 +165,152 @@ Next: Continue v0.3 search implementation
 Notes: Parallel work on template improvements and search feature
 ```
 
+## Task Agent Development Workflow
+
+This workflow enables isolated feature development using git worktrees within the project directory.
+
+### Three-Level Claude Hierarchy
+
+1. **Manager Claude** (e.g., ~/projects/)
+   - Lives at the top-level projects directory
+   - Coordinates across multiple projects
+   - Never implements features directly
+
+2. **Project Lead Claude** (e.g., ~/projects/claudepm/ on dev branch)
+   - Lives in a specific project directory
+   - Always stays on the dev branch
+   - Dispatches Task Agents for features
+   - Reviews PRs and manages merges
+
+3. **Task Agent Claude** (e.g., ~/projects/claudepm/worktrees/add-search/)
+   - Lives in temporary worktrees within the project
+   - Implements specific features in isolation
+   - Creates PRs back to dev
+   - Gets terminated after merge
+
+### Project Lead Workflow
+
+When you need to implement a feature:
+
+1. **Stay on dev branch**: Never switch branches as Project Lead
+2. **Create local worktree**:
+   ```bash
+   git worktree add worktrees/feature-name feature/feature-name
+   ```
+3. **Dispatch Task Agent**: Use /dispatch-task or manually create prompt
+4. **Review PR**: When Task Agent completes, review their PR
+5. **Merge and cleanup**:
+   ```bash
+   gh pr merge [PR-number] --squash --delete-branch
+   git worktree remove worktrees/feature-name
+   ```
+
+### Why Local Worktrees?
+
+- **Security**: Claude can access worktrees/ but not ../sibling-dirs
+- **Organization**: All temporary work contained within project
+- **Discovery**: `ls worktrees/` shows all active features
+- **Cleanup**: Easy to find and remove stale worktrees
+
+### Critical Requirements
+
+- **MUST have worktrees/ in .gitignore** (prevents accidental commits)
+- **MUST use git worktree remove** (not rm -rf)
+- **MUST create worktrees from dev branch**
+
+### Example: Dispatching a Task Agent
+
+**Using /dispatch-task command (recommended):**
+```
+/dispatch-task add-search
+I need to add search functionality to CLAUDE_LOG.md with date filtering and regex support
+```
+
+**Or manually create worktree and prompt:**
+```bash
+# 1. Create the worktree (staying on dev branch)
+git worktree add worktrees/add-search feature/add-search
+
+# 2. Open a NEW Claude conversation with this prompt:
+```
+
+**Task Agent Prompt Template:**
+```
+You are a Task Agent for claudepm working in the worktrees/add-search worktree.
+
+Your mission: Implement search functionality for CLAUDE_LOG.md files
+
+Requirements:
+- Add a `search` command that searches log entries
+- Support date filtering with --from and --to flags
+- Support keyword search with basic regex
+- Format output clearly showing matches
+- Include tests
+
+Process:
+1. cd worktrees/add-search
+2. Read CLAUDE_LOG.md and PROJECT_ROADMAP.md for context
+3. Implement the feature
+4. Test thoroughly
+5. Update documentation
+6. Commit with clear messages
+7. Create PR back to dev branch
+8. Report completion
+
+Remember: You work in isolation. Make atomic commits. Focus only on this feature.
+```
+
+### Benefits of Local Worktrees
+
+1. **No Access Issues**: Task Agents can work in worktrees/feature but can't access ../sibling-dirs
+2. **Easy Discovery**: `ls worktrees/` shows all active development
+3. **Clean Organization**: All feature work contained within the project
+4. **Simple Cleanup**: Find and remove stale worktrees easily
+5. **Parallel Development**: Multiple Task Agents can work simultaneously
+
+### Common Task Agent Patterns
+
+**Feature Implementation:**
+```bash
+# Task Agent works in worktrees/feature-name
+cd worktrees/add-templates
+# Implements complete feature
+# Creates PR when done
+```
+
+**Bug Fix:**
+```bash
+# Task Agent isolates bug in worktrees/fix-bug-name
+cd worktrees/fix-date-parsing
+# Reproduces, fixes, tests
+# Creates focused PR
+```
+
+**Refactoring:**
+```bash
+# Task Agent refactors in worktrees/refactor-area
+cd worktrees/refactor-commands
+# Makes systematic improvements
+# Ensures tests still pass
+```
+
+### When NOT to Use Task Agents
+
+- **Quick typo fixes**: Just fix directly on dev
+- **README updates only**: Too simple for isolation
+- **Exploration**: Use dev branch for research
+- **Emergency hotfixes**: Fix directly and backport
+
+### Cleanup After Task Agent Completes
+
+```bash
+# After PR is merged
+gh pr merge 42 --squash --delete-branch
+git worktree remove worktrees/feature-name
+
+# If abandoned
+git worktree remove --force worktrees/feature-name
+git branch -D feature/feature-name
+```
+
 Remember: The log is our shared memory. Write clearly for your future self.

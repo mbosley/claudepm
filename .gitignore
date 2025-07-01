@@ -1,5 +1,7 @@
 .DS_Store
 *.backup
 .claudepm
+# Worktrees directory for Task Agent development
+worktrees/
 # Don't ignore the templates directory
 !templates/

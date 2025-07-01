@@ -200,22 +200,179 @@ Notes: Parallel work included auth implementation and payment integration
 
 When working with feature branches and worktrees:
 
-1. **Create worktree**: `git worktree add ../project-feature feature/name`
+1. **Create local worktree**: `git worktree add worktrees/feature-name feature/feature-name`
 2. **Develop**: Make changes, test, commit regularly
 3. **Create PR**: `gh pr create --base dev --title "feat: Description"`
 4. **After merge - CRITICAL cleanup**:
    ```bash
-   # Return to main worktree
-   cd ../main-project
+   # From main project directory (not in worktree)
    # Remove worktree
-   git worktree remove ../project-feature  
+   git worktree remove worktrees/feature-name
    # Delete local branch
-   git branch -d feature/name
+   git branch -d feature/feature-name
    # Prune remote tracking
    git remote prune origin
    ```
-5. **If feature is abandoned**: Use `--force` flag: `git worktree remove --force`
+5. **If feature is abandoned**: Use `--force` flag: `git worktree remove --force worktrees/feature-name`
+
+**IMPORTANT**: Always ensure `worktrees/` is in your .gitignore to prevent accidental commits of worktree directories.
 
 Always clean up worktrees after merging or abandoning features to prevent accumulation.
+
+## Task Agent Development Workflow
+
+This workflow enables isolated feature development using git worktrees within the project directory.
+
+### Three-Level Claude Hierarchy
+
+1. **Manager Claude** (e.g., ~/projects/)
+   - Lives at the top-level projects directory
+   - Coordinates across multiple projects
+   - Never implements features directly
+
+2. **Project Lead Claude** (e.g., ~/projects/my-app/ on dev branch)
+   - Lives in a specific project directory
+   - Always stays on the dev branch
+   - Dispatches Task Agents for features
+   - Reviews PRs and manages merges
+
+3. **Task Agent Claude** (e.g., ~/projects/my-app/worktrees/add-auth/)
+   - Lives in temporary worktrees within the project
+   - Implements specific features in isolation
+   - Creates PRs back to dev
+   - Gets terminated after merge
+
+### Project Lead Workflow
+
+When you need to implement a feature:
+
+1. **Stay on dev branch**: Never switch branches as Project Lead
+2. **Create local worktree**:
+   ```bash
+   git worktree add worktrees/feature-name feature/feature-name
+   ```
+3. **Dispatch Task Agent**: Start a new conversation with implementation instructions
+4. **Review PR**: When Task Agent completes, review their PR
+5. **Merge and cleanup**:
+   ```bash
+   gh pr merge [PR-number] --squash --delete-branch
+   git worktree remove worktrees/feature-name
+   ```
+
+### Task Agent Workflow
+
+As a Task Agent, you:
+
+1. **Work in isolation**: cd worktrees/your-feature
+2. **Follow the plan**: Implement according to architectural guidance
+3. **Log everything**: Update CLAUDE_LOG.md with [feature/branch-name] prefix
+4. **Commit often**: Small, atomic commits
+5. **Create PR when done**:
+   ```bash
+   gh pr create --base dev --title "feat: Your feature" --body "..."
+   ```
+6. **Await review**: Stop after PR creation
+
+### Why Local Worktrees?
+
+- **Security**: Claude can access worktrees/ but not ../sibling-dirs
+- **Organization**: All temporary work contained within project
+- **Discovery**: `ls worktrees/` shows all active features
+- **Cleanup**: Easy to find and remove stale worktrees
+
+### Critical Requirements
+
+- **MUST have worktrees/ in .gitignore** (prevents accidental commits)
+- **MUST use git worktree remove** (not rm -rf)
+- **MUST create worktrees from dev branch**
+
+### Example: Dispatching a Task Agent
+
+**Project Lead starts the process:**
+```bash
+# 1. Create the worktree (staying on dev branch)
+git worktree add worktrees/add-search feature/add-search
+
+# 2. Open a NEW Claude conversation and provide this prompt:
+```
+
+**Task Agent Prompt Template:**
+```
+You are a Task Agent for [project-name] working in the worktrees/add-search worktree.
+
+Your mission: Implement search functionality for CLAUDE_LOG.md files
+
+Requirements:
+- Add a `search` command that searches log entries
+- Support date filtering with --from and --to flags
+- Support keyword search with basic regex
+- Format output clearly showing matches
+- Include tests
+
+Process:
+1. cd worktrees/add-search
+2. Read CLAUDE_LOG.md and PROJECT_ROADMAP.md for context
+3. Implement the feature
+4. Test thoroughly
+5. Update documentation
+6. Commit with clear messages
+7. Create PR back to dev branch
+8. Report completion
+
+Remember: You work in isolation. Make atomic commits. Focus only on this feature.
+```
+
+### Benefits of Local Worktrees
+
+1. **No Access Issues**: Task Agents can work in worktrees/feature but can't access ../sibling-dirs
+2. **Easy Discovery**: `ls worktrees/` shows all active development
+3. **Clean Organization**: All feature work contained within the project
+4. **Simple Cleanup**: Find and remove stale worktrees easily
+5. **Parallel Development**: Multiple Task Agents can work simultaneously
+
+### Common Task Agent Patterns
+
+**Feature Implementation:**
+```bash
+# Task Agent works in worktrees/feature-name
+cd worktrees/add-auth
+# Implements complete feature
+# Creates PR when done
+```
+
+**Bug Fix:**
+```bash
+# Task Agent isolates bug in worktrees/fix-bug-name
+cd worktrees/fix-date-parsing
+# Reproduces, fixes, tests
+# Creates focused PR
+```
+
+**Refactoring:**
+```bash
+# Task Agent refactors in worktrees/refactor-area
+cd worktrees/refactor-cli
+# Makes systematic improvements
+# Ensures tests still pass
+```
+
+### When NOT to Use Task Agents
+
+- **Quick typo fixes**: Just fix directly on dev
+- **README updates only**: Too simple for isolation
+- **Exploration**: Use dev branch for research
+- **Emergency hotfixes**: Fix directly and backport
+
+### Cleanup After Task Agent Completes
+
+```bash
+# After PR is merged
+gh pr merge 42 --squash --delete-branch
+git worktree remove worktrees/feature-name
+
+# If abandoned
+git worktree remove --force worktrees/feature-name
+git branch -D feature/feature-name
+```
 
 Remember: The log is our shared memory. Write clearly for your future self.
