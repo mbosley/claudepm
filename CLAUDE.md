@@ -80,7 +80,8 @@ Purpose: Simple memory system for Claude Code sessions
 **0. Architectural Planning (for non-trivial features)**
 - [ ] Define the feature clearly - what problem does it solve?
 - [ ] Run `/architect-feature` with a comprehensive description
-- [ ] Review the generated plan for completeness and alignment
+- [ ] **REVIEW: Read Gemini's complete architectural plan carefully**
+- [ ] **DECIDE: Approve, adjust, or cancel based on the plan's alignment**
 - [ ] Use the plan to guide all subsequent implementation steps
 
 **Note:** Use architect-first for: features touching multiple files, new concepts, refactoring, complex integrations. Skip for: typo fixes, simple doc updates, single-line changes.
