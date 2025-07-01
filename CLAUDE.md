@@ -3,10 +3,11 @@
 ## Core Principles
 1. **Edit, don't create** - Modify existing code rather than rewriting
 2. **Small changes** - Make the minimal change that solves the problem
-3. **Test immediately** - Verify each change before moving on
-4. **Preserve what works** - Don't break working features for elegance
-5. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
-6. **Commit completed work** - Don't let finished features sit uncommitted
+3. **Architect first** - For non-trivial features, use /architect-feature before implementing
+4. **Test immediately** - Verify each change before moving on
+5. **Preserve what works** - Don't break working features for elegance
+6. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
+7. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
 1. Read PROJECT_ROADMAP.md - see current state and priorities
@@ -75,6 +76,14 @@ Purpose: Simple memory system for Claude Code sessions
 4. Follow this comprehensive checklist:
 
 #### Feature Development Checklist
+
+**0. Architectural Planning (for non-trivial features)**
+- [ ] Define the feature clearly - what problem does it solve?
+- [ ] Run `/architect-feature` with a comprehensive description
+- [ ] Review the generated plan for completeness and alignment
+- [ ] Use the plan to guide all subsequent implementation steps
+
+**Note:** Use architect-first for: features touching multiple files, new concepts, refactoring, complex integrations. Skip for: typo fixes, simple doc updates, single-line changes.
 
 **1. Code/Script Updates**
 - [ ] Update `install.sh` if feature affects installation

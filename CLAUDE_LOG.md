@@ -772,3 +772,16 @@ Next: Commit and create PR to dev branch
 Notes: This makes the codebase much cleaner - templates are clearly separated from active files
 
 ---
+
+
+### 2025-07-01 14:28 - [feature/doc-architect-first] - Codified architect-first development philosophy
+Did:
+- ADDED: 'Architect first' as Core Principle #3 in CLAUDE.md
+- ADDED: Architectural Planning step to Feature Development Checklist
+- DOCUMENTED: When to use architect-first vs direct implementation
+- UPDATED: PROJECT_ROADMAP.md Development Process with architect-first model
+- UPDATED: README.md Philosophy section with AI-powered planning
+Next: Commit and merge to dev branch
+Notes: This formalizes what we learned from template reorg - AI architectural planning dramatically improves implementation quality
+
+---

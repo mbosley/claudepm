@@ -184,6 +184,7 @@ The magic isn't in the tool - it's in establishing consistent patterns that Clau
 - No daemon processes
 - No complex state management  
 - No external dependencies
+- **Architect-first development** - AI-powered planning before implementation
 - Just markdown and git
 
 ## Contributing

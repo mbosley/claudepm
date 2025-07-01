@@ -37,7 +37,8 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Better integrated template versioning into documentation (v0.1.4)
 - [x] Added commit reminders to workflow
 - [x] Created /architect-feature command for AI-powered planning
-- [ ] Implement formal git workflow (dev branch, worktrees)
+- [x] Reorganized templates into templates/ directory structure (v0.1.5)
+- [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
@@ -460,6 +461,8 @@ When adding features to claudepm, follow the checklist in CLAUDE.md:
 6. Log the work and update roadmap before committing
 
 This ensures consistency and prevents missing components. The full checklist lives in CLAUDE.md under "When asked to add a feature" - keeping our three-document principle intact.
+
+claudepm now follows an 'architect-first' development model for non-trivial changes. Before writing code, we use the /architect-feature command to generate comprehensive implementation plans. This approach ensures changes are well-considered, aligned with project principles, and have a clear path to completion. The architect-first approach was validated during the v0.1.5 template reorganization and is now standard practice.
 
 ---
 Last updated: 2025-07-01 12:49
