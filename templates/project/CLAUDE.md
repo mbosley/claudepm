@@ -97,6 +97,13 @@ Next: Continue working
 3. Make the smallest change possible
 4. Test that specific change before proceeding
 
+#### For non-trivial features (touching multiple files, new concepts):
+1. Define the feature clearly - what problem does it solve?
+2. Run `/architect-feature` with a comprehensive description
+3. **REVIEW: Read Gemini's complete architectural plan carefully**
+4. **DECIDE: Approve, adjust, or cancel based on the plan's alignment**
+5. Use the plan to guide all subsequent implementation steps
+
 ### When something isn't working:
 1. Read the existing code carefully first
 2. Try small fixes before big rewrites
@@ -188,5 +195,27 @@ Notes: Parallel work included auth implementation and payment integration
 - Each worktree maintains its own log timeline
 - Conflicts are good - they show parallel progress
 - The merge marker helps explain any timeline jumps
+
+## Git Workflow & Worktree Hygiene
+
+When working with feature branches and worktrees:
+
+1. **Create worktree**: `git worktree add ../project-feature feature/name`
+2. **Develop**: Make changes, test, commit regularly
+3. **Create PR**: `gh pr create --base dev --title "feat: Description"`
+4. **After merge - CRITICAL cleanup**:
+   ```bash
+   # Return to main worktree
+   cd ../main-project
+   # Remove worktree
+   git worktree remove ../project-feature  
+   # Delete local branch
+   git branch -d feature/name
+   # Prune remote tracking
+   git remote prune origin
+   ```
+5. **If feature is abandoned**: Use `--force` flag: `git worktree remove --force`
+
+Always clean up worktrees after merging or abandoning features to prevent accumulation.
 
 Remember: The log is our shared memory. Write clearly for your future self.
