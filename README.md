@@ -73,6 +73,11 @@ cd ~/projects/my-web-app
 │   │   ├── doctor.md
 │   │   └── ... (10 total)
 │   └── templates/           # Project templates
+│       ├── manager/         # Manager-level templates
+│       │   └── CLAUDE.md
+│       └── project/         # Project-level templates
+│           ├── CLAUDE.md
+│           └── PROJECT_ROADMAP.md
 │
 ├── my-web-app/              # Individual project
 │   ├── CLAUDE.md           # Project instructions

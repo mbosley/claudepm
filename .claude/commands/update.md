@@ -45,8 +45,18 @@ Usage: /update [project-name]
 
 5. **Apply latest template**:
    ```bash
-   # Start with fresh template
-   cp ~/.claude/templates/CLAUDE.md "$PROJECT/CLAUDE.md.new"
+   # Check for new template structure first, fall back to old if needed
+   if [ -f ~/.claude/templates/project/CLAUDE.md ]; then
+     # New structure (v0.1.5+)
+     cp ~/.claude/templates/project/CLAUDE.md "$PROJECT/CLAUDE.md.new"
+   elif [ -f ~/.claude/templates/CLAUDE.md ]; then
+     # Legacy structure (pre-v0.1.5)
+     echo "⚠️  Using legacy template location. Please re-run install.sh to update."
+     cp ~/.claude/templates/CLAUDE.md "$PROJECT/CLAUDE.md.new"
+   else
+     echo "❌ Error: No template found. Please reinstall claudepm."
+     exit 1
+   fi
    
    # Insert preserved content at appropriate locations
    # Replace template's generic Project Context with actual content

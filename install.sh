@@ -7,7 +7,7 @@ echo "=========================================="
 echo
 
 # Check if we're in the right place
-if [ ! -f "CLAUDE_MANAGER.md" ]; then
+if [ ! -f "templates/manager/CLAUDE.md" ]; then
     echo "Error: Please run this from the claudepm directory"
     exit 1
 fi
@@ -30,21 +30,23 @@ if [ -f "$PROJECTS_DIR/CLAUDE.md" ]; then
     read -p "  Backup and replace? [y/N]: " REPLACE
     if [ "$REPLACE" = "y" ] || [ "$REPLACE" = "Y" ]; then
         cp "$PROJECTS_DIR/CLAUDE.md" "$PROJECTS_DIR/CLAUDE.md.backup"
-        cp CLAUDE_MANAGER.md "$PROJECTS_DIR/CLAUDE.md"
+        cp templates/manager/CLAUDE.md "$PROJECTS_DIR/CLAUDE.md"
         echo "  ✓ Installed (backup saved as CLAUDE.md.backup)"
     else
         echo "  Skipped"
     fi
 else
-    cp CLAUDE_MANAGER.md "$PROJECTS_DIR/CLAUDE.md"
+    cp templates/manager/CLAUDE.md "$PROJECTS_DIR/CLAUDE.md"
     echo "  ✓ Installed"
 fi
 
 # Create .claude directory for templates
 echo "Creating templates directory..."
-mkdir -p "$PROJECTS_DIR/.claude/templates"
-cp CLAUDE_PROJECT_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/CLAUDE.md"
-cp PROJECT_ROADMAP_TEMPLATE.md "$PROJECTS_DIR/.claude/templates/PROJECT_ROADMAP.md"
+mkdir -p "$PROJECTS_DIR/.claude/templates/project"
+mkdir -p "$PROJECTS_DIR/.claude/templates/manager"
+cp templates/project/CLAUDE.md "$PROJECTS_DIR/.claude/templates/project/CLAUDE.md"
+cp templates/project/PROJECT_ROADMAP.md "$PROJECTS_DIR/.claude/templates/project/PROJECT_ROADMAP.md"
+cp templates/manager/CLAUDE.md "$PROJECTS_DIR/.claude/templates/manager/CLAUDE.md"
 cp TEMPLATE_VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
 echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat TEMPLATE_VERSION))"
 

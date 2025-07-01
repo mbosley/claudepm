@@ -758,3 +758,17 @@ Next: Implement git workflow changes, then MCP integration based on plans
 Notes: Gemini 2.5 Pro's architectural analysis is incredibly thorough - perfect for planning complex features before implementation
 
 ---
+
+
+### 2025-07-01 14:17 - [feature/template-reorg] - Reorganized templates into directory structure
+Did:
+- MOVED: All templates into templates/ directory with manager/ and project/ subdirs
+- UPDATED: install.sh to use new template paths and create proper structure
+- ADDED: Backward compatibility to /update command for legacy installations
+- UPDATED: All documentation references to reflect new structure
+- TESTED: Fresh installation creates correct directory hierarchy
+- BUMPED: Template version to 0.1.5 with changelog
+Next: Commit and create PR to dev branch
+Notes: This makes the codebase much cleaner - templates are clearly separated from active files
+
+---

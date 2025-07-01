@@ -2,6 +2,25 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.5 - 2025-07-01
+
+### Added
+- Reorganized templates into `templates/` directory structure
+- Separate `manager/` and `project/` subdirectories for clarity
+- Backward compatibility in `/update` command for legacy installations
+
+### Changed
+- Template files moved from root to organized structure:
+  - `CLAUDE_MANAGER.md` → `templates/manager/CLAUDE.md`
+  - `CLAUDE_PROJECT_TEMPLATE.md` → `templates/project/CLAUDE.md`
+  - `PROJECT_ROADMAP_TEMPLATE.md` → `templates/project/PROJECT_ROADMAP.md`
+- Updated all documentation references to new paths
+- Install script now creates subdirectories in user's `.claude/templates/`
+
+### Fixed
+- Installer can now run from any directory (uses SCRIPT_DIR)
+- Clearer separation between source templates and active files
+
 ## v0.1.4 - 2025-07-01
 
 ### Added

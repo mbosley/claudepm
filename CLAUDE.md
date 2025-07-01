@@ -41,7 +41,7 @@ If working on a feature branch, include branch name:
 ```
 
 **Be precise about PLANNED vs IMPLEMENTED:**
-- `IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md` (code written)
+- `IMPLEMENTED: Dynamic scoping in manager templates` (code written)
 - `PLANNED: Manager report persistence in roadmap` (added to roadmap)
 - `DOCUMENTED: Sub-agent patterns in templates` (docs updated)
 - `FIXED: Timestamp accuracy with date command` (bug resolved)
@@ -83,9 +83,9 @@ Purpose: Simple memory system for Claude Code sessions
 
 **2. Template Updates**
 - [ ] Update `CLAUDE.md` (this file!)
-- [ ] Update `CLAUDE_PROJECT_TEMPLATE.md` 
-- [ ] Update `CLAUDE_MANAGER.md` (if affects manager level)
-- [ ] Update `PROJECT_ROADMAP_TEMPLATE.md` (if affects roadmap structure)
+- [ ] Update `templates/project/CLAUDE.md` 
+- [ ] Update `templates/manager/CLAUDE.md` (if affects manager level)
+- [ ] Update `templates/project/PROJECT_ROADMAP.md` (if affects roadmap structure)
 
 **3. Version Management**
 - [ ] Bump version in `TEMPLATE_VERSION`

@@ -156,7 +156,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
    ```
    Add dynamic scoping to manager reports and plan persistence feature
    
-   - IMPLEMENTED: Dynamic date filtering in CLAUDE_MANAGER.md
+   - IMPLEMENTED: Dynamic date filtering in manager templates
    - PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
    - UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
    ```
