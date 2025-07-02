@@ -930,3 +930,15 @@ Next: Test migration on real projects
 Notes: Major milestone - updates now require no AI intervention\!
 
 ---
+
+
+### 2025-07-02 14:49 - Migrated claudepm to v0.2.0 architecture
+Did:
+- MIGRATED: Split CLAUDE.md into custom (176 lines) + core (removed 194 lines)
+- BACKED UP: Original saved as CLAUDE.md.backup_20250702_144938
+- UPDATED: .claudepm with core_version=0.2.0 and role=project
+- PRESERVED: All claudepm-specific development instructions
+Next: Test that everything works correctly with new architecture
+Notes: Dogfooding successful\! Core instructions now from CLAUDEPM-PROJECT.md
+
+---
