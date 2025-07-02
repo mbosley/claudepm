@@ -30,6 +30,8 @@ You'll see exactly what each AI contributes, with clear attribution.
 
 To use this command, provide a clear description of the feature you want to implement.
 
+**Note**: This command uses the llm-mcp-server (https://github.com/mbosley/llm-mcp-server) for Gemini access.
+
 <mcp__llm-tools__analyze_with_gemini>
 <files>**/*.md</files>
 <files>**/*.sh</files>

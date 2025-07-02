@@ -327,6 +327,14 @@ brew install gh  # macOS
 gh auth login
 ```
 
+### Optional: MCP Server Integration (Coming Soon)
+claudepm can integrate with MCP (Model Context Protocol) servers for enhanced functionality:
+- **apple-mcp**: Email, calendar, and macOS app integration
+- **[llm-mcp-server](https://github.com/mbosley/llm-mcp-server)**: Additional AI model access (Gemini, GPT-4)
+- **filesystem-server**: Enhanced file operations
+
+Note: MCP server integration is currently manual. Future versions will include streamlined setup instructions and dependency management.
+
 ## Contributing
 
 claudepm uses itself for development! Check out our CLAUDE_LOG.md to see how it was built.

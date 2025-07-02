@@ -134,6 +134,17 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Builds on accumulated knowledge
 
 ### v0.7 - Manager Intelligence & Commands
+- [ ] **MCP Server Integration & Dependencies**
+  - Harmonize MCP server installation with claudepm setup
+  - Document required MCP servers:
+    - apple-mcp (macOS app integration)
+    - [llm-mcp-server](https://github.com/mbosley/llm-mcp-server) (AI model access)
+    - filesystem-server (enhanced file operations)
+  - Consider bundled installer or setup script for MCP dependencies
+  - Provide fallback options when MCP servers aren't available
+  - Clear documentation on which features require which MCP servers
+  - Environment variable management for API keys (GOOGLE_AI_API_KEY, etc.)
+  - Coordinate with llm-mcp-server development for seamless integration
 - [ ] Advanced status commands:
   - `claudepm recap` - Weekly/daily summaries
   - `claudepm health` - Project health check

@@ -892,3 +892,15 @@ Next: Continue cleanup and prepare for v0.2.0 release
 Notes: This follows standard project organization - executable utilities in their own directory while keeping the main installer visible at root.
 
 ---
+
+
+### 2025-07-02 13:34 - Added MCP server integration to roadmap
+Did:
+- ADDED: MCP Server Integration & Dependencies section to v0.7 in PROJECT_ROADMAP.md
+- DOCUMENTED: Need to harmonize MCP server installation with claudepm
+- ADDED: Placeholder section in README.md about MCP integration (Coming Soon)
+- IDENTIFIED: Key challenges - dependency management, API keys, fallback options
+Next: Continue preparing for v0.2.0 release
+Notes: Currently MCP servers are installed manually. Future versions should streamline this with bundled installer or clear dependency management.
+
+---
