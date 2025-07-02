@@ -167,6 +167,8 @@ Notes: Parallel work on template improvements and search feature
 
 ## Task Agent Development Workflow
 
+**CRITICAL:** The Project Lead **MUST** stay on the `dev` branch. All worktree operations **MUST** be performed using the `./claudepm-admin.sh` script to prevent errors.
+
 This workflow enables isolated feature development using git worktrees within the project directory.
 
 ### Three-Level Claude Hierarchy
@@ -188,6 +190,40 @@ This workflow enables isolated feature development using git worktrees within th
    - Creates PRs back to dev
    - Gets terminated after merge
 
+### Visual Role Indicators (Recommended)
+
+To avoid confusion between Project Lead and Task Agent roles, add the following function to your shell profile (`~/.bashrc`, `~/.zshrc`). This will change your command prompt to clearly display your current role.
+
+**Add this to your `~/.bashrc` or `~/.zshrc`:**
+```bash
+function claudepm_ps1() {
+    local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [[ -n "$branch" ]]; then
+        if [[ "$branch" == "dev" ]]; then
+            PS1="[PROJECT LEAD @ dev] \$ "
+        elif [[ "$branch" == "main" ]]; then
+            PS1="[!!! MAIN BRANCH !!!] \$ "
+        elif [[ "$branch" =~ ^feature/ ]]; then
+            PS1="[TASK AGENT @ $branch] \$ "
+        else
+            PS1="[$branch] \$ "
+        fi
+    else
+        # Default prompt if not in a git repo
+        PS1="\h:\W \u\$ "
+    fi
+}
+# For Bash, set the prompt command
+PROMPT_COMMAND="claudepm_ps1"
+
+# For Zsh, use precmd hook
+# precmd() { claudepm_ps1 }
+```
+
+After adding this, source your profile (`source ~/.bashrc`) or open a new terminal. Your prompt will now look like this:
+- **Project Lead:** `[PROJECT LEAD @ dev] $`
+- **Task Agent:** `[TASK AGENT @ feature/add-search] $`
+
 ### Project Lead Workflow
 
 When you need to implement a feature:
@@ -195,14 +231,14 @@ When you need to implement a feature:
 1. **Stay on dev branch**: Never switch branches as Project Lead
 2. **Create local worktree**:
    ```bash
-   git worktree add worktrees/feature-name feature/feature-name
+   ./claudepm-admin.sh create-worktree <feature-name>
    ```
 3. **Dispatch Task Agent**: Use /dispatch-task or manually create prompt
 4. **Review PR**: When Task Agent completes, review their PR
 5. **Merge and cleanup**:
    ```bash
    gh pr merge [PR-number] --squash --delete-branch
-   git worktree remove worktrees/feature-name
+   ./claudepm-admin.sh remove-worktree <feature-name>
    ```
 
 ### Why Local Worktrees?
@@ -229,7 +265,7 @@ I need to add search functionality to CLAUDE_LOG.md with date filtering and rege
 **Or manually create worktree and prompt:**
 ```bash
 # 1. Create the worktree (staying on dev branch)
-git worktree add worktrees/add-search feature/add-search
+./claudepm-admin.sh create-worktree add-search
 
 # 2. Open a NEW Claude conversation with this prompt:
 ```
@@ -306,11 +342,10 @@ cd worktrees/refactor-commands
 ```bash
 # After PR is merged
 gh pr merge 42 --squash --delete-branch
-git worktree remove worktrees/feature-name
+./claudepm-admin.sh remove-worktree <feature-name>
 
 # If abandoned
-git worktree remove --force worktrees/feature-name
-git branch -D feature/feature-name
+./claudepm-admin.sh remove-worktree <feature-name>
 ```
 
 Remember: The log is our shared memory. Write clearly for your future self.
