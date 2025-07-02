@@ -316,6 +316,9 @@ Which projects need attention? Check for blockers and stale work
 ### /start-work [project]
 Quick briefing before diving into a specific project
 
+### /email-check
+Process emails as project updates via apple-mcp integration. Reads emails and suggests updates to project files without auto-updating. Maintains human control over what gets incorporated.
+
 **Note**: These commands are stored in `.claude/commands/*.md` and can be customized or extended.
 See https://www.anthropic.com/engineering/claude-code-best-practices for more on slash commands.
 

@@ -145,6 +145,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - `/project-health` - Which projects need attention?
   - `/start-work [project]` - Quick briefing before diving into project
   - `/brain-dump` - Process unstructured updates and route to projects
+  - `/email-check` - Process emails as project updates via apple-mcp
 - [ ] Sub-agent report generation pattern
   - Manager spawns one agent per project for deep analysis
   - Each agent reads three documents + git history
@@ -158,6 +159,15 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - FUTURE: Automated report saving after processing
   - FUTURE: Batch processing of multiple updates
   - NOTE: Core functionality works today through Claude's intelligence, not code
+- [ ] **Email Ingestion via apple-mcp** (Project Updates from Email)
+  - ALREADY WORKS: MCP servers provide email reading capability
+  - NEW: /email-check command processes emails as project updates
+  - Filters emails for project-relevant content
+  - Suggests (never auto-updates) changes to PROJECT_ROADMAP.md
+  - Extracts deadlines, decisions, and blockers
+  - Manager mode: Routes email updates to appropriate projects
+  - Project mode: Filters for project-specific emails only
+  - Philosophy: Email is a read-only source; humans approve all changes
 - [ ] **Manager Report Persistence** (Hierarchical Memory)
   - Save daily summaries to `~/.claudepm/reports/daily/YYYY-MM-DD.md`
   - Save weekly summaries to `~/.claudepm/reports/weekly/`

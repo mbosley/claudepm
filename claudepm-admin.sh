@@ -109,7 +109,6 @@ function archive_task_prompt {
         echo -e "${COLOR_GREEN}Archived TASK_PROMPT.md to ${archive_name}${COLOR_NC}"
     fi
 }
-
 # --- Main Script Logic ---
 
 # Global safety check: never run on main

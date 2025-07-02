@@ -814,6 +814,19 @@ Notes: This change solves Claude's security limitation - can't access ../dirs bu
 ---
 
 
+### 2025-07-01 16:23 - [feature/email-ingestion] - Implemented email ingestion via apple-mcp
+Did:
+- CREATED: /email-check command in .claude/commands/email-check.md
+- UPDATED: templates/manager/CLAUDE.md - added /email-check to slash commands list
+- UPDATED: templates/project/CLAUDE.md - added Available Slash Commands section with /email-check
+- UPDATED: PROJECT_ROADMAP.md - added email ingestion to v0.7 section with full details
+- TESTED: Read all files to verify correct implementation
+Next: Commit changes and create PR back to dev branch
+Notes: Implementation follows Gemini's architectural plan exactly. Maintains MCP philosophy of primitives over workflows. Human approval required for all suggested updates.
+
+---
+
+
 ### 2025-07-02 12:39 - [feature/task-prompt-management] - Implemented TASK_PROMPT management system
 Did:
 - IMPLEMENTED: Automated TASK_PROMPT.md generation from template
