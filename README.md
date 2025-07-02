@@ -73,7 +73,7 @@ At the project level, you can:
 /dispatch-task add-user-auth
 
 # Or use the automated admin script
-./claudepm-admin.sh create-worktree feature-name
+./tools/claudepm-admin.sh create-worktree feature-name
 ```
 
 Task Agents work in isolated `worktrees/` directories, implementing features without affecting the main codebase until PR review.
@@ -103,7 +103,9 @@ Task Agents work in isolated `worktrees/` directories, implementing features wit
 │   ├── CLAUDE_LOG.md       # Project work history
 │   ├── PROJECT_ROADMAP.md  # Plans and current state
 │   ├── .claudepm           # Metadata (gitignored)
-│   ├── claudepm-admin.sh   # Git worktree management
+│   ├── tools/              # Utility scripts
+│   │   ├── claudepm-admin.sh # Git worktree management
+│   │   └── get-timestamp.sh  # Timestamp helper
 │   ├── worktrees/          # Task Agent workspaces (gitignored)
 │   │   └── add-auth/       # Feature implementation
 │   │       └── TASK_PROMPT.md
@@ -163,7 +165,7 @@ Gemini will analyze your codebase and provide a complete architectural plan.
 # Creates PR when complete
 
 # After PR merge
-./claudepm-admin.sh remove-worktree add-websockets
+./tools/claudepm-admin.sh remove-worktree add-websockets
 ```
 
 ### Checking Project Health
@@ -258,7 +260,7 @@ The three-level hierarchy enables parallel feature development:
 **Project Lead (you) workflow:**
 ```bash
 # Stay on dev branch
-./claudepm-admin.sh create-worktree add-search
+./tools/claudepm-admin.sh create-worktree add-search
 
 # This creates:
 # - worktrees/add-search/ directory
@@ -270,7 +272,7 @@ The three-level hierarchy enables parallel feature development:
 # Review PR when complete
 
 # Cleanup after merge
-./claudepm-admin.sh remove-worktree add-search
+./tools/claudepm-admin.sh remove-worktree add-search
 # Archives TASK_PROMPT to .prompts_archive/
 ```
 

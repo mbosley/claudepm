@@ -879,3 +879,16 @@ Next: Continue directory cleanup and prepare for v0.2.0 release
 Notes: This clarifies that VERSION versions the entire claudepm system, not just templates. Makes the project more approachable to users familiar with standard conventions.
 
 ---
+
+
+### 2025-07-02 13:30 - Organized bash scripts into tools/ directory
+Did:
+- CREATED: tools/ directory for utility scripts
+- MOVED: claudepm-admin.sh and get-timestamp.sh to tools/
+- UPDATED: All references in CLAUDE.md, templates/project/CLAUDE.md, and README.md
+- TESTED: Scripts work correctly from new location with proper permissions
+- KEPT: install.sh in root for discoverability as entry point
+Next: Continue cleanup and prepare for v0.2.0 release
+Notes: This follows standard project organization - executable utilities in their own directory while keeping the main installer visible at root.
+
+---

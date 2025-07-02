@@ -167,7 +167,7 @@ Notes: Parallel work on template improvements and search feature
 
 ## Task Agent Development Workflow
 
-**CRITICAL:** The Project Lead **MUST** stay on the `dev` branch. All worktree operations **MUST** be performed using the `./claudepm-admin.sh` script to prevent errors.
+**CRITICAL:** The Project Lead **MUST** stay on the `dev` branch. All worktree operations **MUST** be performed using the `./tools/claudepm-admin.sh` script to prevent errors.
 
 This workflow enables isolated feature development using git worktrees within the project directory.
 
@@ -231,7 +231,7 @@ When you need to implement a feature:
 1. **Stay on dev branch**: Never switch branches as Project Lead
 2. **Create local worktree using claudepm-admin.sh**:
    ```bash
-   ./claudepm-admin.sh create-worktree <feature-name>
+   ./tools/claudepm-admin.sh create-worktree <feature-name>
    ```
    This will:
    - Create the worktree and feature branch
@@ -242,7 +242,7 @@ When you need to implement a feature:
 5. **Merge and cleanup**:
    ```bash
    gh pr merge [PR-number] --squash --delete-branch
-   ./claudepm-admin.sh remove-worktree <feature-name>
+   ./tools/claudepm-admin.sh remove-worktree <feature-name>
    ```
    This will:
    - Archive TASK_PROMPT.md to .prompts_archive/
@@ -272,7 +272,7 @@ I need to add search functionality to CLAUDE_LOG.md with date filtering and rege
 **Or use claudepm-admin.sh (recommended):**
 ```bash
 # 1. Create the worktree with automated TASK_PROMPT generation (staying on dev branch)
-./claudepm-admin.sh create-worktree add-search
+./tools/claudepm-admin.sh create-worktree add-search
 
 # 2. The TASK_PROMPT.md is automatically generated with:
 #    - Feature name filled in
@@ -356,14 +356,14 @@ cd worktrees/refactor-commands
 ```bash
 # After PR is merged (recommended approach)
 gh pr merge 42 --squash --delete-branch
-./claudepm-admin.sh remove-worktree <feature-name>
+./tools/claudepm-admin.sh remove-worktree <feature-name>
 
 # Manual cleanup if needed
 git worktree remove --force worktrees/<feature-name>
 git branch -D feature/<feature-name>
 ```
 
-The `claudepm-admin.sh remove-worktree` command will:
+The `tools/claudepm-admin.sh remove-worktree` command will:
 - Archive the TASK_PROMPT.md to .prompts_archive/YYYY-MM-DD-feature-name.md
 - Safely remove the worktree
 - Delete the feature branch

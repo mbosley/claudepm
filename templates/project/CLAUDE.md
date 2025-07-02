@@ -256,7 +256,7 @@ When you need to implement a feature:
 1. **Stay on dev branch**: Never switch branches as Project Lead
 2. **Create local worktree using claudepm-admin.sh**:
    ```bash
-   ./claudepm-admin.sh create-worktree feature-name
+   ./tools/claudepm-admin.sh create-worktree feature-name
    ```
    This will:
    - Create the worktree and feature branch
@@ -267,7 +267,7 @@ When you need to implement a feature:
 5. **Merge and cleanup**:
    ```bash
    gh pr merge [PR-number] --squash --delete-branch
-   ./claudepm-admin.sh remove-worktree feature-name
+   ./tools/claudepm-admin.sh remove-worktree feature-name
    ```
    This will:
    - Archive TASK_PROMPT.md to .prompts_archive/
@@ -384,14 +384,14 @@ cd worktrees/refactor-cli
 ```bash
 # After PR is merged (recommended approach)
 gh pr merge 42 --squash --delete-branch
-./claudepm-admin.sh remove-worktree feature-name
+./tools/claudepm-admin.sh remove-worktree feature-name
 
 # Manual cleanup if needed
 git worktree remove --force worktrees/feature-name
 git branch -D feature/feature-name
 ```
 
-The `claudepm-admin.sh remove-worktree` command will:
+The `tools/claudepm-admin.sh remove-worktree` command will:
 - Archive the TASK_PROMPT.md to .prompts_archive/YYYY-MM-DD-feature-name.md
 - Safely remove the worktree
 - Delete the feature branch
