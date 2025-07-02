@@ -825,3 +825,30 @@ Next: Commit changes and create PR back to dev branch
 Notes: Implementation follows Gemini's architectural plan exactly. Maintains MCP philosophy of primitives over workflows. Human approval required for all suggested updates.
 
 ---
+
+
+### 2025-07-02 12:39 - [feature/task-prompt-management] - Implemented TASK_PROMPT management system
+Did:
+- IMPLEMENTED: Automated TASK_PROMPT.md generation from template
+- IMPLEMENTED: TASK_PROMPT archiving to .prompts_archive/ on worktree removal
+- CREATED: templates/project/TASK_PROMPT.template.md with placeholders
+- ENHANCED: claudepm-admin.sh with generate_task_prompt and archive_task_prompt functions
+- INTEGRATED: Architectural reviews from .api-queries/ automatically included
+- TESTED: Both with and without architectural reviews - works correctly
+- UPDATED: All documentation and templates to reflect new workflow
+- BUMPED: Template version to 0.1.8 with changelog
+Next: Create PR back to dev branch
+
+---
+
+
+### 2025-07-02 12:48 - [feature/task-prompt-management] - Resolved merge conflicts with dev
+Did:
+- MERGED: origin/dev into feature branch to resolve conflicts
+- RESOLVED: Conflicts in CLAUDE.md (angle bracket placeholders)
+- RESOLVED: Conflicts in CLAUDE_LOG.md (kept both entries)
+- RESOLVED: Conflicts in claudepm-admin.sh (preserved our functions)
+- FIXED: Removed 'local' keywords that cause errors in case statements
+Next: PR #4 ready for review and merge
+
+---

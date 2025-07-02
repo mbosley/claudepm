@@ -2,6 +2,24 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.8 - 2025-01-02
+
+### Added
+- **Automated TASK_PROMPT Generation**: New TASK_PROMPT.template.md for standardized Task Agent mission briefs
+- **TASK_PROMPT Archiving**: Completed TASK_PROMPTs automatically archived to .prompts_archive/
+- **Enhanced claudepm-admin.sh**: Now generates and archives TASK_PROMPT.md files automatically
+- **.gitignore Update**: Added .prompts_archive/ to track completed Task Agent missions
+
+### Changed
+- Updated Task Agent workflow to use claudepm-admin.sh for worktree management
+- Project Lead workflow now emphasizes automated TASK_PROMPT generation
+- Cleanup process now includes automatic TASK_PROMPT archiving
+
+### Benefits
+- **Consistency**: Every Task Agent receives a well-structured mission brief
+- **Traceability**: Historical record of all Task Agent missions preserved
+- **Integration**: Architectural reviews from .api-queries/ automatically included
+
 ## v0.1.6 - 2025-07-01
 
 ### Added

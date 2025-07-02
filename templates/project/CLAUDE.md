@@ -254,17 +254,24 @@ This workflow enables isolated feature development using git worktrees within th
 When you need to implement a feature:
 
 1. **Stay on dev branch**: Never switch branches as Project Lead
-2. **Create local worktree**:
+2. **Create local worktree using claudepm-admin.sh**:
    ```bash
-   git worktree add worktrees/feature-name feature/feature-name
+   ./claudepm-admin.sh create-worktree feature-name
    ```
+   This will:
+   - Create the worktree and feature branch
+   - Generate TASK_PROMPT.md from template
+   - Include architectural review if found in .api-queries/
 3. **Dispatch Task Agent**: Start a new conversation with implementation instructions
 4. **Review PR**: When Task Agent completes, review their PR
 5. **Merge and cleanup**:
    ```bash
    gh pr merge [PR-number] --squash --delete-branch
-   git worktree remove worktrees/feature-name
+   ./claudepm-admin.sh remove-worktree feature-name
    ```
+   This will:
+   - Archive TASK_PROMPT.md to .prompts_archive/
+   - Remove the worktree and branch safely
 
 ### Task Agent Workflow
 
@@ -336,6 +343,8 @@ Remember: You work in isolation. Make atomic commits. Focus only on this feature
 3. **Clean Organization**: All feature work contained within the project
 4. **Simple Cleanup**: Find and remove stale worktrees easily
 5. **Parallel Development**: Multiple Task Agents can work simultaneously
+6. **Automated TASK_PROMPT**: Each worktree gets a mission brief automatically
+7. **Archived History**: Completed TASK_PROMPTs saved to .prompts_archive/
 
 ### Common Task Agent Patterns
 
@@ -373,13 +382,18 @@ cd worktrees/refactor-cli
 ### Cleanup After Task Agent Completes
 
 ```bash
-# After PR is merged
+# After PR is merged (recommended approach)
 gh pr merge 42 --squash --delete-branch
-git worktree remove worktrees/feature-name
+./claudepm-admin.sh remove-worktree feature-name
 
-# If abandoned
+# Manual cleanup if needed
 git worktree remove --force worktrees/feature-name
 git branch -D feature/feature-name
 ```
+
+The `claudepm-admin.sh remove-worktree` command will:
+- Archive the TASK_PROMPT.md to .prompts_archive/YYYY-MM-DD-feature-name.md
+- Safely remove the worktree
+- Delete the feature branch
 
 Remember: The log is our shared memory. Write clearly for your future self.
