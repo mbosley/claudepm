@@ -20,6 +20,7 @@ COLOR_RED='\033[0;31m'
 COLOR_GREEN='\033[0;32m'
 COLOR_YELLOW='\033[0;33m'
 COLOR_BLUE='\033[0;34m'
+COLOR_CYAN='\033[0;36m'
 COLOR_NC='\033[0m' # No Color
 
 # --- Helper Functions ---
@@ -173,7 +174,7 @@ EOF
             # Archive TASK_PROMPT.md before removing worktree
             archive_task_prompt "$FEATURE_NAME" "$worktree_path"
             
-            git worktree remove "$worktree_path"
+            git worktree remove --force "$worktree_path"
             git branch -D "$branch_name"
             echo -e "${COLOR_GREEN}Cleanup complete.${COLOR_NC}"
         else

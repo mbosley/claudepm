@@ -13,19 +13,19 @@ This document outlines the phased approach to building comprehensive test covera
 **Goal:** Establish testing infrastructure and core safety tests
 
 ### Traditional Tests
-- [ ] `installer` - Test install.sh creates correct structure
-- [ ] `get-context` - Test context assembly from two-file architecture
-- [ ] `admin-worktree` - Test worktree creation/removal
+- [x] `installer` - Test install.sh creates correct structure
+- [x] `get-context` - Test context assembly from two-file architecture
+- [x] `admin-worktree` - Test worktree creation/removal
 
 ### AI Behavioral Tests
-- [ ] `core_log_append` - Verify append-only behavior
+- [x] `core_log_append` - Verify append-only behavior
 - [ ] `core_role_adherence` - Ensure agents respect their roles
 - [ ] `workflow_adopt_project` - Test project adoption
 
 ### Infrastructure
 - [x] Test runner framework
-- [ ] GitHub Actions CI setup
-- [ ] Test documentation
+- [x] GitHub Actions CI setup
+- [x] Test documentation
 
 ## Phase 2: Core Workflows (Weeks 3-4)
 **Goal:** Verify main user workflows work end-to-end

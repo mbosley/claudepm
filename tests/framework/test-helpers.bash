@@ -45,6 +45,30 @@ assert_output() {
     esac
 }
 
+refute_output() {
+    local unexpected
+    case "$1" in
+        --partial)
+            unexpected="$2"
+            if [[ "$output" == *"$unexpected"* ]]; then
+                echo "Output contains unexpected string"
+                echo "Unexpected substring: $unexpected"
+                echo "Actual output: $output"
+                return 1
+            fi
+            ;;
+        *)
+            unexpected="$1"
+            if [ "$output" == "$unexpected" ]; then
+                echo "Output matches unexpected value"
+                echo "Unexpected: $unexpected"
+                echo "Actual: $output"
+                return 1
+            fi
+            ;;
+    esac
+}
+
 assert_file_exists() {
     local file="$1"
     if [ ! -f "$file" ]; then
