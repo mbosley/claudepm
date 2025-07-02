@@ -942,3 +942,29 @@ Next: Test that everything works correctly with new architecture
 Notes: Dogfooding successful\! Core instructions now from CLAUDEPM-PROJECT.md
 
 ---
+
+
+### 2025-07-02 15:46 - Built comprehensive testing infrastructure
+Did:
+- Created test framework with bats for traditional tests and Python for AI behavioral tests
+- Implemented first traditional test for installer script
+- Implemented first AI behavioral test for log append behavior
+- Created GitHub Actions CI workflow with cost-aware execution strategy
+- Documented testing patterns and roadmap for expansion
+Next: Install bats-core locally and test the framework, then expand test coverage
+Notes: Using hybrid approach - deterministic tests run always, AI tests run on PRs only to manage costs
+
+---
+
+
+### 2025-07-02 15:49 - [feature/testing-infrastructure] - Created comprehensive testing framework
+Did:
+- IMPLEMENTED: Hybrid test framework with bats for traditional tests and Python for AI behavioral tests
+- IMPLEMENTED: First traditional test suite for installer with 9 test cases
+- IMPLEMENTED: First AI behavioral test for log append behavior (with mock Claude responses)
+- IMPLEMENTED: GitHub Actions CI workflow with cost-aware execution strategy
+- DOCUMENTED: Testing patterns, roadmap, and cost management strategies
+Next: Install bats-core locally, run tests, then expand coverage following roadmap
+Notes: Framework ready for Claude Code SDK integration when API key available. Using mocks for now.
+
+---

@@ -1,0 +1,155 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, dev, feature/* ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+    inputs:
+      run_all_tests:
+        description: 'Run all tests including expensive AI tests'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  traditional-tests:
+    name: Traditional Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bats jq
+        
+    - name: Run traditional tests
+      run: |
+        chmod +x tests/framework/run-tests.sh
+        ./tests/framework/run-tests.sh traditional
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: traditional-test-results
+        path: tests/test-results/
+        retention-days: 7
+
+  ai-behavioral-tests:
+    name: AI Behavioral Tests
+    runs-on: ubuntu-latest
+    # Run on PRs, manual triggers with run_all_tests, or weekly schedule
+    if: |
+      github.event_name == 'pull_request' || 
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all_tests == 'true') ||
+      github.event_name == 'schedule'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f tests/framework/sdk/requirements.txt ]; then
+          pip install -r tests/framework/sdk/requirements.txt
+        fi
+        
+    - name: Check for API key
+      id: check_api_key
+      run: |
+        if [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+          echo "has_api_key=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_api_key=false" >> $GITHUB_OUTPUT
+          echo "::warning::ANTHROPIC_API_KEY not configured - skipping AI tests"
+        fi
+        
+    - name: Run AI behavioral tests
+      if: steps.check_api_key.outputs.has_api_key == 'true'
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        chmod +x tests/framework/run-tests.sh
+        ./tests/framework/run-tests.sh ai-behavioral --model=haiku
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: ai-test-results
+        path: tests/test-results/
+        retention-days: 7
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [traditional-tests, ai-behavioral-tests]
+    if: always()
+    steps:
+    - name: Generate summary
+      run: |
+        echo "## Test Results Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Check traditional tests
+        if [ "${{ needs.traditional-tests.result }}" == "success" ]; then
+          echo "✅ Traditional tests passed" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Traditional tests failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        # Check AI tests
+        if [ "${{ needs.ai-behavioral-tests.result }}" == "success" ]; then
+          echo "✅ AI behavioral tests passed" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ needs.ai-behavioral-tests.result }}" == "skipped" ]; then
+          echo "⏭️ AI behavioral tests skipped" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ AI behavioral tests failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Workflow triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+
+  # Optional: Weekly full test suite
+  weekly-full-tests:
+    name: Weekly Full Test Suite
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install all dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bats jq
+        python -m pip install --upgrade pip
+        
+    - name: Run full test suite
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        chmod +x tests/framework/run-tests.sh
+        ./tests/framework/run-tests.sh all
+        
+    - name: Generate cost report
+      if: always()
+      run: |
+        echo "## Weekly Test Cost Report" >> $GITHUB_STEP_SUMMARY
+        echo "Tests run with model: claude-3-haiku" >> $GITHUB_STEP_SUMMARY
+        echo "Estimated cost: < $0.01" >> $GITHUB_STEP_SUMMARY
+
+# Schedule weekly runs (optional - uncomment to enable)
+# on:
+#   schedule:
+#     - cron: '0 0 * * 0' # Every Sunday at midnight
