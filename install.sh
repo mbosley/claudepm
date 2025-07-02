@@ -63,7 +63,7 @@ fi
 
 # Install get-context helper
 if [ -f "tools/get-context.sh" ]; then
-    cp tools/get-context.sh "$PROJECTS_DIR/.claude/bin/"
+    cp tools/get-context.sh "$PROJECTS_DIR/.claude/bin/get-context"
     chmod +x "$PROJECTS_DIR/.claude/bin/get-context"
     echo "  ✓ Installed get-context helper"
 fi
@@ -100,7 +100,7 @@ EOF
 fi
 
 # Apply append-only protection to CLAUDE_LOG.md (macOS only)
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [[ "$OSTYPE" == "darwin"* ]] && [ -z "$CLAUDEPM_TEST_MODE" ]; then
     echo "Applying append-only protection to log files..."
     if [ -f "$PROJECTS_DIR/CLAUDE_LOG.md" ]; then
         chflags uappnd "$PROJECTS_DIR/CLAUDE_LOG.md" 2>/dev/null && \

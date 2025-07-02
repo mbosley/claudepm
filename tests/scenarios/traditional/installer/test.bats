@@ -8,6 +8,9 @@ setup() {
     export TEST_PROJECTS_DIR="$BATS_TEST_TMPDIR/test-projects"
     mkdir -p "$TEST_PROJECTS_DIR"
     
+    # Disable append-only protection during tests
+    export CLAUDEPM_TEST_MODE=1
+    
     # Copy the installer to the test directory
     cp "$PROJECT_ROOT/install.sh" "$BATS_TEST_TMPDIR/"
     
@@ -33,6 +36,12 @@ setup() {
     if [ -f "$PROJECT_ROOT/tools/get-context.sh" ]; then
         mkdir -p "$BATS_TEST_TMPDIR/tools"
         cp "$PROJECT_ROOT/tools/get-context.sh" "$BATS_TEST_TMPDIR/tools/"
+    else
+        # Create a minimal get-context.sh for testing
+        mkdir -p "$BATS_TEST_TMPDIR/tools"
+        echo '#!/bin/bash' > "$BATS_TEST_TMPDIR/tools/get-context.sh"
+        echo 'echo "get-context helper"' >> "$BATS_TEST_TMPDIR/tools/get-context.sh"
+        chmod +x "$BATS_TEST_TMPDIR/tools/get-context.sh"
     fi
     
     cd "$BATS_TEST_TMPDIR"

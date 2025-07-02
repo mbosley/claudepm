@@ -38,8 +38,15 @@ run_isolated_test() {
     # Create temporary directory for test isolation
     TEST_TMP=$(mktemp -d -t claudepm-test-XXXXXX)
     
-    # Set up cleanup trap
-    trap "rm -rf '$TEST_TMP'" EXIT
+    # Set up cleanup trap (handle append-only files on macOS)
+    cleanup_test_dir() {
+        if [[ "$OSTYPE" == "darwin"* ]] && [ -d "$TEST_TMP" ]; then
+            # Remove append-only flag from any CLAUDE_LOG.md files
+            find "$TEST_TMP" -name "CLAUDE_LOG.md" -exec chflags nouappnd {} \; 2>/dev/null || true
+        fi
+        rm -rf "$TEST_TMP"
+    }
+    trap cleanup_test_dir EXIT
     
     # Copy test scenario to temp directory
     if [ -d "$(dirname "$test_path")/setup" ]; then
@@ -59,7 +66,10 @@ run_isolated_test() {
         fi
     elif [ "$test_type" = "python" ]; then
         if command -v python3 >/dev/null 2>&1; then
-            python3 "$test_path" || exit_code=$?
+            # For Python tests, we need to run from the original directory
+            # so imports work correctly, but still use the temp directory
+            cd "$(dirname "$test_path")"
+            python3 "$(basename "$test_path")" || exit_code=$?
         else
             print_status "$YELLOW" "SKIP" "python3 not installed - skipping AI behavioral tests"
             return 0
@@ -68,8 +78,8 @@ run_isolated_test() {
     
     cd - >/dev/null
     
-    # Clean up (trap will handle this, but being explicit)
-    rm -rf "$TEST_TMP"
+    # Clean up
+    cleanup_test_dir
     trap - EXIT
     
     if [ $exit_code -eq 0 ]; then
@@ -113,21 +123,17 @@ main() {
     if [ "$MODE" = "all" ] || [ "$MODE" = "ai-behavioral" ]; then
         print_status "$BLUE" "INFO" "Running AI behavioral tests..."
         
-        # Check for API key
-        if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
-            print_status "$YELLOW" "WARN" "ANTHROPIC_API_KEY not set - skipping AI tests"
-        else
-            for test_file in "$TESTS_DIR"/scenarios/ai-behavioral/*/test.py; do
-                if [ -f "$test_file" ]; then
-                    ((total_tests++))
-                    if run_isolated_test "$test_file" "python"; then
-                        ((passed_tests++))
-                    else
-                        ((failed_tests++))
-                    fi
+        # Note: We use claude CLI which doesn't need ANTHROPIC_API_KEY
+        for test_file in "$TESTS_DIR"/scenarios/ai-behavioral/*/test.py; do
+            if [ -f "$test_file" ]; then
+                ((total_tests++))
+                if run_isolated_test "$test_file" "python"; then
+                    ((passed_tests++))
+                else
+                    ((failed_tests++))
                 fi
-            done
-        fi
+            fi
+        done
     fi
     
     # Summary
