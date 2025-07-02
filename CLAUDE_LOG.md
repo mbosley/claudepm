@@ -852,3 +852,30 @@ Did:
 Next: PR #4 ready for review and merge
 
 ---
+
+
+### 2025-07-02 13:05 - Updated README with new features
+Did:
+- Added three-level Claude hierarchy (Manager, Project Lead, Task Agent)
+- Documented AI-powered architecture planning with cost transparency
+- Added Task Agent workflow and claudepm-admin.sh usage
+- Updated architecture diagram with worktrees and .prompts_archive
+- Added requirements section (Git, optional Google AI key, optional gh)
+- Included setup instructions for optional features
+- Updated version to v0.1.8 to match current
+Next: Review other documentation that might need updates
+
+---
+
+
+### 2025-07-02 13:20 - Renamed versioning files to standard conventions
+Did:
+- RENAMED: TEMPLATE_VERSION → VERSION
+- RENAMED: TEMPLATE_CHANGELOG.md → CHANGELOG.md
+- UPDATED: All references in install.sh, README.md, CLAUDE.md, templates/, and PROJECT_ROADMAP.md
+- TESTED: Verified renamed files work correctly
+- RATIONALE: Follows standard naming conventions (CHANGELOG.md is universally recognized)
+Next: Continue directory cleanup and prepare for v0.2.0 release
+Notes: This clarifies that VERSION versions the entire claudepm system, not just templates. Makes the project more approachable to users familiar with standard conventions.
+
+---

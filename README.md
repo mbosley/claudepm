@@ -1,13 +1,14 @@
 # claudepm - Simple Project Memory for Claude
 
-A minimal memory system that helps Claude maintain context across sessions using just three markdown files per project.
+A minimal memory system that helps Claude maintain context across sessions using just three markdown files per project. Features optional AI-powered architecture planning and isolated feature development workflows.
 
 ## What is claudepm?
 
-claudepm solves the "Claude has no memory" problem by creating a simple, persistent memory system using markdown files. It enables two levels of Claude operation:
+claudepm solves the "Claude has no memory" problem by creating a simple, persistent memory system using markdown files. It enables three levels of Claude operation:
 
 - **Manager Claude** - Orchestrates multiple projects from your root directory
-- **Worker Claude** - Focuses on individual project implementation
+- **Project Lead Claude** - Manages features and reviews within a project
+- **Task Agent Claude** - Implements specific features in isolated environments
 
 ## Quick Start
 
@@ -54,11 +55,28 @@ From `~/projects`, you have access to slash commands:
 - `/project-health` - Find stale or blocked projects
 - `/orient` - Quick context check
 
-### 3. Use Worker Claude for Implementation
+### 3. Use Project Lead Claude for Feature Management
 ```bash
 cd ~/projects/my-web-app
-# Claude now reads this project's CLAUDE.md and works at project level
 ```
+
+At the project level, you can:
+
+- `/architect-feature` - Plan complex features with AI assistance
+- `/dispatch-task [feature]` - Create isolated worktrees for Task Agents
+- `/email-check` - Process project-specific emails and update roadmap
+- Manage PRs and coordinate multiple feature implementations
+
+### 4. Deploy Task Agents for Implementation
+```bash
+# Create and dispatch a Task Agent for a feature
+/dispatch-task add-user-auth
+
+# Or use the automated admin script
+./claudepm-admin.sh create-worktree feature-name
+```
+
+Task Agents work in isolated `worktrees/` directories, implementing features without affecting the main codebase until PR review.
 
 ## Architecture
 
@@ -71,19 +89,26 @@ cd ~/projects/my-web-app
 │   │   ├── brain-dump.md
 │   │   ├── adopt-project.md
 │   │   ├── doctor.md
-│   │   └── ... (10 total)
+│   │   └── ... (13 total)
 │   └── templates/           # Project templates
 │       ├── manager/         # Manager-level templates
 │       │   └── CLAUDE.md
 │       └── project/         # Project-level templates
 │           ├── CLAUDE.md
-│           └── PROJECT_ROADMAP.md
+│           ├── PROJECT_ROADMAP.md
+│           └── TASK_PROMPT.template.md
 │
 ├── my-web-app/              # Individual project
 │   ├── CLAUDE.md           # Project instructions
 │   ├── CLAUDE_LOG.md       # Project work history
 │   ├── PROJECT_ROADMAP.md  # Plans and current state
-│   └── .claudepm           # Metadata (gitignored)
+│   ├── .claudepm           # Metadata (gitignored)
+│   ├── claudepm-admin.sh   # Git worktree management
+│   ├── worktrees/          # Task Agent workspaces (gitignored)
+│   │   └── add-auth/       # Feature implementation
+│   │       └── TASK_PROMPT.md
+│   └── .prompts_archive/   # Completed Task Agent missions
+│       └── 2025-01-02-add-auth.md
 │
 └── another-project/         # Another project
     └── ...                  # Same structure
@@ -117,6 +142,30 @@ Blog post about launch should go out next week.
 
 Manager Claude will parse this and update the appropriate project roadmaps.
 
+### Planning Complex Features
+```bash
+cd ~/projects/my-app
+/architect-feature
+
+I need to add real-time collaboration with WebSockets, 
+including presence indicators and conflict resolution.
+```
+
+Gemini will analyze your codebase and provide a complete architectural plan.
+
+### Deploying Task Agents
+```bash
+# After architectural review or for any feature
+./claudepm-admin.sh create-worktree add-websockets
+
+# Start new Claude conversation with generated TASK_PROMPT
+# Task Agent works in worktrees/add-websockets/
+# Creates PR when complete
+
+# After PR merge
+./claudepm-admin.sh remove-worktree add-websockets
+```
+
 ### Checking Project Health
 ```bash
 cd ~/projects
@@ -146,16 +195,17 @@ Blocked: Need Firebase credentials from client
 ## Key Principles
 
 - **Install once, use everywhere** - One installation at project root manages all projects
-- **Two Claude modes** - Manager (orchestration) and Worker (implementation)
+- **Three Claude modes** - Manager (orchestration), Project Lead (review), Task Agent (implementation)
 - **Three documents only** - CLAUDE.md, CLAUDE_LOG.md, PROJECT_ROADMAP.md per project
 - **Logs are append-only** - Never edit past entries
 - **Simple tooling** - Just markdown and slash commands
+- **Architect-first development** - AI assistance for planning complex features
 
 ## Template Versioning
 
 claudepm's templates evolve as we discover better patterns, but your existing projects shouldn't break. Our versioning system ensures:
 
-- **Current version: v0.1.3** (see TEMPLATE_CHANGELOG.md for changes)
+- **Current version: v0.1.8** (see CHANGELOG.md for changes)
 - **No forced updates** - Projects continue working with their current templates
 - **Backward compatibility** - Updates preserve your customizations
 - **Informed decisions** - The changelog explains what you'd gain by updating
@@ -163,7 +213,7 @@ claudepm's templates evolve as we discover better patterns, but your existing pr
 ### How it works:
 1. Each project's `.claudepm` file tracks its template version
 2. `/doctor` identifies which projects have outdated templates
-3. Review TEMPLATE_CHANGELOG.md to see what's new
+3. Review CHANGELOG.md to see what's new
 4. `/update [project]` refreshes templates while preserving your customizations
 
 ### Why this matters:
@@ -178,14 +228,102 @@ cat my-project/.claudepm | grep template_version
 /doctor  # Shows which projects need updates
 ```
 
+## Advanced Features
+
+### AI-Powered Architecture Planning
+
+The `/architect-feature` command leverages Gemini 2.5 Pro's 1M token context window to analyze your entire codebase and create comprehensive architectural plans for complex features.
+
+**How it works:**
+1. You describe the feature you want to implement
+2. Gemini analyzes your entire codebase
+3. Generates a detailed architectural plan with:
+   - Technical design decisions
+   - File-by-file implementation plan
+   - Integration points with existing code
+   - Edge cases and testing strategy
+4. You review and approve the plan
+5. Claude implements following the architecture
+
+**Cost Transparency:**
+- Uses Gemini 2.5 Pro API (requires Google AI API key)
+- Typical analysis: ~$0.10-0.50 depending on codebase size
+- Costs shown before execution
+- Only runs when you use the command
+
+### Task Agent Development Workflow
+
+The three-level hierarchy enables parallel feature development:
+
+**Project Lead (you) workflow:**
+```bash
+# Stay on dev branch
+./claudepm-admin.sh create-worktree add-search
+
+# This creates:
+# - worktrees/add-search/ directory
+# - feature/add-search branch
+# - TASK_PROMPT.md with mission brief
+
+# Dispatch a Task Agent in a new conversation
+# Task Agent implements in isolation
+# Review PR when complete
+
+# Cleanup after merge
+./claudepm-admin.sh remove-worktree add-search
+# Archives TASK_PROMPT to .prompts_archive/
+```
+
+**Benefits:**
+- Multiple features developed in parallel
+- Clean git history with atomic PRs
+- Archived mission history for learning
+- No conflicts between features
+
 ## Philosophy
 
 The magic isn't in the tool - it's in establishing consistent patterns that Claude can follow:
 - No daemon processes
 - No complex state management  
 - No external dependencies
-- **Architect-first development** - AI-powered planning before implementation
 - Just markdown and git
+- Optional AI assistance for complex planning
+
+## Requirements
+
+- Git (for worktree functionality)
+- Bash shell
+- Optional: Google AI API key for `/architect-feature` command
+- Optional: GitHub CLI (`gh`) for PR management
+
+## Setup
+
+### Basic Installation
+```bash
+git clone https://github.com/mbosley/claudepm.git
+cd claudepm
+./install.sh
+# Enter your projects directory when prompted
+```
+
+### Optional: AI Architecture Planning
+To use the `/architect-feature` command:
+1. Get a Google AI API key from https://aistudio.google.com/app/apikey
+2. Set the environment variable:
+   ```bash
+   export GOOGLE_AI_API_KEY="your-key-here"
+   ```
+
+### Optional: GitHub Integration
+For automated PR creation:
+```bash
+# Install GitHub CLI
+brew install gh  # macOS
+# or see https://cli.github.com for other platforms
+
+# Authenticate
+gh auth login
+```
 
 ## Contributing
 

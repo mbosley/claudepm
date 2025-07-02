@@ -47,8 +47,8 @@ mkdir -p "$PROJECTS_DIR/.claude/templates/manager"
 cp templates/project/CLAUDE.md "$PROJECTS_DIR/.claude/templates/project/CLAUDE.md"
 cp templates/project/PROJECT_ROADMAP.md "$PROJECTS_DIR/.claude/templates/project/PROJECT_ROADMAP.md"
 cp templates/manager/CLAUDE.md "$PROJECTS_DIR/.claude/templates/manager/CLAUDE.md"
-cp TEMPLATE_VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
-echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat TEMPLATE_VERSION))"
+cp VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
+echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat VERSION))"
 
 # Install slash commands if they exist
 if [ -d ".claude/commands" ]; then

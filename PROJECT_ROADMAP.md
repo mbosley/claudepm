@@ -312,7 +312,7 @@ This separation keeps each file focused:
 - Git workflow features are aspirational - focus on core memory system first
 
 ### Template Versioning Design
-Template versioning (via TEMPLATE_VERSION and TEMPLATE_CHANGELOG.md) solves a fundamental tension:
+Template versioning (via VERSION and CHANGELOG.md) solves a fundamental tension:
 - We discover better patterns through dogfooding
 - But existing projects shouldn't break when we improve templates
 - Solution: Track versions, document changes, preserve customizations
@@ -471,7 +471,7 @@ This keeps MCP servers focused and claudepm workflows flexible. The intelligence
 When adding features to claudepm, follow the checklist in CLAUDE.md:
 1. Update code/scripts (install.sh, slash commands)
 2. Update all affected templates
-3. Bump TEMPLATE_VERSION and update TEMPLATE_CHANGELOG.md
+3. Bump VERSION and update CHANGELOG.md
 4. Update documentation (README, roadmap)
 5. Test thoroughly (fresh install, adoption, updates)
 6. Log the work and update roadmap before committing

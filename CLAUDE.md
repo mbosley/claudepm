@@ -61,7 +61,7 @@ Purpose: Simple memory system for Claude Code sessions
 ## Project-Specific Commands
 - Test: `./install.sh` (test installation)
 - Check: `ls -la ~/.claude/templates/` (verify templates)
-- Version: `cat TEMPLATE_VERSION` (current template version)
+- Version: `cat VERSION` (current template version)
 
 ## Useful Resources
 - Claude Code Best Practices: https://www.anthropic.com/engineering/claude-code-best-practices
@@ -98,8 +98,8 @@ Purpose: Simple memory system for Claude Code sessions
 - [ ] Update `templates/project/PROJECT_ROADMAP.md` (if affects roadmap structure)
 
 **3. Version Management**
-- [ ] Bump version in `TEMPLATE_VERSION`
-- [ ] Add entry to `TEMPLATE_CHANGELOG.md` with:
+- [ ] Bump version in `VERSION`
+- [ ] Add entry to `CHANGELOG.md` with:
   - Version number and date
   - Added/Changed/Fixed sections
   - Clear description of what changed
