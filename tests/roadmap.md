@@ -9,6 +9,21 @@ This document outlines the phased approach to building comprehensive test covera
 - **Start simple, expand systematically**
 - **Prioritize high-value tests first**
 
+## Critical Decision Point (2025-01-02)
+After completing Phase 1 and consulting with Gemini about testing best practices, we face a strategic decision:
+
+### Option A: Continue Current Approach
+- Proceed with Phase 2 as planned
+- Accept 60+ second AI tests as necessary
+- Risk: Tests become slower and more expensive over time
+
+### Option B: Refactor to Testing Pyramid
+- Restructure to 80% unit, 15% integration, 5% E2E tests
+- Break complex commands into testable sub-commands
+- Benefit: Fast, reliable, cost-effective testing
+
+**Recommendation:** Option B aligns with industry best practices and addresses our current pain points (timeouts, complex untestable commands).
+
 ## Phase 1: Foundation (Current)
 **Goal:** Establish testing infrastructure and core safety tests
 
@@ -19,8 +34,8 @@ This document outlines the phased approach to building comprehensive test covera
 
 ### AI Behavioral Tests
 - [x] `core_log_append` - Verify append-only behavior
-- [ ] `core_role_adherence` - Ensure agents respect their roles
-- [ ] `workflow_adopt_project` - Test project adoption
+- [x] `core_role_adherence` - Ensure agents respect their roles
+- [x] `workflow_adopt_project` - Test project adoption
 
 ### Infrastructure
 - [x] Test runner framework

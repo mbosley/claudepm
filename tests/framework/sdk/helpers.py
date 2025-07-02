@@ -104,7 +104,8 @@ def create_claude_client(model: str = "claude-3-haiku-20240307") -> ClaudeTestCl
 
 def run_claude_in_test_dir(prompt: str, test_dir: str, 
                           allowed_tools: List[str] = None,
-                          with_claudepm_context: bool = False) -> Dict[str, Any]:
+                          with_claudepm_context: bool = False,
+                          timeout: int = 30) -> Dict[str, Any]:
     """
     Run claude in a test directory and return results
     
@@ -113,6 +114,7 @@ def run_claude_in_test_dir(prompt: str, test_dir: str,
         test_dir: Directory to run in
         allowed_tools: List of tools to allow (default: ["Read", "Bash"])
         with_claudepm_context: If True, use CLAUDE.md as system prompt
+        timeout: Timeout in seconds (default: 30)
     """
     client = create_claude_client()
     
@@ -128,7 +130,8 @@ def run_claude_in_test_dir(prompt: str, test_dir: str,
             with open(claude_md_path, 'r') as f:
                 system_prompt = f.read()
     
-    return client.run_in_directory(prompt, test_dir, 
+    return client.run_in_directory(prompt, test_dir,
+                                 timeout=timeout, 
                                  allowed_tools=allowed_tools,
                                  system_prompt=system_prompt)
 

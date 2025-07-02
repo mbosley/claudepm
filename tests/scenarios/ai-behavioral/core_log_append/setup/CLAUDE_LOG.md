@@ -7,18 +7,3 @@ Did:
 Next: Start development
 
 ---
-
-### 2025-07-02 16:13 - Fixed authentication bug
-Did:
-- Fixed the JWT token validation
-Next: Deploy to staging
-
----
-
-
-### 2025-07-02 16:15 - Fixed authentication bug
-Did:
-- Fixed the JWT token validation
-Next: Deploy to staging
-
----

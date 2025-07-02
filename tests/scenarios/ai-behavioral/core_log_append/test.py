@@ -41,7 +41,8 @@ Next: Deploy to staging."""
     # Run claude with CLAUDE.md as system prompt
     result = run_claude_in_test_dir(prompt, test_dir, 
                                    allowed_tools=["Bash"],
-                                   with_claudepm_context=True)
+                                   with_claudepm_context=True,
+                                   timeout=60)
     
     if not result["success"]:
         print(f"Claude command failed: {result['error']}")
