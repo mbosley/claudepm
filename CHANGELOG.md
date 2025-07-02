@@ -2,6 +2,34 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.2.0 - 2025-01-02
+
+### Added
+- **Two-File Architecture**: Split CLAUDE.md into custom + managed files
+  - CLAUDEPM-PROJECT.md: Generic claudepm instructions (378 lines)
+  - CLAUDEPM-MANAGER.md: Generic manager instructions (640 lines)
+  - CLAUDEPM-TASK.md: Task Agent specific instructions (107 lines)
+- **get-context Helper**: Central script to assemble full context
+- **Core Templates Directory**: ~/.claude/core/ for managed templates
+- **Migration Support**: /migrate-project command for v0.1.x → v0.2.0
+- **Role-Based Loading**: .claudepm "role" field determines which CLAUDEPM file loads
+
+### Changed
+- Templates now split: User customizations in CLAUDE.md, generic in CLAUDEPM-*.md
+- install.sh creates ~/.claude/core/ and ~/.claude/bin/ directories
+- claudepm-admin.sh creates .claudepm with "role": "task-agent" in worktrees
+- /doctor command detects legacy format and suggests migration
+- Updates now deterministic - just replace files in ~/.claude/core/
+
+### Benefits
+- **Deterministic Updates**: No AI needed, just file replacement
+- **Preserved Customizations**: User content never touched during updates
+- **Faster Updates**: Simple file copy instead of complex parsing
+- **Future Extensibility**: New roles just need new CLAUDEPM-*.md files
+
+### Migration
+Run `/migrate-project [project-name]` to migrate existing projects.
+
 ## v0.1.9 - 2025-01-02
 
 ### Added

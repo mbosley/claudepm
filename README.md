@@ -203,11 +203,33 @@ Blocked: Need Firebase credentials from client
 - **Simple tooling** - Just markdown and slash commands
 - **Architect-first development** - AI assistance for planning complex features
 
+## Two-File Architecture (v0.2.0)
+
+Starting with v0.2.0, claudepm uses a two-file architecture that separates generic instructions from your customizations:
+
+- **CLAUDE.md** - Your project-specific customizations (small file, ~20 lines)
+- **CLAUDEPM-*.md** - Generic claudepm instructions (managed centrally)
+
+### Benefits:
+- **Deterministic updates** - No AI needed, just replace core files
+- **Preserved customizations** - Your content is never touched
+- **Faster updates** - Simple file copy instead of complex parsing
+- **Role-based instructions** - Different instructions for Manager/Project/Task Agent
+
+### How it works:
+1. Core instructions live in `~/.claude/core/CLAUDEPM-*.md`
+2. Your customizations stay in your project's `CLAUDE.md`
+3. Claude sees both files combined at runtime
+4. Updates only touch the core files
+
+### Migration:
+If you have projects from v0.1.x, run `/migrate-project [name]` to switch to the new architecture.
+
 ## Template Versioning
 
 claudepm's templates evolve as we discover better patterns, but your existing projects shouldn't break. Our versioning system ensures:
 
-- **Current version: v0.1.8** (see CHANGELOG.md for changes)
+- **Current version: v0.2.0** (see CHANGELOG.md for changes)
 - **No forced updates** - Projects continue working with their current templates
 - **Backward compatibility** - Updates preserve your customizations
 - **Informed decisions** - The changelog explains what you'd gain by updating

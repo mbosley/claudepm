@@ -1,11 +1,11 @@
 # Project Roadmap - claudepm
 
-*Last updated: 2025-07-01*
+*Last updated: 2025-01-02*
 
 ## Current Status
-v0.1 released! 🎉 Available at https://github.com/mbosley/claudepm
+v0.2.0 released! 🎉 Available at https://github.com/mbosley/claudepm
 
-A minimal memory system for Claude Code using three markdown files. The complete system includes CLAUDE.md (instructions), CLAUDE_LOG.md (append-only history), and PROJECT_ROADMAP.md (living state document). Now testing with real projects.
+A minimal memory system for Claude Code using three markdown files. Version 0.2.0 introduces a two-file architecture that separates generic instructions from user customizations, enabling deterministic updates without AI intervention. The system includes CLAUDE.md (customizations), CLAUDEPM-*.md (managed core), CLAUDE_LOG.md (append-only history), and PROJECT_ROADMAP.md (living state document).
 
 ## Active Work
 - [x] Released v0.1 with comprehensive documentation
@@ -44,12 +44,14 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Implemented Task Agent workflow with local worktrees (v0.1.6)
 - [x] Added /dispatch-task command for Task Agent creation
 - [x] Implement TASK_PROMPT management system (v0.1.8)
+- [x] Implement two-file template architecture (v0.2.0)
+- [x] Create deterministic update mechanism
+- [x] Add /migrate-project command for v0.1.x → v0.2.0
 - [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]
 - [ ] Test adoption on existing projects
 - [ ] Refine templates based on actual usage
-- [ ] Create v0.2.0 release with git workflow and MCP features
 
 ## Upcoming
 
@@ -58,7 +60,14 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Tag v0.1 release
 - [x] Push to https://github.com/mbosley/claudepm
 
-### v0.2 - Perfect the Within-Project Experience
+### v0.2 - Two-File Architecture (Complete! 🎉)
+- [x] Implement two-file template architecture
+- [x] Create deterministic update mechanism
+- [x] Add migration support for v0.1.x projects
+- [x] Update all tooling for new architecture
+- [x] Create comprehensive documentation
+
+### v0.3 - Perfect the Within-Project Experience
 - [ ] Refine templates based on real usage patterns
 - [ ] Add project initialization helper (simple script)
 - [ ] Create troubleshooting guide
@@ -70,7 +79,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Update CLAUDE.md templates with command examples
   - Teach Claude to check if claudepm exists
 
-### v0.3 - Basic Log Search (Critical for Usefulness)
+### v0.4 - Basic Log Search (Critical for Usefulness)
 - [ ] **Within-project search**
   - ALREADY WORKS: `grep "pattern" CLAUDE_LOG.md` via Claude
   - FUTURE: `claudepm search [term]` CLI command
@@ -86,7 +95,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Decision format: `Decided: [choice] because [reasoning]`
   - Tags for filtering: #error #solution #decision #blocker
 
-### v0.4 - Robust Installation & Discovery
+### v0.5 - Robust Installation & Discovery
 - [ ] Enhanced installer
   - Install at root projects directory (configurable)
   - Interactive wizard with directory selection
@@ -111,7 +120,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Identify incomplete installations
   - Check for outdated templates
 
-### v0.5 - Cross-Project Basics
+### v0.6 - Cross-Project Basics
 - [ ] Create claudepm CLI tool with commands:
   - `claudepm init` - Initialize new project with all 3 files
   - `claudepm status` - Show all projects status
@@ -119,7 +128,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [ ] Automatic project discovery
 - [ ] Basic multi-project status view
 
-### v0.6 - Advanced Search & Intelligence
+### v0.7 - Advanced Search & Intelligence
 - [ ] **Cross-project search** 
   - Search all projects for similar problems
   - "How did I solve auth in other projects?"
@@ -133,7 +142,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Reduces repeating past mistakes
   - Builds on accumulated knowledge
 
-### v0.7 - Manager Intelligence & Commands
+### v0.8 - Manager Intelligence & Commands
 - [ ] **MCP Server Integration & Dependencies**
   - Harmonize MCP server installation with claudepm setup
   - Document required MCP servers:
@@ -186,13 +195,13 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Makes manager insights searchable over time
   - Enables trend analysis: "What were common blockers last month?"
 
-### v0.8 - Git Integration
+### v0.9 - Git Integration
 - [ ] Auto-append to log on git commit (git hook)
 - [ ] Show uncommitted changes in status
 - [ ] Branch awareness in logs
 - [ ] Commit message templates using recent logs
 
-### v0.9 - Git Workflow Support
+### v1.0 - Git Workflow Support
 - [ ] Automatic feature branch creation
   - `claudepm feature start [name]` creates branch and logs it
   - Updates PROJECT_ROADMAP.md to track feature branch
@@ -206,7 +215,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Template for code review feedback in logs
   - Track PR status in roadmap
 
-### v1.0 - Log Management & Beta Release
+### v1.1 - Log Management & Beta Release
 - [ ] Log archiving (move old entries to archive)
 - [ ] Maximum log size handling
 - [ ] Log entry templates
