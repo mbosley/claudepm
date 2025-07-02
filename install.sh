@@ -40,14 +40,34 @@ else
     echo "  ✓ Installed"
 fi
 
-# Create .claude directory for templates
-echo "Creating templates directory..."
+# Create .claude directory structure
+echo "Creating .claude directory structure..."
 mkdir -p "$PROJECTS_DIR/.claude/templates/project"
 mkdir -p "$PROJECTS_DIR/.claude/templates/manager"
+mkdir -p "$PROJECTS_DIR/.claude/core"
+mkdir -p "$PROJECTS_DIR/.claude/bin"
+
+# Copy templates (for now, keep full templates for backward compatibility)
 cp templates/project/CLAUDE.md "$PROJECTS_DIR/.claude/templates/project/CLAUDE.md"
 cp templates/project/PROJECT_ROADMAP.md "$PROJECTS_DIR/.claude/templates/project/PROJECT_ROADMAP.md"
 cp templates/manager/CLAUDE.md "$PROJECTS_DIR/.claude/templates/manager/CLAUDE.md"
 cp VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
+
+# Copy core CLAUDEPM files (new in v0.2.0)
+if [ -f "templates/project/CLAUDEPM-PROJECT.md" ]; then
+    cp templates/project/CLAUDEPM-PROJECT.md "$PROJECTS_DIR/.claude/core/"
+    cp templates/manager/CLAUDEPM-MANAGER.md "$PROJECTS_DIR/.claude/core/"
+    cp templates/task-agent/CLAUDEPM-TASK.md "$PROJECTS_DIR/.claude/core/"
+    echo "  ✓ Installed core templates (v0.2.0 architecture)"
+fi
+
+# Install get-context helper
+if [ -f "tools/get-context.sh" ]; then
+    cp tools/get-context.sh "$PROJECTS_DIR/.claude/bin/"
+    chmod +x "$PROJECTS_DIR/.claude/bin/get-context"
+    echo "  ✓ Installed get-context helper"
+fi
+
 echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat VERSION))"
 
 # Install slash commands if they exist

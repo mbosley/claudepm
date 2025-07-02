@@ -904,3 +904,16 @@ Next: Continue preparing for v0.2.0 release
 Notes: Currently MCP servers are installed manually. Future versions should streamline this with bundled installer or clear dependency management.
 
 ---
+
+
+### 2025-07-02 14:35 - Implemented Phase 0-1 of two-file architecture
+Did:
+- IMPLEMENTED: Migration markers in templates (v0.1.9)
+- IMPLEMENTED: get-context.sh helper script
+- IMPLEMENTED: Split templates into CLAUDEPM-*.md files
+- IMPLEMENTED: Created CLAUDEPM-TASK.md for Task Agents
+- UPDATED: install.sh to copy core files to ~/.claude/core/
+- UPDATED: claudepm-admin.sh to create .claudepm with task-agent role
+Next: Update slash commands to use get-context helper
+
+---

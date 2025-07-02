@@ -135,6 +135,18 @@ case "$COMMAND" in
         echo -e "${COLOR_BLUE}Creating branch '${COLOR_YELLOW}${branch_name}${COLOR_BLUE}' and worktree at '${COLOR_YELLOW}${worktree_path}${COLOR_BLUE}'...${COLOR_NC}"
         git worktree add -b "$branch_name" "$worktree_path"
         
+        # Create .claudepm file for Task Agent role
+        cat > "${worktree_path}/.claudepm" << EOF
+{
+  "claudepm": {
+    "version": "0.2.0",
+    "core_version": "0.2.0",
+    "role": "task-agent"
+  }
+}
+EOF
+        echo -e "${COLOR_CYAN}Created .claudepm with task-agent role${COLOR_NC}"
+        
         # Generate TASK_PROMPT.md
         generate_task_prompt "$FEATURE_NAME" "$worktree_path"
         
