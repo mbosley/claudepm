@@ -2,6 +2,19 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.1.9 - 2025-01-02
+
+### Added
+- **Migration Markers**: Added HTML comment markers to enable future two-file architecture
+  - `<!-- CLAUDEPM_CUSTOMIZATION_START -->` and `<!-- CLAUDEPM_CUSTOMIZATION_END -->`
+  - Enables v0.2.0 migration path for splitting CLAUDE.md files
+  - No functional changes - purely preparatory
+
+### Changed
+- Templates now include markers to delineate custom vs managed content
+- Project template: Custom section starts at "## Project Context" 
+- Manager template: Custom section at end for user additions
+
 ## v0.1.8 - 2025-01-02
 
 ### Added

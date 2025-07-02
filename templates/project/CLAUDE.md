@@ -58,6 +58,9 @@ This prevents confusion when reading logs later!
 - **Think git branches**: Each version could be a feature branch
 - **Enable automation**: Clear enough that future Claude could execute
 
+<!-- All content above this line is part of the standard claudepm template. -->
+<!-- CLAUDEPM_CUSTOMIZATION_START -->
+
 ## Project Context
 Type: [Web app, CLI tool, library, etc.]
 Language: [Python, JS, etc.]
@@ -397,3 +400,6 @@ The `tools/claudepm-admin.sh remove-worktree` command will:
 - Delete the feature branch
 
 Remember: The log is our shared memory. Write clearly for your future self.
+
+<!-- CLAUDEPM_CUSTOMIZATION_END -->
+<!-- All content below this line is part of the standard claudepm template. -->

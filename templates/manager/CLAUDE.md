@@ -636,3 +636,11 @@ Items that can't be matched to a project:
 ```
 
 This pattern scales from quick notes to meeting transcripts!
+
+<!-- All content above this line is part of the standard claudepm template. -->
+<!-- CLAUDEPM_CUSTOMIZATION_START -->
+
+<!-- Add any manager-specific customizations below this line -->
+
+<!-- CLAUDEPM_CUSTOMIZATION_END -->
+<!-- All content below this line is part of the standard claudepm template. -->
