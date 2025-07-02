@@ -840,3 +840,15 @@ Did:
 Next: Create PR back to dev branch
 
 ---
+
+
+### 2025-07-02 12:48 - [feature/task-prompt-management] - Resolved merge conflicts with dev
+Did:
+- MERGED: origin/dev into feature branch to resolve conflicts
+- RESOLVED: Conflicts in CLAUDE.md (angle bracket placeholders)
+- RESOLVED: Conflicts in CLAUDE_LOG.md (kept both entries)
+- RESOLVED: Conflicts in claudepm-admin.sh (preserved our functions)
+- FIXED: Removed 'local' keywords that cause errors in case statements
+Next: PR #4 ready for review and merge
+
+---
