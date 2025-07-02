@@ -43,6 +43,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Codified architect-first development philosophy
 - [x] Implemented Task Agent workflow with local worktrees (v0.1.6)
 - [x] Added /dispatch-task command for Task Agent creation
+- [x] Implement TASK_PROMPT management system (v0.1.8)
 - [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]

@@ -812,3 +812,18 @@ Next: Commit these changes and create PR
 Notes: This change solves Claude's security limitation - can't access ../dirs but CAN access worktrees/
 
 ---
+
+
+### 2025-07-02 12:39 - [feature/task-prompt-management] - Implemented TASK_PROMPT management system
+Did:
+- IMPLEMENTED: Automated TASK_PROMPT.md generation from template
+- IMPLEMENTED: TASK_PROMPT archiving to .prompts_archive/ on worktree removal
+- CREATED: templates/project/TASK_PROMPT.template.md with placeholders
+- ENHANCED: claudepm-admin.sh with generate_task_prompt and archive_task_prompt functions
+- INTEGRATED: Architectural reviews from .api-queries/ automatically included
+- TESTED: Both with and without architectural reviews - works correctly
+- UPDATED: All documentation and templates to reflect new workflow
+- BUMPED: Template version to 0.1.8 with changelog
+Next: Create PR back to dev branch
+
+---
