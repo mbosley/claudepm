@@ -367,18 +367,22 @@ task_command() {
             echo "Tasks:"
             if [[ "$filter" == "--blocked" ]]; then
                 grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md | while IFS= read -r line; do
-                    local uuid=$(echo "$line" | cut -d'::' -f3)
-                    local status=$(echo "$line" | cut -d'::' -f4)
-                    local date=$(echo "$line" | cut -d'::' -f5)
-                    local desc=$(echo "$line" | cut -d'::' -f6-)
+                    # Split by :: using sed
+                    local parts=$(echo "$line" | sed 's/::/|/g')
+                    local uuid=$(echo "$parts" | cut -d'|' -f3)
+                    local status=$(echo "$parts" | cut -d'|' -f4)
+                    local date=$(echo "$parts" | cut -d'|' -f5)
+                    local desc=$(echo "$parts" | cut -d'|' -f6-)
                     printf "[%s] %s - %s\n" "$status" "$date" "$desc"
                 done
             else
                 grep "CPM::TASK::" ROADMAP.md | while IFS= read -r line; do
-                    local uuid=$(echo "$line" | cut -d'::' -f3)
-                    local status=$(echo "$line" | cut -d'::' -f4)
-                    local date=$(echo "$line" | cut -d'::' -f5)
-                    local desc=$(echo "$line" | cut -d'::' -f6-)
+                    # Split by :: using sed
+                    local parts=$(echo "$line" | sed 's/::/|/g')
+                    local uuid=$(echo "$parts" | cut -d'|' -f3)
+                    local status=$(echo "$parts" | cut -d'|' -f4)
+                    local date=$(echo "$parts" | cut -d'|' -f5)
+                    local desc=$(echo "$parts" | cut -d'|' -f6-)
                     printf "[%s] %s - %s\n" "$status" "$date" "$desc"
                 done
             fi
