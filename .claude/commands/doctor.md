@@ -62,6 +62,11 @@ First, let me check the overall claudepm environment:
    Current version: v[X.X]
    Run /update [project] to update templates
    
+   ### Migration Needed (v0.2.0)
+   [List projects without core_version in .claudepm]
+   These projects use legacy single-file architecture
+   Run /migrate-project [project] to migrate
+   
    ### Stale Projects (>7 days)
    [List projects with no recent activity]
    
@@ -81,6 +86,19 @@ First, let me check the overall claudepm environment:
    - Very old log entries
    - Large uncommitted changes
    - Projects without roadmaps
+   - **NEW**: Legacy single-file architecture (missing core_version)
+
+6. **Check for v0.2.0 migration needs**:
+   ```bash
+   # For each project with .claudepm
+   if [ -f "$PROJECT/.claudepm" ]; then
+     CORE_VERSION=$(grep -o '"core_version"' "$PROJECT/.claudepm")
+     if [ -z "$CORE_VERSION" ]; then
+       echo "⚠️  $PROJECT: Uses legacy single-file architecture"
+       echo "   Run: /migrate-project $PROJECT"
+     fi
+   fi
+   ```
 
 Example output:
 ```

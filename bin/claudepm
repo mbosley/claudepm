@@ -1,0 +1,83 @@
+#!/bin/bash
+# claudepm - Simple project memory management for Claude
+set -euo pipefail
+
+# Configuration
+CLAUDEPM_HOME="${CLAUDEPM_HOME:-$HOME/.claudepm}"
+CLAUDEPM_CONFIG="${CLAUDEPM_CONFIG:-$HOME/.config/claudepm}"
+CLAUDEPM_VERSION=$(cat "$CLAUDEPM_HOME/VERSION")
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Source utility functions
+source "$CLAUDEPM_HOME/lib/utils.sh"
+
+# Display usage
+usage() {
+    cat << EOF
+claudepm v$CLAUDEPM_VERSION - Simple project memory management
+
+Usage: claudepm <command> [options]
+
+Commands:
+  init [type]      Initialize new project or manager (type: project|manager)
+  adopt            Adopt existing project into claudepm
+  upgrade          Upgrade project to latest template version
+  doctor [paths]   Check health of all projects
+  health           Check current project health
+  task <subcommand> Manage tasks in ROADMAP.md
+  version          Show claudepm version
+
+Task subcommands:
+  task add <description>    Add new task
+  task list [--blocked]     List tasks (optionally filtered)
+  task done <uuid>          Mark task as done
+  task block <uuid> <reason> Mark task as blocked
+
+Examples:
+  claudepm init project      # Start new project
+  claudepm adopt             # Add claudepm to existing project
+  claudepm doctor            # Check all registered projects
+  claudepm task add "Implement user auth"
+
+EOF
+}
+
+# Main command logic
+case "${1:-}" in
+    init)
+        init_project "${2:-project}"
+        ;;
+    adopt)
+        adopt_project "${2:-}"
+        ;;
+    upgrade)
+        upgrade_project
+        ;;
+    doctor)
+        shift
+        doctor_check "$@"
+        ;;
+    health)
+        health_check
+        ;;
+    task)
+        shift
+        task_command "$@"
+        ;;
+    version|--version|-v)
+        echo "claudepm v$CLAUDEPM_VERSION"
+        ;;
+    help|--help|-h|"")
+        usage
+        ;;
+    *)
+        echo "Error: Unknown command '$1'"
+        echo "Run 'claudepm help' for usage"
+        exit 1
+        ;;
+esac

@@ -1,56 +1,7 @@
 # Project: claudepm
 
-## Core Principles
-1. **Edit, don't create** - Modify existing code rather than rewriting
-2. **Small changes** - Make the minimal change that solves the problem
-3. **Test immediately** - Verify each change before moving on
-4. **Preserve what works** - Don't break working features for elegance
-5. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
-6. **Commit completed work** - Don't let finished features sit uncommitted
-
-## Start Every Session
-1. Read PROJECT_ROADMAP.md - see current state and priorities
-2. Read recent CLAUDE_LOG.md - understand last session's work
-3. Run git status - see uncommitted work
-
-## After Each Work Block
-1. Add to CLAUDE_LOG.md using append-only pattern:
-```bash
-# Simple, clean append that always works
-{
-echo ""
-echo ""
-echo "### $(date '+%Y-%m-%d %H:%M') - [Brief summary]"
-echo "Did:"
-echo "- [First accomplishment]"
-echo "- [Second accomplishment]"
-echo "Next: [Immediate next task]"
-echo "Blocked: [Any blockers - only if blocked]"
-echo ""
-echo "---"
-} >> CLAUDE_LOG.md
-```
-
-**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator. This prevents accidental history loss.
-
-**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
-
-If working on a feature branch, include branch name:
-```
-### YYYY-MM-DD HH:MM - [feature/search] - Added log search functionality
-```
-
-**Be precise about PLANNED vs IMPLEMENTED:**
-- `IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md` (code written)
-- `PLANNED: Manager report persistence in roadmap` (added to roadmap)
-- `DOCUMENTED: Sub-agent patterns in templates` (docs updated)
-- `FIXED: Timestamp accuracy with date command` (bug resolved)
-
-2. Update PROJECT_ROADMAP.md:
-- Check off completed items
-- Move items between sections as needed
-- Add any new discoveries
-- Update "Last updated" date
+<!-- This file contains claudepm-specific development instructions -->
+<!-- Core claudepm instructions are automatically loaded from CLAUDEPM-PROJECT.md -->
 
 ## Project Context
 Type: Developer tool / Meta project management system
@@ -60,7 +11,7 @@ Purpose: Simple memory system for Claude Code sessions
 ## Project-Specific Commands
 - Test: `./install.sh` (test installation)
 - Check: `ls -la ~/.claude/templates/` (verify templates)
-- Version: `cat TEMPLATE_VERSION` (current template version)
+- Version: `cat VERSION` (current template version)
 
 ## Useful Resources
 - Claude Code Best Practices: https://www.anthropic.com/engineering/claude-code-best-practices
@@ -76,6 +27,15 @@ Purpose: Simple memory system for Claude Code sessions
 
 #### Feature Development Checklist
 
+**0. Architectural Planning (for non-trivial features)**
+- [ ] Define the feature clearly - what problem does it solve?
+- [ ] Run `/architect-feature` with a comprehensive description
+- [ ] **REVIEW: Read Gemini's complete architectural plan carefully**
+- [ ] **DECIDE: Approve, adjust, or cancel based on the plan's alignment**
+- [ ] Use the plan to guide all subsequent implementation steps
+
+**Note:** Use architect-first for: features touching multiple files, new concepts, refactoring, complex integrations. Skip for: typo fixes, simple doc updates, single-line changes.
+
 **1. Code/Script Updates**
 - [ ] Update `install.sh` if feature affects installation
 - [ ] Update relevant slash commands in `.claude/commands/`
@@ -83,13 +43,13 @@ Purpose: Simple memory system for Claude Code sessions
 
 **2. Template Updates**
 - [ ] Update `CLAUDE.md` (this file!)
-- [ ] Update `CLAUDE_PROJECT_TEMPLATE.md` 
-- [ ] Update `CLAUDE_MANAGER.md` (if affects manager level)
-- [ ] Update `PROJECT_ROADMAP_TEMPLATE.md` (if affects roadmap structure)
+- [ ] Update `templates/project/CLAUDE.md` 
+- [ ] Update `templates/manager/CLAUDE.md` (if affects manager level)
+- [ ] Update `templates/project/PROJECT_ROADMAP.md` (if affects roadmap structure)
 
 **3. Version Management**
-- [ ] Bump version in `TEMPLATE_VERSION`
-- [ ] Add entry to `TEMPLATE_CHANGELOG.md` with:
+- [ ] Bump version in `VERSION`
+- [ ] Add entry to `CHANGELOG.md` with:
   - Version number and date
   - Added/Changed/Fixed sections
   - Clear description of what changed
@@ -154,5 +114,64 @@ Did: Merged logs from feature/v0.2 and feature/v0.3 branches
 Next: Continue v0.3 search implementation
 Notes: Parallel work on template improvements and search feature
 ```
+
+## Task Agent Development Workflow
+
+**CRITICAL:** The Project Lead **MUST** stay on the `dev` branch. All worktree operations **MUST** be performed using the `./tools/claudepm-admin.sh` script to prevent errors.
+
+This workflow enables isolated feature development using git worktrees within the project directory.
+
+### Three-Level Claude Hierarchy
+
+1. **Manager Claude** (e.g., ~/projects/)
+   - Lives at the top-level projects directory
+   - Coordinates across multiple projects
+   - Never implements features directly
+
+2. **Project Lead Claude** (e.g., ~/projects/claudepm/ on dev branch)
+   - Lives in a specific project directory
+   - Always stays on the dev branch
+   - Dispatches Task Agents for features
+   - Reviews PRs and manages merges
+
+3. **Task Agent Claude** (e.g., ~/projects/claudepm/worktrees/add-search/)
+   - Lives in temporary worktrees within the project
+   - Implements specific features in isolation
+   - Creates PRs back to dev
+   - Gets terminated after merge
+
+### Visual Role Indicators (Recommended)
+
+To avoid confusion between Project Lead and Task Agent roles, add the following function to your shell profile (`~/.bashrc`, `~/.zshrc`). This will change your command prompt to clearly display your current role.
+
+**Add this to your `~/.bashrc` or `~/.zshrc`:**
+```bash
+function claudepm_ps1() {
+    local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [[ -n "$branch" ]]; then
+        if [[ "$branch" == "dev" ]]; then
+            PS1="[PROJECT LEAD @ dev] \$ "
+        elif [[ "$branch" == "main" ]]; then
+            PS1="[!!! MAIN BRANCH !!!] \$ "
+        elif [[ "$branch" =~ ^feature/ ]]; then
+            PS1="[TASK AGENT @ $branch] \$ "
+        else
+            PS1="[$branch] \$ "
+        fi
+    else
+        # Default prompt if not in a git repo
+        PS1="\h:\W \u\$ "
+    fi
+}
+# For Bash, set the prompt command
+PROMPT_COMMAND="claudepm_ps1"
+
+# For Zsh, use precmd hook
+# precmd() { claudepm_ps1 }
+```
+
+After adding this, source your profile (`source ~/.bashrc`) or open a new terminal. Your prompt will now look like this:
+- **Project Lead:** `[PROJECT LEAD @ dev] $`
+- **Task Agent:** `[TASK AGENT @ feature/add-search] $`
 
 Remember: The log is our shared memory. Write clearly for your future self.

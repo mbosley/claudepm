@@ -745,3 +745,316 @@ Next: Commit these changes immediately (practicing what we preach\!)
 Notes: I failed to commit after completing v0.1.4 work. This improvement makes committing more prominent in the workflow to prevent that oversight.
 
 ---
+
+
+### 2025-07-01 12:48 - Created /architect-feature command and architectural plans
+Did:
+- CREATED: dev branch and pushed to origin
+- CREATED: feature/architect-command branch with worktree
+- IMPLEMENTED: /architect-feature slash command for AI-powered planning
+- TESTED: Successfully used Gemini 2.5 Pro for architectural analysis
+- GENERATED: Comprehensive plans for git workflow and MCP integration
+Next: Implement git workflow changes, then MCP integration based on plans
+Notes: Gemini 2.5 Pro's architectural analysis is incredibly thorough - perfect for planning complex features before implementation
+
+---
+
+
+### 2025-07-01 14:17 - [feature/template-reorg] - Reorganized templates into directory structure
+Did:
+- MOVED: All templates into templates/ directory with manager/ and project/ subdirs
+- UPDATED: install.sh to use new template paths and create proper structure
+- ADDED: Backward compatibility to /update command for legacy installations
+- UPDATED: All documentation references to reflect new structure
+- TESTED: Fresh installation creates correct directory hierarchy
+- BUMPED: Template version to 0.1.5 with changelog
+Next: Commit and create PR to dev branch
+Notes: This makes the codebase much cleaner - templates are clearly separated from active files
+
+---
+
+
+### 2025-07-01 14:28 - [feature/doc-architect-first] - Codified architect-first development philosophy
+Did:
+- ADDED: 'Architect first' as Core Principle #3 in CLAUDE.md
+- ADDED: Architectural Planning step to Feature Development Checklist
+- DOCUMENTED: When to use architect-first vs direct implementation
+- UPDATED: PROJECT_ROADMAP.md Development Process with architect-first model
+- UPDATED: README.md Philosophy section with AI-powered planning
+Next: Commit and merge to dev branch
+Notes: This formalizes what we learned from template reorg - AI architectural planning dramatically improves implementation quality
+
+---
+
+
+### 2025-07-01 15:46 - [feature/task-agent-workflow] - Implemented Task Agent workflow system
+Did:
+- CREATED: /dispatch-task command in .claude/commands/dispatch-task.md
+- UPDATED: templates/project/CLAUDE.md with comprehensive Task Agent Development Workflow section
+- UPDATED: Root CLAUDE.md to mirror the template changes
+- UPDATED: architect-feature.md to mention dispatch-task as next step option
+- DOCUMENTED: Three-level hierarchy (Manager → Project Lead → Task Agent)
+Next: Test the dispatch-task command and create PR back to dev
+Notes: All changes follow Gemini's architectural plan. Made it clear this workflow is universal, not claudepm-specific.
+
+---
+
+
+### 2025-07-01 16:02 - Completed Task Agent workflow migration to local worktrees
+Did:
+- VERIFIED: .gitignore already contains worktrees/ entry
+- VERIFIED: dispatch-task.md command already exists
+- UPDATED: templates/project/CLAUDE.md - comprehensive Task Agent section with local worktrees
+- UPDATED: CLAUDE.md - Task Agent section now uses worktrees/ instead of ../sibling
+- UPDATED: Git Workflow section in template to use local worktrees
+- CONFIRMED: architect-feature.md already mentions dispatch-task option
+Next: Commit these changes and create PR
+Notes: This change solves Claude's security limitation - can't access ../dirs but CAN access worktrees/
+
+---
+
+
+### 2025-07-01 16:23 - [feature/email-ingestion] - Implemented email ingestion via apple-mcp
+Did:
+- CREATED: /email-check command in .claude/commands/email-check.md
+- UPDATED: templates/manager/CLAUDE.md - added /email-check to slash commands list
+- UPDATED: templates/project/CLAUDE.md - added Available Slash Commands section with /email-check
+- UPDATED: PROJECT_ROADMAP.md - added email ingestion to v0.7 section with full details
+- TESTED: Read all files to verify correct implementation
+Next: Commit changes and create PR back to dev branch
+Notes: Implementation follows Gemini's architectural plan exactly. Maintains MCP philosophy of primitives over workflows. Human approval required for all suggested updates.
+
+---
+
+
+### 2025-07-02 12:39 - [feature/task-prompt-management] - Implemented TASK_PROMPT management system
+Did:
+- IMPLEMENTED: Automated TASK_PROMPT.md generation from template
+- IMPLEMENTED: TASK_PROMPT archiving to .prompts_archive/ on worktree removal
+- CREATED: templates/project/TASK_PROMPT.template.md with placeholders
+- ENHANCED: claudepm-admin.sh with generate_task_prompt and archive_task_prompt functions
+- INTEGRATED: Architectural reviews from .api-queries/ automatically included
+- TESTED: Both with and without architectural reviews - works correctly
+- UPDATED: All documentation and templates to reflect new workflow
+- BUMPED: Template version to 0.1.8 with changelog
+Next: Create PR back to dev branch
+
+---
+
+
+### 2025-07-02 12:48 - [feature/task-prompt-management] - Resolved merge conflicts with dev
+Did:
+- MERGED: origin/dev into feature branch to resolve conflicts
+- RESOLVED: Conflicts in CLAUDE.md (angle bracket placeholders)
+- RESOLVED: Conflicts in CLAUDE_LOG.md (kept both entries)
+- RESOLVED: Conflicts in claudepm-admin.sh (preserved our functions)
+- FIXED: Removed 'local' keywords that cause errors in case statements
+Next: PR #4 ready for review and merge
+
+---
+
+
+### 2025-07-02 13:05 - Updated README with new features
+Did:
+- Added three-level Claude hierarchy (Manager, Project Lead, Task Agent)
+- Documented AI-powered architecture planning with cost transparency
+- Added Task Agent workflow and claudepm-admin.sh usage
+- Updated architecture diagram with worktrees and .prompts_archive
+- Added requirements section (Git, optional Google AI key, optional gh)
+- Included setup instructions for optional features
+- Updated version to v0.1.8 to match current
+Next: Review other documentation that might need updates
+
+---
+
+
+### 2025-07-02 13:20 - Renamed versioning files to standard conventions
+Did:
+- RENAMED: TEMPLATE_VERSION → VERSION
+- RENAMED: TEMPLATE_CHANGELOG.md → CHANGELOG.md
+- UPDATED: All references in install.sh, README.md, CLAUDE.md, templates/, and PROJECT_ROADMAP.md
+- TESTED: Verified renamed files work correctly
+- RATIONALE: Follows standard naming conventions (CHANGELOG.md is universally recognized)
+Next: Continue directory cleanup and prepare for v0.2.0 release
+Notes: This clarifies that VERSION versions the entire claudepm system, not just templates. Makes the project more approachable to users familiar with standard conventions.
+
+---
+
+
+### 2025-07-02 13:30 - Organized bash scripts into tools/ directory
+Did:
+- CREATED: tools/ directory for utility scripts
+- MOVED: claudepm-admin.sh and get-timestamp.sh to tools/
+- UPDATED: All references in CLAUDE.md, templates/project/CLAUDE.md, and README.md
+- TESTED: Scripts work correctly from new location with proper permissions
+- KEPT: install.sh in root for discoverability as entry point
+Next: Continue cleanup and prepare for v0.2.0 release
+Notes: This follows standard project organization - executable utilities in their own directory while keeping the main installer visible at root.
+
+---
+
+
+### 2025-07-02 13:34 - Added MCP server integration to roadmap
+Did:
+- ADDED: MCP Server Integration & Dependencies section to v0.7 in PROJECT_ROADMAP.md
+- DOCUMENTED: Need to harmonize MCP server installation with claudepm
+- ADDED: Placeholder section in README.md about MCP integration (Coming Soon)
+- IDENTIFIED: Key challenges - dependency management, API keys, fallback options
+Next: Continue preparing for v0.2.0 release
+Notes: Currently MCP servers are installed manually. Future versions should streamline this with bundled installer or clear dependency management.
+
+---
+
+
+### 2025-07-02 14:35 - Implemented Phase 0-1 of two-file architecture
+Did:
+- IMPLEMENTED: Migration markers in templates (v0.1.9)
+- IMPLEMENTED: get-context.sh helper script
+- IMPLEMENTED: Split templates into CLAUDEPM-*.md files
+- IMPLEMENTED: Created CLAUDEPM-TASK.md for Task Agents
+- UPDATED: install.sh to copy core files to ~/.claude/core/
+- UPDATED: claudepm-admin.sh to create .claudepm with task-agent role
+Next: Update slash commands to use get-context helper
+
+---
+
+
+### 2025-07-02 14:41 - Completed v0.2.0 two-file architecture
+Did:
+- IMPLEMENTED: Complete two-file template system
+- CREATED: /migrate-project command for seamless migration
+- UPDATED: /doctor to detect and suggest migration
+- DOCUMENTED: New architecture in README and CHANGELOG
+- RELEASED: v0.2.0 with deterministic updates
+Next: Test migration on real projects
+Notes: Major milestone - updates now require no AI intervention\!
+
+---
+
+
+### 2025-07-02 14:49 - Migrated claudepm to v0.2.0 architecture
+Did:
+- MIGRATED: Split CLAUDE.md into custom (176 lines) + core (removed 194 lines)
+- BACKED UP: Original saved as CLAUDE.md.backup_20250702_144938
+- UPDATED: .claudepm with core_version=0.2.0 and role=project
+- PRESERVED: All claudepm-specific development instructions
+Next: Test that everything works correctly with new architecture
+Notes: Dogfooding successful\! Core instructions now from CLAUDEPM-PROJECT.md
+
+---
+
+
+### 2025-07-02 15:46 - Built comprehensive testing infrastructure
+Did:
+- Created test framework with bats for traditional tests and Python for AI behavioral tests
+- Implemented first traditional test for installer script
+- Implemented first AI behavioral test for log append behavior
+- Created GitHub Actions CI workflow with cost-aware execution strategy
+- Documented testing patterns and roadmap for expansion
+Next: Install bats-core locally and test the framework, then expand test coverage
+Notes: Using hybrid approach - deterministic tests run always, AI tests run on PRs only to manage costs
+
+---
+
+
+### 2025-07-02 15:49 - [feature/testing-infrastructure] - Created comprehensive testing framework
+Did:
+- IMPLEMENTED: Hybrid test framework with bats for traditional tests and Python for AI behavioral tests
+- IMPLEMENTED: First traditional test suite for installer with 9 test cases
+- IMPLEMENTED: First AI behavioral test for log append behavior (with mock Claude responses)
+- IMPLEMENTED: GitHub Actions CI workflow with cost-aware execution strategy
+- DOCUMENTED: Testing patterns, roadmap, and cost management strategies
+Next: Install bats-core locally, run tests, then expand coverage following roadmap
+Notes: Framework ready for Claude Code SDK integration when API key available. Using mocks for now.
+
+---
+
+
+### 2025-07-02 16:16 - [feature/testing-infrastructure] - Completed testing infrastructure
+Did:
+- FIXED: Installer test by correcting get-context file copy
+- IMPLEMENTED: AI behavioral testing using claude CLI with --system-prompt and --allowedTools
+- VERIFIED: Both traditional and AI tests working correctly
+- DEMONSTRATED: Log append test validates actual file changes, not just output
+Next: Expand test coverage following the roadmap
+Notes: Using claude CLI directly leverages user's Claude subscription - no API key needed
+
+---
+
+
+### 2025-07-02 16:45 - [feature/testing-infrastructure] - Completed Phase 1 traditional tests
+Did:
+- IMPLEMENTED: get-context traditional test with role detection
+- FIXED: get-context.sh to use portable uppercase conversion
+- IMPLEMENTED: admin-worktree traditional test suite
+- FIXED: claudepm-admin.sh to force-remove worktrees with untracked files
+- ADDED: COLOR_CYAN definition to admin script
+- ADDED: refute_output helper to test framework
+- UPDATED: test roadmap to reflect completed tests
+Next: Implement remaining AI behavioral tests (core_role_adherence, workflow_adopt_project)
+Notes: All traditional tests now passing (3/3). Ready for Phase 1 AI tests.
+
+---
+
+
+### 2025-07-02 18:26 - Completed Phase 1 testing infrastructure
+Did:
+- FIXED: GitHub Actions deprecation (upload-artifact v3→v4)
+- IMPLEMENTED: All Phase 1 tests (3 traditional, 3 AI behavioral)
+- FIXED: Bash compatibility issue in get-context.sh
+- ADDED: Timeout parameter to AI test SDK (60s)
+- CREATED: Simplified workflow_adopt_project test after full version timed out
+- CONSULTED: Gemini for testing best practices guidance
+Next: Decide between continuing current approach vs refactoring to testing pyramid
+Blocked: Complex commands (156-line adopt-project) are difficult to test reliably
+Notes: Gemini recommends testing pyramid (80% unit/15% integration/5% E2E) and breaking monolithic commands into sub-commands
+
+---
+
+
+### 2025-07-03 12:37 - Implemented v0.2.5 core infrastructure
+Did:
+- CREATED: ~/.claudepm directory structure with bin, lib, templates, commands
+- IMPLEMENTED: Main claudepm script with init, adopt, upgrade, doctor, health, task commands
+- CREATED: utils.sh library with all core functions
+- UPDATED: install.sh for v0.2.5 architecture
+- ADDED: CONVENTIONS.md documenting CPM::TASK format
+- CREATED: 5 slash commands (brain-dump, doctor, daily-standup, weekly-review, start-work)
+- RENAMED: PROJECT_ROADMAP.md to ROADMAP.md throughout
+- ADDED: NOTES.md templates for project and manager
+- TESTED: Installation successful, claudepm v0.2.5 working
+Next: Test adopt command on a real project
+Notes: Core infrastructure complete. Centralized templates solve version drift without complexity.
+
+---
+
+
+### 2025-07-03 12:46 - Tested v0.2.5 in sandbox
+Did:
+- CREATED: sandbox/projects/ directory for testing
+- TESTED: Manager initialization - works correctly
+- TESTED: Project initialization - works correctly
+- TESTED: Task add command - works but has display bug in list
+- TESTED: Adopt command - works but has parsing bugs for package.json
+- IDENTIFIED: mapfile compatibility issue (bash 4+ feature on macOS bash 3)
+- IDENTIFIED: grep count parsing issues causing syntax errors
+- IDENTIFIED: IFS parsing issues in task list display
+Next: Fix compatibility issues for macOS bash 3
+Notes: Core functionality works\! Just needs some bash compatibility fixes.
+
+---
+
+
+### 2025-07-03 12:58 - Fixed bash compatibility issues
+Did:
+- FIXED: mapfile command for bash 3 compatibility (using while read loop)
+- FIXED: package.json parsing with better sed regex
+- FIXED: grep count whitespace issues with tr -d ' 
+'
+- FIXED: task list display using cut instead of IFS parsing
+- TESTED: All fixes working in sandbox
+- VERIFIED: doctor, health, task, and adopt commands now functional
+Next: Clean up sandbox and commit fixes
+Notes: v0.2.5 now fully compatible with macOS bash 3.2
+
+---

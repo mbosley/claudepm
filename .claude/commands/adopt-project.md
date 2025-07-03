@@ -24,7 +24,7 @@ Set up claudepm for an existing project by analyzing its structure and generatin
 
 3. **Generate CLAUDE.md** using the full template:
    - If CLAUDE.md already exists, back it up and extract Project Context
-   - Start with the complete content from ~/.claude/templates/CLAUDE.md
+   - Start with the complete content from ~/.claude/templates/project/CLAUDE.md
    - Replace `[Project Name]` with the discovered project name
    - In the "Project Context" section, either preserve existing or add:
      ```markdown
@@ -47,7 +47,7 @@ Set up claudepm for an existing project by analyzing its structure and generatin
      - claudepm Files listing
 
 4. **Generate PROJECT_ROADMAP.md** using the template:
-   - Start with ~/.claude/templates/PROJECT_ROADMAP.md
+   - Start with ~/.claude/templates/project/PROJECT_ROADMAP.md
    - Fill in sections based on analysis:
    
    ```markdown

@@ -1,6 +1,9 @@
 .DS_Store
 *.backup
 .claudepm
-# Don't ignore the templates
-!CLAUDE_MANAGER.md
-!CLAUDE_PROJECT_TEMPLATE.md
+# Worktrees directory for Task Agent development
+worktrees/
+# Don't ignore the templates directory
+!templates/
+# Archive of TASK_PROMPT files from completed/removed worktrees
+.prompts_archive/

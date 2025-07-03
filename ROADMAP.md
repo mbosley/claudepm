@@ -1,45 +1,18 @@
 # Project Roadmap - claudepm
 
-## Current Status
-v0.1 released! 🎉 Available at https://github.com/mbosley/claudepm
+*Last updated: 2025-01-03*
 
-A minimal memory system for Claude Code using three markdown files. The complete system includes CLAUDE.md (instructions), CLAUDE_LOG.md (append-only history), and PROJECT_ROADMAP.md (living state document). Now testing with real projects.
+## Current Status
+v0.2.5 implemented! Core infrastructure complete with centralized templates.
+
+claudepm v0.2.5 solves the version drift problem without introducing complexity. Following the principle of "do one thing well," this version adds centralized template management while maintaining the dead-simple markdown-based workflow. The system now uses four core files: CLAUDE.md (instructions), LOG.md (history), ROADMAP.md (plans), and NOTES.md (wisdom).
 
 ## Active Work
-- [x] Released v0.1 with comprehensive documentation
-- [x] Added roadmap best practices to templates
-- [x] Created sub-agent report patterns for Manager Claude
-- [x] Added brain dump processing pattern for Manager Claude
-- [x] Implemented 6 slash commands as proper .claude/commands/ files
-- [x] Added structured report formats for consistency
-- [x] Documented PLANNED vs IMPLEMENTED distinction
-- [x] Implemented project adoption functionality
-- [x] Created /adopt-project slash command
-- [x] Designed .claudepm marker file specification
-- [x] Fixed /adopt-project to use full template content
-- [x] Created .claudepm marker for claudepm itself
-- [x] Designed Kanban module and Work Item ID system (future enhancement)
-- [x] Created /orient command for instant context awareness
-- [x] Added manager-level logging pattern
-- [x] Documented parallel sub-agent pattern for efficiency
-- [x] Updated installer to create manager CLAUDE_LOG.md
-- [x] Added parallel work/merge conflict guidance
-- [x] Implemented template version management (/doctor and /update)
-- [x] Rewrote README.md with clear architecture explanation
-- [x] Created MIT LICENSE file
-- [x] Enhanced manager-level logging guidance with examples
-- [x] Emphasized parallel Task execution with concrete examples
-- [x] Established MCP integration philosophy
-- [x] Implemented append-only logging protection (macOS)
-- [x] Added feature development checklist to CLAUDE.md
-- [x] Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
-- [x] Meta-articulated separation in templates (v0.1.3)
-- [x] Better integrated template versioning into documentation (v0.1.4)
-- [x] Added commit reminders to workflow
-- [ ] Test on 3-5 real projects [DUE: 2025-07-05]
-- [ ] Test adoption on existing projects
+- [ ] Test v0.2.5 adopt command on real projects
+- [ ] Document v0.2.5 migration path from v0.2.0
+- [ ] Test slash commands integration
+- [ ] Create QUICKSTART.md guide
 - [ ] Refine templates based on actual usage
-- [ ] Create v0.1.4 release with all improvements
 
 ## Upcoming
 
@@ -48,7 +21,26 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [x] Tag v0.1 release
 - [x] Push to https://github.com/mbosley/claudepm
 
-### v0.2 - Perfect the Within-Project Experience
+### v0.2 - Two-File Architecture (Complete! 🎉)
+- [x] Implement two-file template architecture
+- [x] Create deterministic update mechanism
+- [x] Add migration support for v0.1.x projects
+- [x] Update all tooling for new architecture
+- [x] Create comprehensive documentation
+
+### v0.2.5 - Simple Centralization (Complete! 🎉)
+- [x] Design simplified architecture avoiding Second System Effect
+- [x] Get Gemini's validation on architecture
+- [x] Implement core infrastructure (install.sh, claudepm script)
+- [x] Create centralized template management (~/.claudepm/)
+- [x] Implement task commands with CPM::TASK format
+- [x] Create CONVENTIONS.md documentation
+- [x] Add NOTES.md as fourth core file
+- [x] Create claudepm slash commands
+- [x] Rename PROJECT_ROADMAP.md to ROADMAP.md
+- [x] Build comprehensive testing infrastructure
+
+### v0.3 - Perfect the Within-Project Experience
 - [ ] Refine templates based on real usage patterns
 - [ ] Add project initialization helper (simple script)
 - [ ] Create troubleshooting guide
@@ -60,7 +52,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Update CLAUDE.md templates with command examples
   - Teach Claude to check if claudepm exists
 
-### v0.3 - Basic Log Search (Critical for Usefulness)
+### v0.4 - Basic Log Search (Critical for Usefulness)
 - [ ] **Within-project search**
   - ALREADY WORKS: `grep "pattern" CLAUDE_LOG.md` via Claude
   - FUTURE: `claudepm search [term]` CLI command
@@ -76,7 +68,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Decision format: `Decided: [choice] because [reasoning]`
   - Tags for filtering: #error #solution #decision #blocker
 
-### v0.4 - Robust Installation & Discovery
+### v0.5 - Robust Installation & Discovery
 - [ ] Enhanced installer
   - Install at root projects directory (configurable)
   - Interactive wizard with directory selection
@@ -101,7 +93,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Identify incomplete installations
   - Check for outdated templates
 
-### v0.5 - Cross-Project Basics
+### v0.6 - Cross-Project Basics
 - [ ] Create claudepm CLI tool with commands:
   - `claudepm init` - Initialize new project with all 3 files
   - `claudepm status` - Show all projects status
@@ -109,7 +101,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
 - [ ] Automatic project discovery
 - [ ] Basic multi-project status view
 
-### v0.6 - Advanced Search & Intelligence
+### v0.7 - Advanced Search & Intelligence
 - [ ] **Cross-project search** 
   - Search all projects for similar problems
   - "How did I solve auth in other projects?"
@@ -123,7 +115,18 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Reduces repeating past mistakes
   - Builds on accumulated knowledge
 
-### v0.7 - Manager Intelligence & Commands
+### v0.8 - Manager Intelligence & Commands
+- [ ] **MCP Server Integration & Dependencies**
+  - Harmonize MCP server installation with claudepm setup
+  - Document required MCP servers:
+    - apple-mcp (macOS app integration)
+    - [llm-mcp-server](https://github.com/mbosley/llm-mcp-server) (AI model access)
+    - filesystem-server (enhanced file operations)
+  - Consider bundled installer or setup script for MCP dependencies
+  - Provide fallback options when MCP servers aren't available
+  - Clear documentation on which features require which MCP servers
+  - Environment variable management for API keys (GOOGLE_AI_API_KEY, etc.)
+  - Coordinate with llm-mcp-server development for seamless integration
 - [ ] Advanced status commands:
   - `claudepm recap` - Weekly/daily summaries
   - `claudepm health` - Project health check
@@ -135,6 +138,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - `/project-health` - Which projects need attention?
   - `/start-work [project]` - Quick briefing before diving into project
   - `/brain-dump` - Process unstructured updates and route to projects
+  - `/email-check` - Process emails as project updates via apple-mcp
 - [ ] Sub-agent report generation pattern
   - Manager spawns one agent per project for deep analysis
   - Each agent reads three documents + git history
@@ -148,6 +152,15 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - FUTURE: Automated report saving after processing
   - FUTURE: Batch processing of multiple updates
   - NOTE: Core functionality works today through Claude's intelligence, not code
+- [ ] **Email Ingestion via apple-mcp** (Project Updates from Email)
+  - ALREADY WORKS: MCP servers provide email reading capability
+  - NEW: /email-check command processes emails as project updates
+  - Filters emails for project-relevant content
+  - Suggests (never auto-updates) changes to PROJECT_ROADMAP.md
+  - Extracts deadlines, decisions, and blockers
+  - Manager mode: Routes email updates to appropriate projects
+  - Project mode: Filters for project-specific emails only
+  - Philosophy: Email is a read-only source; humans approve all changes
 - [ ] **Manager Report Persistence** (Hierarchical Memory)
   - Save daily summaries to `~/.claudepm/reports/daily/YYYY-MM-DD.md`
   - Save weekly summaries to `~/.claudepm/reports/weekly/`
@@ -155,13 +168,13 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Makes manager insights searchable over time
   - Enables trend analysis: "What were common blockers last month?"
 
-### v0.8 - Git Integration
+### v0.9 - Git Integration
 - [ ] Auto-append to log on git commit (git hook)
 - [ ] Show uncommitted changes in status
 - [ ] Branch awareness in logs
 - [ ] Commit message templates using recent logs
 
-### v0.9 - Git Workflow Support
+### v1.0 - Git Workflow Support
 - [ ] Automatic feature branch creation
   - `claudepm feature start [name]` creates branch and logs it
   - Updates PROJECT_ROADMAP.md to track feature branch
@@ -175,7 +188,7 @@ A minimal memory system for Claude Code using three markdown files. The complete
   - Template for code review feedback in logs
   - Track PR status in roadmap
 
-### v1.0 - Log Management & Beta Release
+### v1.1 - Log Management & Beta Release
 - [ ] Log archiving (move old entries to archive)
 - [ ] Maximum log size handling
 - [ ] Log entry templates
@@ -292,7 +305,7 @@ This separation keeps each file focused:
 - Git workflow features are aspirational - focus on core memory system first
 
 ### Template Versioning Design
-Template versioning (via TEMPLATE_VERSION and TEMPLATE_CHANGELOG.md) solves a fundamental tension:
+Template versioning (via VERSION and CHANGELOG.md) solves a fundamental tension:
 - We discover better patterns through dogfooding
 - But existing projects shouldn't break when we improve templates
 - Solution: Track versions, document changes, preserve customizations
@@ -451,12 +464,14 @@ This keeps MCP servers focused and claudepm workflows flexible. The intelligence
 When adding features to claudepm, follow the checklist in CLAUDE.md:
 1. Update code/scripts (install.sh, slash commands)
 2. Update all affected templates
-3. Bump TEMPLATE_VERSION and update TEMPLATE_CHANGELOG.md
+3. Bump VERSION and update CHANGELOG.md
 4. Update documentation (README, roadmap)
 5. Test thoroughly (fresh install, adoption, updates)
 6. Log the work and update roadmap before committing
 
 This ensures consistency and prevents missing components. The full checklist lives in CLAUDE.md under "When asked to add a feature" - keeping our three-document principle intact.
 
+claudepm now follows an 'architect-first' development model for non-trivial changes. Before writing code, we use the /architect-feature command to generate comprehensive implementation plans. This approach ensures changes are well-considered, aligned with project principles, and have a clear path to completion. The architect-first approach was validated during the v0.1.5 template reorganization and is now standard practice.
+
 ---
-Last updated: 2025-07-01 12:10
+Last updated: 2025-07-01 12:49
