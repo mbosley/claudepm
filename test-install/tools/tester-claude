@@ -1,0 +1,46 @@
+#!/bin/bash
+# tester-claude - Launch Claude configured for testing tasks
+set -euo pipefail
+
+# Default configuration for Tester Claude
+MODEL="claude-3-5-sonnet-20241022"  # Sonnet for speed/cost
+PERMISSION_MODE="bypassPermissions"  # Skip confirmations during testing
+MAX_TURNS="20"                       # Reasonable limit for test sessions
+
+# Colors for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Launching Tester Claude...${NC}"
+echo -e "${YELLOW}Configuration:${NC}"
+echo "  Model: $MODEL"
+echo "  Permission Mode: $PERMISSION_MODE (no confirmation prompts)"
+echo "  Max Turns: $MAX_TURNS"
+echo ""
+
+# Check if we have a test environment initialized
+if [ -n "${CLAUDEPM_TEST_SANDBOX:-}" ]; then
+    echo -e "${GREEN}Test Environment Detected:${NC}"
+    echo "  Sandbox: $CLAUDEPM_TEST_SANDBOX"
+    echo "  Report: ${CLAUDEPM_TEST_REPORT:-Not set}"
+    echo "  Trace: ${CLAUDEPM_TEST_TRACE_LOG:-Not set}"
+    echo ""
+    
+    # Change to sandbox directory if it exists
+    if [ -d "$CLAUDEPM_TEST_SANDBOX" ]; then
+        cd "$CLAUDEPM_TEST_SANDBOX"
+        echo -e "${GREEN}Changed to sandbox directory${NC}"
+    fi
+fi
+
+# Add system prompt for testing role
+SYSTEM_PROMPT="You are Tester Claude, a QA specialist. Your role is to test software, not fix it. Focus on finding issues, edge cases, and documenting your findings clearly. Always think like a new user who has never used the software before."
+
+# Launch Claude with testing configuration
+exec claude \
+    --model "$MODEL" \
+    --permission-mode "$PERMISSION_MODE" \
+    --max-turns "$MAX_TURNS" \
+    --system-prompt "$SYSTEM_PROMPT" \
+    "$@"

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Test artifacts
+*.log
+.test-results/
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.test
+
+# Temporary test files
+tmp/
+temp/
+*.tmp

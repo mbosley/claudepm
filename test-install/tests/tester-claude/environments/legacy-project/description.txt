@@ -1,0 +1,1 @@
+Test adopting an existing Node.js project with TODOs and package.json

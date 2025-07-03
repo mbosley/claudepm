@@ -1,0 +1,12 @@
+# Tester Claude temporary files
+runs/
+sandboxes/
+reports/
+
+# Test environment archives (generated)
+environments/*/initial.tar.gz
+
+# Keep directory structure
+!runs/.gitkeep
+!sandboxes/.gitkeep
+!reports/.gitkeep
