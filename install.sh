@@ -1,137 +1,130 @@
 #!/bin/bash
+# install.sh - Install claudepm v0.2.5
+set -euo pipefail
 
-# claudepm installer - Simple Project Memory for Claude
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
-echo "claudepm - Simple Project Memory for Claude"
-echo "=========================================="
-echo
+echo "Installing claudepm v0.2.5..."
+echo "=============================="
 
-# Check if we're in the right place
-if [ ! -f "templates/manager/CLAUDE.md" ]; then
-    echo "Error: Please run this from the claudepm directory"
-    exit 1
+# 1. Create directory structure
+echo -e "\n1. Creating directory structure..."
+mkdir -p ~/.claudepm/{bin,templates/{manager,project,task-agent},lib,commands}
+mkdir -p ~/.config/claudepm/templates
+echo -e "${GREEN}✓ Directories created${NC}"
+
+# 2. Copy core files
+echo -e "\n2. Copying core files..."
+
+# Copy templates if we're in the claudepm repo
+if [[ -d "templates" ]]; then
+    cp -r templates/* ~/.claudepm/templates/
+    echo -e "${GREEN}✓ Templates copied${NC}"
+else
+    echo -e "${YELLOW}⚠ Templates directory not found${NC}"
 fi
 
-# Get the target directory
-read -p "Where is your projects directory? [~/projects]: " PROJECTS_DIR
-PROJECTS_DIR=${PROJECTS_DIR:-~/projects}
-PROJECTS_DIR=$(eval echo "$PROJECTS_DIR")
-
-# Check if directory exists
-if [ ! -d "$PROJECTS_DIR" ]; then
-    echo "Error: Directory $PROJECTS_DIR does not exist"
-    exit 1
+# Copy commands if available
+if [[ -d "commands" ]]; then
+    cp -r commands/* ~/.claudepm/commands/
+    echo -e "${GREEN}✓ Commands copied${NC}"
+else
+    echo -e "${YELLOW}⚠ Commands directory not found - will create later${NC}"
 fi
 
-# Install manager CLAUDE.md
-echo "Installing Manager CLAUDE.md..."
-if [ -f "$PROJECTS_DIR/CLAUDE.md" ]; then
-    echo "  Found existing CLAUDE.md"
-    read -p "  Backup and replace? [y/N]: " REPLACE
-    if [ "$REPLACE" = "y" ] || [ "$REPLACE" = "Y" ]; then
-        cp "$PROJECTS_DIR/CLAUDE.md" "$PROJECTS_DIR/CLAUDE.md.backup"
-        cp templates/manager/CLAUDE.md "$PROJECTS_DIR/CLAUDE.md"
-        echo "  ✓ Installed (backup saved as CLAUDE.md.backup)"
+# Copy the claudepm script
+if [[ -f "bin/claudepm" ]]; then
+    cp bin/claudepm ~/.claudepm/bin/
+    chmod +x ~/.claudepm/bin/claudepm
+    echo -e "${GREEN}✓ claudepm script installed${NC}"
+else
+    # Use the one we already created
+    echo -e "${GREEN}✓ claudepm script already in place${NC}"
+fi
+
+# Copy utils.sh
+if [[ -f "lib/utils.sh" ]]; then
+    cp lib/utils.sh ~/.claudepm/lib/
+    echo -e "${GREEN}✓ Utils library copied${NC}"
+else
+    # Use the one we already created
+    echo -e "${GREEN}✓ Utils library already in place${NC}"
+fi
+
+# 3. Create VERSION and other files
+echo "0.2.5" > ~/.claudepm/VERSION
+touch ~/.claudepm/projects.list
+
+# Copy CONVENTIONS.md
+if [[ -f "CONVENTIONS.md" ]]; then
+    cp CONVENTIONS.md ~/.claudepm/
+elif [[ -f "$HOME/.claudepm/CONVENTIONS.md" ]]; then
+    echo -e "${GREEN}✓ CONVENTIONS.md already in place${NC}"
+else
+    echo -e "${YELLOW}⚠ CONVENTIONS.md not found${NC}"
+fi
+
+echo -e "${GREEN}✓ Core files created${NC}"
+
+# 4. Add to PATH
+echo -e "\n3. Checking PATH configuration..."
+shell_rc=""
+if [[ -f "$HOME/.bashrc" ]]; then
+    shell_rc="$HOME/.bashrc"
+elif [[ -f "$HOME/.zshrc" ]]; then
+    shell_rc="$HOME/.zshrc"
+fi
+
+if [[ -n "$shell_rc" ]]; then
+    if ! grep -q "claudepm/bin" "$shell_rc"; then
+        echo "" >> "$shell_rc"
+        echo "# claudepm" >> "$shell_rc"
+        echo 'export PATH="$HOME/.claudepm/bin:$PATH"' >> "$shell_rc"
+        echo -e "${GREEN}✓ Added claudepm to PATH in $shell_rc${NC}"
+        echo "  Run: source $shell_rc"
     else
-        echo "  Skipped"
+        echo -e "${GREEN}✓ PATH already configured${NC}"
     fi
 else
-    cp templates/manager/CLAUDE.md "$PROJECTS_DIR/CLAUDE.md"
-    echo "  ✓ Installed"
+    echo -e "${YELLOW}⚠ Could not find .bashrc or .zshrc${NC}"
+    echo "  Add to your shell config: export PATH=\"\$HOME/.claudepm/bin:\$PATH\""
 fi
 
-# Create .claude directory structure
-echo "Creating .claude directory structure..."
-mkdir -p "$PROJECTS_DIR/.claude/templates/project"
-mkdir -p "$PROJECTS_DIR/.claude/templates/manager"
-mkdir -p "$PROJECTS_DIR/.claude/core"
-mkdir -p "$PROJECTS_DIR/.claude/bin"
-
-# Copy templates (for now, keep full templates for backward compatibility)
-cp templates/project/CLAUDE.md "$PROJECTS_DIR/.claude/templates/project/CLAUDE.md"
-cp templates/project/PROJECT_ROADMAP.md "$PROJECTS_DIR/.claude/templates/project/PROJECT_ROADMAP.md"
-cp templates/manager/CLAUDE.md "$PROJECTS_DIR/.claude/templates/manager/CLAUDE.md"
-cp VERSION "$PROJECTS_DIR/.claude/templates/VERSION"
-
-# Copy core CLAUDEPM files (new in v0.2.0)
-if [ -f "templates/project/CLAUDEPM-PROJECT.md" ]; then
-    cp templates/project/CLAUDEPM-PROJECT.md "$PROJECTS_DIR/.claude/core/"
-    cp templates/manager/CLAUDEPM-MANAGER.md "$PROJECTS_DIR/.claude/core/"
-    cp templates/task-agent/CLAUDEPM-TASK.md "$PROJECTS_DIR/.claude/core/"
-    echo "  ✓ Installed core templates (v0.2.0 architecture)"
-fi
-
-# Install get-context helper
-if [ -f "tools/get-context.sh" ]; then
-    cp tools/get-context.sh "$PROJECTS_DIR/.claude/bin/get-context"
-    chmod +x "$PROJECTS_DIR/.claude/bin/get-context"
-    echo "  ✓ Installed get-context helper"
-fi
-
-echo "  ✓ Created $PROJECTS_DIR/.claude/templates/ (v$(cat VERSION))"
-
-# Install slash commands if they exist
-if [ -d ".claude/commands" ]; then
-    echo "Installing slash commands..."
-    mkdir -p "$PROJECTS_DIR/.claude/commands"
-    cp .claude/commands/*.md "$PROJECTS_DIR/.claude/commands/" 2>/dev/null
-    echo "  ✓ Installed $(ls .claude/commands/*.md | wc -l) slash commands"
-fi
-
-# Create initial manager CLAUDE_LOG.md if it doesn't exist
-if [ ! -f "$PROJECTS_DIR/CLAUDE_LOG.md" ]; then
-    echo "Creating manager-level CLAUDE_LOG.md..."
-    cat > "$PROJECTS_DIR/CLAUDE_LOG.md" << 'EOF'
-# Manager Claude Activity Log
-
-## Overview
-This log tracks manager-level activities across all projects in ~/projects. It documents brain dump processing, cross-project analyses, adoption activities, and coordination work.
-
----
-
-### $(date '+%Y-%m-%d %H:%M') - Installed claudepm
-Did: Set up claudepm for managing multiple projects
-Projects affected: All future projects
-Next: Try /orient to understand the system, then /adopt-project for existing projects
-
----
-EOF
-    echo "  ✓ Created manager activity log"
-fi
-
-# Apply append-only protection to CLAUDE_LOG.md (macOS only)
-if [[ "$OSTYPE" == "darwin"* ]] && [ -z "$CLAUDEPM_TEST_MODE" ]; then
-    echo "Applying append-only protection to log files..."
-    if [ -f "$PROJECTS_DIR/CLAUDE_LOG.md" ]; then
-        chflags uappnd "$PROJECTS_DIR/CLAUDE_LOG.md" 2>/dev/null && \
-            echo "  ✓ Protected CLAUDE_LOG.md (append-only)" || \
-            echo "  ⚠ Could not protect CLAUDE_LOG.md (requires macOS)"
+# 5. Link slash commands for Claude Code
+echo -e "\n4. Checking for Claude Code installation..."
+if [[ -d "$HOME/.claude/commands" ]]; then
+    echo -e "${GREEN}✓ Claude Code detected${NC}"
+    read -p "Link claudepm slash commands? (y/n): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Create symlinks for any command files that exist
+        for cmd in ~/.claudepm/commands/*.md; do
+            if [[ -f "$cmd" ]]; then
+                ln -sf "$cmd" ~/.claude/commands/ 2>/dev/null || true
+            fi
+        done
+        echo -e "${GREEN}✓ Linked claudepm slash commands${NC}"
     fi
+else
+    echo "  Claude Code not detected (slash commands not linked)"
 fi
 
-echo
-echo "Installation complete!"
-echo
-echo "Next steps:"
-echo "1. cd $PROJECTS_DIR"
-echo "2. code . (or your preferred editor)"
-echo "3. Try these slash commands:"
-echo "   - /orient - Get instant context awareness"
-echo "   - /adopt-project - Add claudepm to existing projects"
-echo "   - /brain-dump - Process unstructured updates"
-echo "   - /daily-standup - Morning project overview"
-echo "   - /project-health - Find projects needing attention"
-echo "4. For new projects, create:"
-echo "   - CLAUDE.md (from template)"
-echo "   - PROJECT_ROADMAP.md (from template)"
-echo "   - CLAUDE_LOG.md (start with first entry)"
-echo
-echo "Templates: $PROJECTS_DIR/.claude/templates/"
-echo "Commands: $PROJECTS_DIR/.claude/commands/"
+# 6. Final instructions
+echo -e "\n${GREEN}✓ Installation complete!${NC}"
+echo -e "\nNext steps:"
+echo "1. Run: source ${shell_rc:-~/.bashrc}"
+echo "2. Verify: claudepm version"
+echo "3. Initialize a project: claudepm init project"
+echo "4. Or adopt existing: claudepm adopt"
 
-echo
-echo "Note: When claudepm CLI is ready, install it to:"
-echo "  ~/.claudepm/bin/claudepm (recommended)"
-echo "  or /usr/local/bin/claudepm (requires sudo)"
-echo
-echo "Claude will be taught to check both locations."
+# Check if we're in the claudepm repo
+if [[ -f "VERSION" ]] && [[ -d "templates" ]]; then
+    echo -e "\n${YELLOW}Note: You're in the claudepm repo.${NC}"
+    echo "To test installation:"
+    echo "  claudepm version  # Should show 0.2.5"
+    echo "  claudepm doctor   # Check system health"
+fi

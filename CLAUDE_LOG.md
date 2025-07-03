@@ -1010,3 +1010,20 @@ Blocked: Complex commands (156-line adopt-project) are difficult to test reliabl
 Notes: Gemini recommends testing pyramid (80% unit/15% integration/5% E2E) and breaking monolithic commands into sub-commands
 
 ---
+
+
+### 2025-07-03 12:37 - Implemented v0.2.5 core infrastructure
+Did:
+- CREATED: ~/.claudepm directory structure with bin, lib, templates, commands
+- IMPLEMENTED: Main claudepm script with init, adopt, upgrade, doctor, health, task commands
+- CREATED: utils.sh library with all core functions
+- UPDATED: install.sh for v0.2.5 architecture
+- ADDED: CONVENTIONS.md documenting CPM::TASK format
+- CREATED: 5 slash commands (brain-dump, doctor, daily-standup, weekly-review, start-work)
+- RENAMED: PROJECT_ROADMAP.md to ROADMAP.md throughout
+- ADDED: NOTES.md templates for project and manager
+- TESTED: Installation successful, claudepm v0.2.5 working
+Next: Test adopt command on a real project
+Notes: Core infrastructure complete. Centralized templates solve version drift without complexity.
+
+---

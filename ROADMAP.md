@@ -1,63 +1,17 @@
 # Project Roadmap - claudepm
 
-*Last updated: 2025-01-02*
+*Last updated: 2025-01-03*
 
 ## Current Status
-v0.2.0 released! 🎉 Available at https://github.com/mbosley/claudepm
+v0.2.5 implemented! Core infrastructure complete with centralized templates.
 
-A minimal memory system for Claude Code using three markdown files. Version 0.2.0 introduces a two-file architecture that separates generic instructions from user customizations, enabling deterministic updates without AI intervention. The system includes CLAUDE.md (customizations), CLAUDEPM-*.md (managed core), CLAUDE_LOG.md (append-only history), and PROJECT_ROADMAP.md (living state document).
+claudepm v0.2.5 solves the version drift problem without introducing complexity. Following the principle of "do one thing well," this version adds centralized template management while maintaining the dead-simple markdown-based workflow. The system now uses four core files: CLAUDE.md (instructions), LOG.md (history), ROADMAP.md (plans), and NOTES.md (wisdom).
 
 ## Active Work
-- [x] Released v0.1 with comprehensive documentation
-- [x] Added roadmap best practices to templates
-- [x] Created sub-agent report patterns for Manager Claude
-- [x] Added brain dump processing pattern for Manager Claude
-- [x] Implemented 6 slash commands as proper .claude/commands/ files
-- [x] Added structured report formats for consistency
-- [x] Documented PLANNED vs IMPLEMENTED distinction
-- [x] Implemented project adoption functionality
-- [x] Created /adopt-project slash command
-- [x] Designed .claudepm marker file specification
-- [x] Fixed /adopt-project to use full template content
-- [x] Created .claudepm marker for claudepm itself
-- [x] Designed Kanban module and Work Item ID system (future enhancement)
-- [x] Created /orient command for instant context awareness
-- [x] Added manager-level logging pattern
-- [x] Documented parallel sub-agent pattern for efficiency
-- [x] Updated installer to create manager CLAUDE_LOG.md
-- [x] Added parallel work/merge conflict guidance
-- [x] Implemented template version management (/doctor and /update)
-- [x] Rewrote README.md with clear architecture explanation
-- [x] Created MIT LICENSE file
-- [x] Enhanced manager-level logging guidance with examples
-- [x] Emphasized parallel Task execution with concrete examples
-- [x] Established MCP integration philosophy
-- [x] Implemented append-only logging protection (macOS)
-- [x] Added feature development checklist to CLAUDE.md
-- [x] Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
-- [x] Meta-articulated separation in templates (v0.1.3)
-- [x] Better integrated template versioning into documentation (v0.1.4)
-- [x] Added commit reminders to workflow
-- [x] Created /architect-feature command for AI-powered planning
-- [x] Reorganized templates into templates/ directory structure (v0.1.5)
-- [x] Codified architect-first development philosophy
-- [x] Implemented Task Agent workflow with local worktrees (v0.1.6)
-- [x] Added /dispatch-task command for Task Agent creation
-- [x] Implement TASK_PROMPT management system (v0.1.8)
-- [x] Implement two-file template architecture (v0.2.0)
-- [x] Create deterministic update mechanism
-- [x] Add /migrate-project command for v0.1.x → v0.2.0
-- [x] Build comprehensive testing infrastructure (Phase 1 complete)
-  - [x] Create test framework with bats and Python
-  - [x] Implement traditional tests (installer, get-context, admin-worktree)
-  - [x] Implement AI behavioral tests (log append, role adherence, workflow adoption)
-  - [x] Integrate Claude Code SDK for real AI testing
-  - [x] Create GitHub Actions CI workflow
-  - [ ] Decide: Continue E2E approach vs refactor to testing pyramid
-- [ ] Implement formal git workflow documentation
-- [ ] Implement MCP integration (email, calendar, AI assistance)
-- [ ] Test on 3-5 real projects [DUE: 2025-07-05]
-- [ ] Test adoption on existing projects
+- [ ] Test v0.2.5 adopt command on real projects
+- [ ] Document v0.2.5 migration path from v0.2.0
+- [ ] Test slash commands integration
+- [ ] Create QUICKSTART.md guide
 - [ ] Refine templates based on actual usage
 
 ## Upcoming
@@ -73,6 +27,18 @@ A minimal memory system for Claude Code using three markdown files. Version 0.2.
 - [x] Add migration support for v0.1.x projects
 - [x] Update all tooling for new architecture
 - [x] Create comprehensive documentation
+
+### v0.2.5 - Simple Centralization (Complete! 🎉)
+- [x] Design simplified architecture avoiding Second System Effect
+- [x] Get Gemini's validation on architecture
+- [x] Implement core infrastructure (install.sh, claudepm script)
+- [x] Create centralized template management (~/.claudepm/)
+- [x] Implement task commands with CPM::TASK format
+- [x] Create CONVENTIONS.md documentation
+- [x] Add NOTES.md as fourth core file
+- [x] Create claudepm slash commands
+- [x] Rename PROJECT_ROADMAP.md to ROADMAP.md
+- [x] Build comprehensive testing infrastructure
 
 ### v0.3 - Perfect the Within-Project Experience
 - [ ] Refine templates based on real usage patterns
