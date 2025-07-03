@@ -1058,3 +1058,16 @@ Next: Clean up sandbox and commit fixes
 Notes: v0.2.5 now fully compatible with macOS bash 3.2
 
 ---
+
+
+### 2025-07-03 17:41 - Merged v0.2.5 implementation to dev
+Did:
+- MERGED: PR #5 implementing v0.2.5 centralized architecture
+- FIXED: Critical delimiter parsing bug in task list command
+- TESTED: All core functionality working (init, adopt, task, health, doctor)
+- SEPARATED: Testing infrastructure to feature/testing-infrastructure-v2 branch
+- UPDATED: ROADMAP.md to reflect v0.2.5 completion
+Next: Deploy v0.2.5 to personal projects, create migration guide
+Notes: Clean separation achieved - v0.2.5 core is merged, testing infrastructure saved for later
+
+---
