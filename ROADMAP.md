@@ -1,18 +1,23 @@
 # Project Roadmap - claudepm
 
-*Last updated: 2025-01-03*
+*Last updated: 2025-07-03*
 
 ## Current Status
-v0.2.5 implemented! Core infrastructure complete with centralized templates.
+v0.2.5 complete and merged! Core infrastructure with centralized templates working perfectly.
 
 claudepm v0.2.5 solves the version drift problem without introducing complexity. Following the principle of "do one thing well," this version adds centralized template management while maintaining the dead-simple markdown-based workflow. The system now uses four core files: CLAUDE.md (instructions), LOG.md (history), ROADMAP.md (plans), and NOTES.md (wisdom).
 
+All core commands tested and working:
+- `claudepm init` creates projects with all 4 files
+- `claudepm adopt` imports existing projects with TODOs
+- `claudepm task add/list/done/block` manages tasks without delimiter errors
+- `claudepm health` and `doctor` provide project status
+- `claudepm upgrade` updates templates to latest version
+
 ## Active Work
-- [ ] Test v0.2.5 adopt command on real projects
 - [ ] Document v0.2.5 migration path from v0.2.0
-- [ ] Test slash commands integration
 - [ ] Create QUICKSTART.md guide
-- [ ] Refine templates based on actual usage
+- [ ] Deploy v0.2.5 to personal projects
 
 ## Upcoming
 
