@@ -112,10 +112,11 @@ adopt_project() {
     # Node.js detection
     if [[ -f "package.json" ]]; then
         project_type="node"
-        project_name=$(grep '"name"' package.json | head -1 | cut -d'"' -f4 || echo "$project_name")
-        test_command=$(grep '"test"' package.json | head -1 | cut -d'"' -f4 || echo "")
-        build_command=$(grep '"build"' package.json | head -1 | cut -d'"' -f4 || echo "")
-        run_command=$(grep '"start"' package.json | head -1 | cut -d'"' -f4 || echo "")
+        # Better JSON parsing - look for the value after the key
+        project_name=$(grep '"name"' package.json | head -1 | sed 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || echo "$project_name")
+        test_command=$(grep '"test"' package.json | head -1 | sed 's/.*"test"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || echo "")
+        build_command=$(grep '"build"' package.json | head -1 | sed 's/.*"build"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || echo "")
+        run_command=$(grep '"start"' package.json | head -1 | sed 's/.*"start"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || echo "")
     fi
     
     # Python detection
@@ -128,9 +129,9 @@ adopt_project() {
     # Find TODOs
     local todo_count=0
     if command -v rg >/dev/null 2>&1; then
-        todo_count=$(rg -c "TODO|FIXME" 2>/dev/null | wc -l || echo 0)
+        todo_count=$(rg -c "TODO|FIXME" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
     else
-        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l || echo 0)
+        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l | tr -d ' ' || echo 0)
     fi
     
     if [[ "$dry_run" == "--dry-run" ]]; then
@@ -262,10 +263,14 @@ health_check() {
     
     # Check blocked tasks
     if [[ -f "ROADMAP.md" ]]; then
-        local blocked_count=$(grep -c "::BLOCKED::" ROADMAP.md 2>/dev/null || echo 0)
-        local active_count=$(grep -c "::TODO::\|::IN_PROGRESS::" ROADMAP.md 2>/dev/null || echo 0)
+        local blocked_count=$(grep -c "::BLOCKED::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
+        local active_count=$(grep -E "::TODO::|::IN_PROGRESS::" ROADMAP.md 2>/dev/null | wc -l | tr -d ' \n' || echo 0)
         
-        if [[ $blocked_count -gt 0 ]]; then
+        # Ensure we have valid numbers
+        blocked_count=${blocked_count:-0}
+        active_count=${active_count:-0}
+        
+        if [[ "$blocked_count" -gt 0 ]]; then
             echo -e "${YELLOW}⚠ Blocked tasks: $blocked_count${NC}"
         else
             echo -e "${GREEN}✓ Blocked tasks: 0${NC}"
@@ -293,7 +298,11 @@ doctor_check() {
     if [[ ${#paths[@]} -eq 0 ]]; then
         # Use projects.list if no paths provided
         if [[ -f "$CLAUDEPM_HOME/projects.list" ]]; then
-            mapfile -t paths < "$CLAUDEPM_HOME/projects.list"
+            # Read file into array (bash 3 compatible)
+            paths=()
+            while IFS= read -r line; do
+                [[ -n "$line" ]] && paths+=("$line")
+            done < "$CLAUDEPM_HOME/projects.list"
         else
             paths=(".")
         fi
@@ -357,11 +366,19 @@ task_command() {
             local filter="${1:-}"
             echo "Tasks:"
             if [[ "$filter" == "--blocked" ]]; then
-                grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md | while IFS='::' read -r _ _ uuid status date desc; do
+                grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md | while IFS= read -r line; do
+                    local uuid=$(echo "$line" | cut -d'::' -f3)
+                    local status=$(echo "$line" | cut -d'::' -f4)
+                    local date=$(echo "$line" | cut -d'::' -f5)
+                    local desc=$(echo "$line" | cut -d'::' -f6-)
                     printf "[%s] %s - %s\n" "$status" "$date" "$desc"
                 done
             else
-                grep "CPM::TASK::" ROADMAP.md | while IFS='::' read -r _ _ uuid status date desc; do
+                grep "CPM::TASK::" ROADMAP.md | while IFS= read -r line; do
+                    local uuid=$(echo "$line" | cut -d'::' -f3)
+                    local status=$(echo "$line" | cut -d'::' -f4)
+                    local date=$(echo "$line" | cut -d'::' -f5)
+                    local desc=$(echo "$line" | cut -d'::' -f6-)
                     printf "[%s] %s - %s\n" "$status" "$date" "$desc"
                 done
             fi

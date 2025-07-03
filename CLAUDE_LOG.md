@@ -1027,3 +1027,34 @@ Next: Test adopt command on a real project
 Notes: Core infrastructure complete. Centralized templates solve version drift without complexity.
 
 ---
+
+
+### 2025-07-03 12:46 - Tested v0.2.5 in sandbox
+Did:
+- CREATED: sandbox/projects/ directory for testing
+- TESTED: Manager initialization - works correctly
+- TESTED: Project initialization - works correctly
+- TESTED: Task add command - works but has display bug in list
+- TESTED: Adopt command - works but has parsing bugs for package.json
+- IDENTIFIED: mapfile compatibility issue (bash 4+ feature on macOS bash 3)
+- IDENTIFIED: grep count parsing issues causing syntax errors
+- IDENTIFIED: IFS parsing issues in task list display
+Next: Fix compatibility issues for macOS bash 3
+Notes: Core functionality works\! Just needs some bash compatibility fixes.
+
+---
+
+
+### 2025-07-03 12:58 - Fixed bash compatibility issues
+Did:
+- FIXED: mapfile command for bash 3 compatibility (using while read loop)
+- FIXED: package.json parsing with better sed regex
+- FIXED: grep count whitespace issues with tr -d ' 
+'
+- FIXED: task list display using cut instead of IFS parsing
+- TESTED: All fixes working in sandbox
+- VERIFIED: doctor, health, task, and adopt commands now functional
+Next: Clean up sandbox and commit fixes
+Notes: v0.2.5 now fully compatible with macOS bash 3.2
+
+---
