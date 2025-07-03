@@ -1,6 +1,6 @@
 # Project Roadmap - claudepm
 
-*Last updated: 2025-01-02*
+*Last updated: 2025-07-02*
 
 ## Current Status
 v0.2.0 released! 🎉 Available at https://github.com/mbosley/claudepm
@@ -47,6 +47,13 @@ A minimal memory system for Claude Code using three markdown files. Version 0.2.
 - [x] Implement two-file template architecture (v0.2.0)
 - [x] Create deterministic update mechanism
 - [x] Add /migrate-project command for v0.1.x → v0.2.0
+- [ ] Build comprehensive testing infrastructure
+  - [x] Create test framework with bats and Python
+  - [x] Implement first traditional test (installer)
+  - [x] Implement first AI behavioral test (log append)
+  - [ ] Integrate Claude Code SDK for real AI testing
+  - [ ] Create GitHub Actions CI workflow
+  - [ ] Expand test coverage to all core features
 - [ ] Implement formal git workflow documentation
 - [ ] Implement MCP integration (email, calendar, AI assistance)
 - [ ] Test on 3-5 real projects [DUE: 2025-07-05]

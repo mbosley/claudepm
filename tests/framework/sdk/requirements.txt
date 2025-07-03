@@ -1,0 +1,9 @@
+# Requirements for AI behavioral testing
+# Note: Claude Code SDK installation requires npm, not pip
+# This file is for any Python testing utilities we need
+
+# For now, we'll use subprocess to call the Claude Code CLI
+# Future additions might include:
+# - pytest for test organization
+# - python-dotenv for environment variables
+# - requests for API interactions

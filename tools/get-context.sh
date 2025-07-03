@@ -29,7 +29,23 @@ if [ -f "CLAUDE.md" ]; then
 fi
 
 # Then append the appropriate CLAUDEPM file from core
-CORE_FILE="$HOME/.claude/core/CLAUDEPM-${ROLE^^}.md"
+# Map role to core file name
+case "$ROLE" in
+    "manager")
+        CORE_NAME="MANAGER"
+        ;;
+    "project")
+        CORE_NAME="PROJECT"
+        ;;
+    "task-agent")
+        CORE_NAME="TASK"
+        ;;
+    *)
+        CORE_NAME="PROJECT"  # Default fallback
+        ;;
+esac
+
+CORE_FILE="$HOME/.claude/core/CLAUDEPM-${CORE_NAME}.md"
 if [ -f "$CORE_FILE" ]; then
     # Add a separator for clarity
     echo ""

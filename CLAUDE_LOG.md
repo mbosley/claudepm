@@ -942,3 +942,71 @@ Next: Test that everything works correctly with new architecture
 Notes: Dogfooding successful\! Core instructions now from CLAUDEPM-PROJECT.md
 
 ---
+
+
+### 2025-07-02 15:46 - Built comprehensive testing infrastructure
+Did:
+- Created test framework with bats for traditional tests and Python for AI behavioral tests
+- Implemented first traditional test for installer script
+- Implemented first AI behavioral test for log append behavior
+- Created GitHub Actions CI workflow with cost-aware execution strategy
+- Documented testing patterns and roadmap for expansion
+Next: Install bats-core locally and test the framework, then expand test coverage
+Notes: Using hybrid approach - deterministic tests run always, AI tests run on PRs only to manage costs
+
+---
+
+
+### 2025-07-02 15:49 - [feature/testing-infrastructure] - Created comprehensive testing framework
+Did:
+- IMPLEMENTED: Hybrid test framework with bats for traditional tests and Python for AI behavioral tests
+- IMPLEMENTED: First traditional test suite for installer with 9 test cases
+- IMPLEMENTED: First AI behavioral test for log append behavior (with mock Claude responses)
+- IMPLEMENTED: GitHub Actions CI workflow with cost-aware execution strategy
+- DOCUMENTED: Testing patterns, roadmap, and cost management strategies
+Next: Install bats-core locally, run tests, then expand coverage following roadmap
+Notes: Framework ready for Claude Code SDK integration when API key available. Using mocks for now.
+
+---
+
+
+### 2025-07-02 16:16 - [feature/testing-infrastructure] - Completed testing infrastructure
+Did:
+- FIXED: Installer test by correcting get-context file copy
+- IMPLEMENTED: AI behavioral testing using claude CLI with --system-prompt and --allowedTools
+- VERIFIED: Both traditional and AI tests working correctly
+- DEMONSTRATED: Log append test validates actual file changes, not just output
+Next: Expand test coverage following the roadmap
+Notes: Using claude CLI directly leverages user's Claude subscription - no API key needed
+
+---
+
+
+### 2025-07-02 16:45 - [feature/testing-infrastructure] - Completed Phase 1 traditional tests
+Did:
+- IMPLEMENTED: get-context traditional test with role detection
+- FIXED: get-context.sh to use portable uppercase conversion
+- IMPLEMENTED: admin-worktree traditional test suite
+- FIXED: claudepm-admin.sh to force-remove worktrees with untracked files
+- ADDED: COLOR_CYAN definition to admin script
+- ADDED: refute_output helper to test framework
+- UPDATED: test roadmap to reflect completed tests
+Next: Implement remaining AI behavioral tests (core_role_adherence, workflow_adopt_project)
+Notes: All traditional tests now passing (3/3). Ready for Phase 1 AI tests.
+
+---
+
+
+### 2025-07-02 18:26 - Completed Phase 1 testing infrastructure
+Did:
+- FIXED: GitHub Actions deprecation (upload-artifact v3→v4)
+- IMPLEMENTED: All Phase 1 tests (3 traditional, 3 AI behavioral)
+- FIXED: Bash compatibility issue in get-context.sh
+- ADDED: Timeout parameter to AI test SDK (60s)
+- CREATED: Simplified workflow_adopt_project test after full version timed out
+- CONSULTED: Gemini for testing best practices guidance
+Next: Decide between continuing current approach vs refactoring to testing pyramid
+Blocked: Complex commands (156-line adopt-project) are difficult to test reliably
+Notes: Gemini recommends testing pyramid (80% unit/15% integration/5% E2E) and breaking monolithic commands into sub-commands
+
+---
