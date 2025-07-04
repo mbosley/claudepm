@@ -1,14 +1,24 @@
 # Project Notes
 
-## Overview
-[Brief description of what this project does and why it exists]
+This file is for human observations, patterns, and insights about the project.
+While LOG.md captures what Claude did, NOTES.md captures what humans learned.
 
-## Key Decisions
+## Patterns Observed
 
-## Discovered Patterns
+<!-- Add patterns you notice across multiple work sessions -->
 
-## Gotchas & Workarounds
+## Key Insights
 
-## Performance Notes
+<!-- Important realizations about the codebase or domain -->
 
-## External Resources
+## Recurring Issues
+
+<!-- Problems that keep coming up and their solutions -->
+
+## Meta-Observations
+
+<!-- Thoughts about the development process itself -->
+
+## Future Considerations
+
+<!-- Ideas and observations for future development -->

@@ -1,14 +1,24 @@
 # Manager Notes
 
-## Overview
-Cross-project patterns, insights, and coordination notes.
+This file is for human observations about patterns across projects.
+While LOG.md captures what Manager Claude coordinated, NOTES.md captures meta-insights.
 
-## Common Patterns Across Projects
+## Cross-Project Patterns
+
+<!-- Patterns you notice across multiple projects -->
+
+## Common Blockers
+
+<!-- Recurring issues that affect multiple projects -->
 
 ## Reusable Solutions
 
-## Resource Management
+<!-- Solutions from one project that could help others -->
 
-## Client/Stakeholder Notes
+## Process Insights
 
-## Lessons Learned
+<!-- Observations about the development workflow itself -->
+
+## Strategic Considerations
+
+<!-- Higher-level thoughts about project portfolio -->
