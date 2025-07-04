@@ -31,7 +31,7 @@ Commands:
   health           Check current project health
   task <subcommand> Manage tasks in ROADMAP.md
   context          Get complete session context (NEW)
-  log <message>    Log work with proper format (NEW)
+  log <title>      Log work with rich format (NEW)
   next             Suggest what to work on (NEW)
   version          Show claudepm version
 

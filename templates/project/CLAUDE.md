@@ -50,14 +50,53 @@ This intelligently prioritizes based on in-progress work, blockers, and dependen
 ## After Each Work Block
 
 ```bash
-claudepm log "Implemented JWT authentication" --next "Add refresh token support"
+# Simple log
+claudepm log "Fixed authentication bug" --next "Run integration tests"
+
+# Rich log with accomplishments and metadata
+claudepm log "Implemented OAuth flow" \
+  --did "Added Google OAuth provider" \
+  --did "Created JWT token generation" \
+  --did "Set up refresh token rotation" \
+  --tag "feature" --tag "auth" \
+  --commit "abc123" --commit "def456" \
+  --time "4h" \
+  --pr "#89" \
+  --next "Add OAuth tests"
+
+# Error tracking
+claudepm log "Debug session" \
+  --error "Memory leak in WebSocket handler" \
+  --did "Found unclosed event listeners" \
+  --tag "bug" --tag "memory-leak" \
+  --time "3h"
+
+# Decision logging
+claudepm log "Architecture review" \
+  --decided "Use event-driven architecture" \
+  --with "@alice" --with "@bob" \
+  --tag "architecture" --tag "decision" \
+  --notes "Chose WebSocket for real-time needs"
+
+# Blocked work
+claudepm log "Payment integration" \
+  --did "Created Stripe webhook endpoints" \
+  --blocked "Waiting for production API keys" \
+  --with "@payment-team"
 ```
 
-This command:
-- Adds proper timestamp automatically
-- Ensures consistent format
-- Maintains append-only history
-- Records what to do next
+Full options:
+- `--did` - Accomplishments (repeatable)
+- `--next` - Next task
+- `--blocked` - Blocker reason
+- `--notes` - Additional context
+- `--tag` - Searchable keywords (repeatable)
+- `--commit` - Git commits (repeatable)
+- `--with` - People involved (repeatable)
+- `--time` - Duration (e.g., "2h", "30m")
+- `--pr` - PR/issue reference
+- `--error` - Error encountered
+- `--decided` - Decision made
 
 **NEVER** use manual appends (`>>`) or heredocs. This breaks the protocol and risks data loss.
 
@@ -125,6 +164,27 @@ claudepm task add "Fix issue Y"    # Track the fix
 ```bash
 claudepm log "Fixed auth bug, all tests passing" --next "Deploy to staging"
 claudepm task done <uuid>          # Mark completed work
+```
+
+### Searching logs (allowed read operations):
+```bash
+# Find all security-related work
+grep "#security" LOG.md
+
+# Find work with specific people
+grep "@alice" LOG.md
+
+# Find all errors encountered
+grep "^Error:" LOG.md
+
+# Find all decisions made
+grep "^Decided:" LOG.md
+
+# Find work by commit
+grep "bee8c91" LOG.md
+
+# Find all blocked items
+grep "^Blocked:" LOG.md
 ```
 
 ## Git Integration
