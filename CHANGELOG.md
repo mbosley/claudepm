@@ -1,6 +1,32 @@
 # claudepm Template Changelog
 
-Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
+Track changes to CLAUDE.md and ROADMAP.md templates that affect existing projects.
+
+## v0.2.6 - 2025-07-04
+
+### Added
+- **Human-Readable Task Format**: Complete rewrite of task management system
+  - Tasks now use standard markdown checkboxes instead of CPM::TASK format
+  - Organized in sections: TODO, IN PROGRESS, BLOCKED, DONE
+  - Inline metadata in square brackets: [high], [#tag], [due:2025-01-15], [@alice], [8h]
+  - UUID on separate line for easy parsing
+- **New Task Commands**:
+  - `task start <uuid>` - Move task to IN PROGRESS with timestamp
+  - `task update <uuid> [options]` - Update task metadata
+  - Enhanced filtering: --overdue, -f/--full for detailed view
+- **Automatic Migration**: Old CPM::TASK format automatically converted during upgrade
+
+### Changed
+- Task storage format from `CPM::TASK::uuid::STATUS::date::description` to markdown checkboxes
+- Task commands now support rich metadata options (-p, -t, -d, -a, -e)
+- health_check, adopt_project, find_blocked, get_context, suggest_next all updated for new format
+- Task sections are now standard markdown headings for better readability
+
+### Benefits
+- Tasks are scannable by humans without needing to parse special formats
+- Standard markdown tools can work with task lists
+- Easier to manually edit tasks when needed
+- Better integration with markdown editors and viewers
 
 ## v0.2.5.2 - 2025-07-03
 
@@ -147,7 +173,7 @@ Run `/migrate-project [project-name]` to migrate existing projects.
 - Template files moved from root to organized structure:
   - `CLAUDE_MANAGER.md` → `templates/manager/CLAUDE.md`
   - `CLAUDE_PROJECT_TEMPLATE.md` → `templates/project/CLAUDE.md`
-  - `PROJECT_ROADMAP_TEMPLATE.md` → `templates/project/PROJECT_ROADMAP.md`
+  - `PROJECT_ROADMAP_TEMPLATE.md` → `templates/project/ROADMAP.md`
 - Updated all documentation references to new paths
 - Install script now creates subdirectories in user's `.claude/templates/`
 
@@ -161,7 +187,7 @@ Run `/migrate-project [project-name]` to migrate existing projects.
 - Changelog references in template HTML comments
 - Version status in /orient command output
 - Template versioning explanation in README.md
-- Template versioning design rationale in PROJECT_ROADMAP.md
+- Template versioning design rationale in ROADMAP.md
 
 ### Changed
 - Enhanced integration of template versioning throughout documentation
@@ -170,11 +196,11 @@ Run `/migrate-project [project-name]` to migrate existing projects.
 ## v0.1.3 - 2025-07-01
 
 ### Added
-- HTML comments in templates clarifying CLAUDE.md vs PROJECT_ROADMAP.md roles
+- HTML comments in templates clarifying CLAUDE.md vs ROADMAP.md roles
 - Structured Notes section in PROJECT_ROADMAP_TEMPLATE.md
 
 ### Changed
-- Clarified separation: CLAUDE.md = HOW, PROJECT_ROADMAP.md = WHAT & WHY
+- Clarified separation: CLAUDE.md = HOW, ROADMAP.md = WHAT & WHY
 - Added guidance for where to put philosophy vs instructions
 
 ## v0.1.2 - 2025-07-01
@@ -212,7 +238,7 @@ Run `/migrate-project [project-name]` to migrate existing projects.
 ## v0.1.0 - 2025-06-28
 
 ### Initial Release
-- Three-document system (CLAUDE.md, CLAUDE_LOG.md, PROJECT_ROADMAP.md)
+- Three-document system (CLAUDE.md, CLAUDE_LOG.md, ROADMAP.md)
 - Core principles (Edit don't create, append-only logs)
 - Basic log format
 - Roadmap structure

@@ -237,10 +237,21 @@ EOF
     
     # Import TODOs if found
     if [[ $todo_count -gt 0 ]]; then
-        echo -e "\n## Imported TODOs\n" >> ROADMAP.md
+        # Ensure Tasks section exists
+        if ! grep -q "^## Tasks" ROADMAP.md; then
+            {
+                echo ""
+                echo "## Tasks"
+                echo ""
+                echo "### TODO"
+            } >> ROADMAP.md
+        fi
+        
         if command -v rg >/dev/null 2>&1; then
             rg "TODO|FIXME" --no-heading | while read -r line; do
-                echo "CPM::TASK::$(generate_uuid)::TODO::$(date +%Y-%m-%d)::$line" >> ROADMAP.md
+                echo "- [ ] $line" >> ROADMAP.md
+                echo "  ID: $(generate_uuid)" >> ROADMAP.md
+                echo "" >> ROADMAP.md
             done
         fi
     fi
@@ -293,12 +304,25 @@ health_check() {
     
     # Check blocked tasks
     if [[ -f "ROADMAP.md" ]]; then
-        local blocked_count=$(grep -c "::BLOCKED::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
-        local active_count=$(grep -E "::TODO::|::IN_PROGRESS::" ROADMAP.md 2>/dev/null | wc -l | tr -d ' \n' || echo 0)
+        # Count tasks in each section
+        local todo_count=0
+        local in_progress_count=0
+        local blocked_count=0
+        local in_section=""
         
-        # Ensure we have valid numbers
-        blocked_count=${blocked_count:-0}
-        active_count=${active_count:-0}
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                in_section="${BASH_REMATCH[1]}"
+            elif [[ "$line" =~ ^-[[:space:]]\[([[:space:]]|x)\] ]] && [[ -n "$in_section" ]]; then
+                case "$in_section" in
+                    TODO) ((todo_count++)) ;;
+                    "IN PROGRESS") ((in_progress_count++)) ;;
+                    BLOCKED) ((blocked_count++)) ;;
+                esac
+            fi
+        done < ROADMAP.md
+        
+        local active_count=$((todo_count + in_progress_count))
         
         if [[ "$blocked_count" -gt 0 ]]; then
             echo -e "${YELLOW}⚠ Blocked tasks: $blocked_count${NC}"
@@ -358,7 +382,10 @@ doctor_check() {
                 fi
                 
                 [[ "$version" != "$CLAUDEPM_VERSION" ]] && status="🟠 Outdated"
-                grep -q "::BLOCKED::" ROADMAP.md 2>/dev/null && status="🟠 Blocked"
+                # Check for blocked tasks in new format
+                if grep -q "^### BLOCKED" ROADMAP.md 2>/dev/null && grep -A20 "^### BLOCKED" ROADMAP.md | grep -q "^- \[[ x]\]"; then
+                    status="🟠 Blocked"
+                fi
                 
                 printf "%-20s v%-6s %s\n" "$name:" "$version" "$status"
                 cd - >/dev/null
@@ -369,6 +396,75 @@ doctor_check() {
     echo -e "\nRun 'claudepm upgrade' in outdated projects"
 }
 
+# Ensure tasks section exists in ROADMAP.md
+ensure_tasks_section() {
+    if [[ ! -f "ROADMAP.md" ]]; then
+        echo "No ROADMAP.md found"
+        exit 1
+    fi
+    
+    # Check if Tasks section exists
+    if ! grep -q "^## Tasks" ROADMAP.md; then
+        # Add Tasks section at the end
+        {
+            echo ""
+            echo "## Tasks"
+            echo ""
+            echo "### TODO"
+            echo ""
+            echo "### IN PROGRESS"
+            echo ""
+            echo "### BLOCKED"
+            echo ""
+            echo "### DONE"
+            echo ""
+        } >> ROADMAP.md
+    fi
+}
+
+# Parse task metadata from a line
+parse_task_metadata() {
+    local line="$1"
+    local metadata=""
+    
+    # Extract priority
+    if [[ "$line" =~ \[high\] ]]; then
+        metadata="${metadata}priority:high "
+    elif [[ "$line" =~ \[medium\] ]]; then
+        metadata="${metadata}priority:medium "
+    elif [[ "$line" =~ \[low\] ]]; then
+        metadata="${metadata}priority:low "
+    fi
+    
+    # Extract tags
+    if [[ "$line" =~ \[#([^]]+)\] ]]; then
+        local tags="${BASH_REMATCH[1]}"
+        metadata="${metadata}tags:${tags} "
+    fi
+    
+    # Extract due date
+    if [[ "$line" =~ \[due:([0-9-]+)\] ]]; then
+        metadata="${metadata}due:${BASH_REMATCH[1]} "
+    fi
+    
+    # Extract assignee
+    if [[ "$line" =~ \[@([^]]+)\] ]]; then
+        metadata="${metadata}assignee:@${BASH_REMATCH[1]} "
+    fi
+    
+    # Extract estimate
+    if [[ "$line" =~ \[([0-9]+[hd])\] ]]; then
+        metadata="${metadata}estimate:${BASH_REMATCH[1]} "
+    fi
+    
+    # Extract blocked reason
+    if [[ "$line" =~ \[blocked:([^]]+)\] ]]; then
+        metadata="${metadata}blocked:${BASH_REMATCH[1]} "
+    fi
+    
+    echo "$metadata"
+}
+
 # Task management
 task_command() {
     local subcommand="${1:-list}"
@@ -376,46 +472,285 @@ task_command() {
     
     case "$subcommand" in
         add)
-            local description="$*"
+            ensure_tasks_section
+            
+            local description=""
+            local priority=""
+            local tags=()
+            local due_date=""
+            local assignee=""
+            local estimate=""
+            
+            # Parse arguments
+            while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    -p|--priority)
+                        priority="$2"
+                        shift 2
+                        ;;
+                    -t|--tag)
+                        tags+=("$2")
+                        shift 2
+                        ;;
+                    -d|--due)
+                        due_date="$2"
+                        shift 2
+                        ;;
+                    -a|--assign)
+                        assignee="$2"
+                        shift 2
+                        ;;
+                    -e|--estimate)
+                        estimate="$2"
+                        shift 2
+                        ;;
+                    *)
+                        # Collect remaining args as description
+                        description="$description $1"
+                        shift
+                        ;;
+                esac
+            done
+            
+            description=$(echo "$description" | sed 's/^ *//')
+            
             if [[ -z "$description" ]]; then
                 echo "Error: Task description required"
-                echo "Usage: claudepm task add <description>"
+                echo "Usage: claudepm task add <description> [options]"
                 exit 1
             fi
+            
             local uuid=$(generate_uuid)
-            echo "CPM::TASK::$uuid::TODO::$(date +%Y-%m-%d)::$description" >> ROADMAP.md
+            
+            # Build task line
+            local task_line="- [ ] $description"
+            [[ -n "$priority" ]] && task_line="$task_line [$priority]"
+            if [[ ${#tags[@]} -gt 0 ]]; then
+                local tag_list=$(printf "#%s" "${tags[@]}" | sed 's/#/, #/g' | sed 's/^, //')
+                task_line="$task_line [$tag_list]"
+            fi
+            [[ -n "$due_date" ]] && task_line="$task_line [due:$due_date]"
+            [[ -n "$assignee" ]] && task_line="$task_line [$assignee]"
+            [[ -n "$estimate" ]] && task_line="$task_line [$estimate]"
+            
+            # Find TODO section and add task
+            local todo_line=$(grep -n "^### TODO" ROADMAP.md | cut -d: -f1)
+            local next_section_line=$(tail -n +$((todo_line + 1)) ROADMAP.md | grep -n "^###" | head -1 | cut -d: -f1)
+            
+            if [[ -n "$next_section_line" ]]; then
+                # Insert before next section
+                local insert_line=$((todo_line + next_section_line - 1))
+                sed -i.bak "${insert_line}i\\
+$task_line\\
+  ID: $uuid\\
+" ROADMAP.md
+            else
+                # Append to end of file
+                {
+                    echo "$task_line"
+                    echo "  ID: $uuid"
+                    echo ""
+                } >> ROADMAP.md
+            fi
+            
             echo "Added task: $uuid"
             ;;
             
         list)
-            if [[ ! -f "ROADMAP.md" ]]; then
-                echo "No ROADMAP.md found"
+            ensure_tasks_section
+            
+            local filter_status=""
+            local filter_priority=""
+            local filter_tag=""
+            local show_full=false
+            local show_overdue=false
+            
+            # Parse list options
+            while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    --todo|--done|--blocked|--in-progress)
+                        filter_status=$(echo "$1" | sed 's/--//' | tr '-' ' ' | tr '[:lower:]' '[:upper:]')
+                        shift
+                        ;;
+                    -p|--priority)
+                        filter_priority="$2"
+                        shift 2
+                        ;;
+                    -t|--tag)
+                        filter_tag="$2"
+                        shift 2
+                        ;;
+                    -f|--full)
+                        show_full=true
+                        shift
+                        ;;
+                    --overdue)
+                        show_overdue=true
+                        shift
+                        ;;
+                    *)
+                        shift
+                        ;;
+                esac
+            done
+            
+            # Read and display tasks
+            local in_section=""
+            local task_buffer=""
+            local task_id=""
+            
+            while IFS= read -r line; do
+                # Check for section headers
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                    if [[ -z "$filter_status" ]] || [[ "$in_section" == "$filter_status" ]]; then
+                        echo ""
+                        echo "$line"
+                    fi
+                    continue
+                fi
+                
+                # Process task lines
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+                    local checkbox="${BASH_REMATCH[1]}"
+                    local task_content="${BASH_REMATCH[2]}"
+                    
+                    # Apply filters
+                    if [[ -n "$filter_status" ]] && [[ "$in_section" != "$filter_status" ]]; then
+                        continue
+                    fi
+                    
+                    if [[ -n "$filter_priority" ]] && ! [[ "$task_content" =~ \["$filter_priority"\] ]]; then
+                        continue
+                    fi
+                    
+                    if [[ -n "$filter_tag" ]] && ! [[ "$task_content" =~ "#$filter_tag" ]]; then
+                        continue
+                    fi
+                    
+                    if [[ "$show_overdue" == true ]]; then
+                        if [[ "$task_content" =~ \[due:([0-9-]+)\] ]]; then
+                            local due_date="${BASH_REMATCH[1]}"
+                            if [[ $(date -d "$due_date" +%s) -lt $(date +%s) ]]; then
+                                task_buffer="$line"
+                            else
+                                continue
+                            fi
+                        else
+                            continue
+                        fi
+                    else
+                        task_buffer="$line"
+                    fi
+                elif [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]]; then
+                    task_id="${BASH_REMATCH[1]}"
+                    if [[ -n "$task_buffer" ]]; then
+                        if [[ "$show_full" == true ]]; then
+                            echo "$task_buffer"
+                            echo "  ID: $task_id"
+                        else
+                            # Extract just the description without metadata
+                            local desc=$(echo "$task_buffer" | sed 's/- \[[x ]\] //' | sed 's/ \[[^]]*\]//g')
+                            echo "[$task_id] $desc"
+                        fi
+                    fi
+                    task_buffer=""
+                    task_id=""
+                fi
+            done < ROADMAP.md
+            ;;
+            
+        start)
+            local uuid="${1:-}"
+            if [[ -z "$uuid" ]]; then
+                echo "Error: UUID required"
+                echo "Usage: claudepm task start <uuid>"
                 exit 1
             fi
             
-            local filter="${1:-}"
-            echo "Tasks:"
-            if [[ "$filter" == "--blocked" ]]; then
-                grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md | while IFS= read -r line; do
-                    # Split by :: using sed
-                    local parts=$(echo "$line" | sed 's/::/|/g')
-                    local uuid=$(echo "$parts" | cut -d'|' -f3)
-                    local status=$(echo "$parts" | cut -d'|' -f4)
-                    local date=$(echo "$parts" | cut -d'|' -f5)
-                    local desc=$(echo "$parts" | cut -d'|' -f6-)
-                    printf "[%s] %s - %s\n" "$status" "$date" "$desc"
-                done
-            else
-                grep "CPM::TASK::" ROADMAP.md | while IFS= read -r line; do
-                    # Split by :: using sed
-                    local parts=$(echo "$line" | sed 's/::/|/g')
-                    local uuid=$(echo "$parts" | cut -d'|' -f3)
-                    local status=$(echo "$parts" | cut -d'|' -f4)
-                    local date=$(echo "$parts" | cut -d'|' -f5)
-                    local desc=$(echo "$parts" | cut -d'|' -f6-)
-                    printf "[%s] %s - %s\n" "$status" "$date" "$desc"
-                done
+            ensure_tasks_section
+            
+            # First, find the task and move it to IN PROGRESS
+            local task_found=false
+            local temp_file=$(mktemp)
+            local in_section=""
+            local task_to_move=""
+            local task_id_to_move=""
+            
+            # Read file and extract task
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                fi
+                
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    task_found=true
+                    task_id_to_move="$line"
+                    # Add started timestamp if not in IN PROGRESS
+                    if [[ "$in_section" != "IN PROGRESS" ]] && ! [[ "$task_to_move" =~ \[started: ]]; then
+                        task_to_move=$(echo "$task_to_move" | sed "s/$/ [started:$(date +%Y-%m-%d)]/")
+                    fi
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]] && [[ -z "$task_to_move" ]]; then
+                    # Store potential task line
+                    local temp_task="$line"
+                fi
+                
+                if [[ "$task_found" == true ]] && [[ -z "$task_to_move" ]]; then
+                    task_to_move="$temp_task"
+                fi
+            done < ROADMAP.md
+            
+            if [[ "$task_found" != true ]]; then
+                echo "Error: Task $uuid not found"
+                exit 1
             fi
+            
+            # Rewrite file with task moved
+            in_section=""
+            local skip_next_id=false
+            
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                    echo "$line" >> "$temp_file"
+                    
+                    # Add task after IN PROGRESS header
+                    if [[ "$in_section" == "IN PROGRESS" ]] && [[ -n "$task_to_move" ]]; then
+                        echo "$task_to_move" >> "$temp_file"
+                        echo "$task_id_to_move" >> "$temp_file"
+                        echo "" >> "$temp_file"
+                        task_to_move=""
+                    fi
+                    continue
+                fi
+                
+                # Skip the original task
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$skip_next_id" == true ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]]; then
+                    # Check if next line is our task ID
+                    local next_line=$(sed -n '/^'"$line"'/{n;p;}' ROADMAP.md)
+                    if [[ "$next_line" =~ ID:[[:space:]]$uuid ]]; then
+                        skip_next_id=true
+                        continue
+                    fi
+                fi
+                
+                echo "$line" >> "$temp_file"
+            done < ROADMAP.md
+            
+            mv "$temp_file" ROADMAP.md
+            echo "Started task $uuid"
             ;;
             
         done)
@@ -425,9 +760,90 @@ task_command() {
                 echo "Usage: claudepm task done <uuid>"
                 exit 1
             fi
-            # Update task status to DONE
-            sed -i.bak "s/CPM::TASK::$uuid::[^:]*::/CPM::TASK::$uuid::DONE::/" ROADMAP.md
-            echo "Marked task $uuid as DONE"
+            
+            ensure_tasks_section
+            
+            # Find task and update checkbox, then move to DONE section
+            local task_found=false
+            local temp_file=$(mktemp)
+            local in_section=""
+            local task_to_move=""
+            local task_id_to_move=""
+            
+            # First pass: find and modify task
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                fi
+                
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    task_found=true
+                    task_id_to_move="$line"
+                    # Update checkbox to checked and add completed timestamp
+                    task_to_move=$(echo "$task_to_move" | sed 's/- \[ \]/- [x]/')
+                    if ! [[ "$task_to_move" =~ \[completed: ]]; then
+                        task_to_move=$(echo "$task_to_move" | sed "s/$/ [completed:$(date +%Y-%m-%d)]/")
+                    fi
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]] && [[ -z "$task_to_move" ]]; then
+                    local temp_task="$line"
+                fi
+                
+                if [[ "$task_found" == true ]] && [[ -z "$task_to_move" ]]; then
+                    task_to_move="$temp_task"
+                fi
+            done < ROADMAP.md
+            
+            if [[ "$task_found" != true ]]; then
+                echo "Error: Task $uuid not found"
+                exit 1
+            fi
+            
+            # Second pass: rewrite file
+            in_section=""
+            local skip_next_id=false
+            
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                    echo "$line" >> "$temp_file"
+                    
+                    # Add task after DONE header
+                    if [[ "$in_section" == "DONE" ]] && [[ -n "$task_to_move" ]]; then
+                        echo "$task_to_move" >> "$temp_file"
+                        echo "$task_id_to_move" >> "$temp_file"
+                        echo "" >> "$temp_file"
+                        task_to_move=""
+                    fi
+                    continue
+                fi
+                
+                # Skip the original task
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$skip_next_id" == true ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]]; then
+                    # Check if next line is our task ID
+                    local next_line=$(sed -n '/^'"$line"'/{n;p;}' ROADMAP.md)
+                    if [[ "$next_line" =~ ID:[[:space:]]$uuid ]]; then
+                        skip_next_id=true
+                        continue
+                    fi
+                fi
+                
+                echo "$line" >> "$temp_file"
+            done < ROADMAP.md
+            
+            mv "$temp_file" ROADMAP.md
+            echo "Completed task $uuid"
             ;;
             
         block)
@@ -438,17 +854,380 @@ task_command() {
                 echo "Usage: claudepm task block <uuid> <reason>"
                 exit 1
             fi
-            # Update task status to BLOCKED and append reason
-            sed -i.bak "s/CPM::TASK::$uuid::[^:]*::\(.*\)/CPM::TASK::$uuid::BLOCKED::\1 (Blocked: $reason)/" ROADMAP.md
-            echo "Marked task $uuid as BLOCKED"
+            
+            ensure_tasks_section
+            
+            # Find task and move to BLOCKED section with reason
+            local task_found=false
+            local temp_file=$(mktemp)
+            local in_section=""
+            local task_to_move=""
+            local task_id_to_move=""
+            
+            # First pass: find task
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                fi
+                
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    task_found=true
+                    task_id_to_move="$line"
+                    # Add blocked reason
+                    if ! [[ "$task_to_move" =~ \[blocked: ]]; then
+                        task_to_move=$(echo "$task_to_move" | sed "s/$/ [blocked:$reason]/")
+                    fi
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]] && [[ -z "$task_to_move" ]]; then
+                    local temp_task="$line"
+                fi
+                
+                if [[ "$task_found" == true ]] && [[ -z "$task_to_move" ]]; then
+                    task_to_move="$temp_task"
+                fi
+            done < ROADMAP.md
+            
+            if [[ "$task_found" != true ]]; then
+                echo "Error: Task $uuid not found"
+                exit 1
+            fi
+            
+            # Second pass: rewrite file
+            in_section=""
+            local skip_next_id=false
+            
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                    echo "$line" >> "$temp_file"
+                    
+                    # Add task after BLOCKED header
+                    if [[ "$in_section" == "BLOCKED" ]] && [[ -n "$task_to_move" ]]; then
+                        echo "$task_to_move" >> "$temp_file"
+                        echo "$task_id_to_move" >> "$temp_file"
+                        echo "" >> "$temp_file"
+                        task_to_move=""
+                    fi
+                    continue
+                fi
+                
+                # Skip the original task
+                if [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$skip_next_id" == true ]]; then
+                    skip_next_id=false
+                    continue
+                fi
+                
+                if [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\] ]]; then
+                    # Check if next line is our task ID
+                    local next_line=$(sed -n '/^'"$line"'/{n;p;}' ROADMAP.md)
+                    if [[ "$next_line" =~ ID:[[:space:]]$uuid ]]; then
+                        skip_next_id=true
+                        continue
+                    fi
+                fi
+                
+                echo "$line" >> "$temp_file"
+            done < ROADMAP.md
+            
+            mv "$temp_file" ROADMAP.md
+            echo "Blocked task $uuid: $reason"
+            ;;
+            
+        update)
+            local uuid="${1:-}"
+            if [[ -z "$uuid" ]]; then
+                echo "Error: UUID required"
+                echo "Usage: claudepm task update <uuid> [options]"
+                exit 1
+            fi
+            shift
+            
+            ensure_tasks_section
+            
+            # Parse update options
+            local new_priority=""
+            local new_tags=()
+            local new_due=""
+            local new_assignee=""
+            local new_estimate=""
+            
+            while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    -p|--priority)
+                        new_priority="$2"
+                        shift 2
+                        ;;
+                    -t|--tag)
+                        new_tags+=("$2")
+                        shift 2
+                        ;;
+                    -d|--due)
+                        new_due="$2"
+                        shift 2
+                        ;;
+                    -a|--assign)
+                        new_assignee="$2"
+                        shift 2
+                        ;;
+                    -e|--estimate)
+                        new_estimate="$2"
+                        shift 2
+                        ;;
+                    *)
+                        echo "Unknown option: $1"
+                        exit 1
+                        ;;
+                esac
+            done
+            
+            # Find and update task
+            local task_found=false
+            local temp_file=$(mktemp)
+            local in_section=""
+            
+            while IFS= read -r line; do
+                if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                    in_section="${BASH_REMATCH[1]}"
+                    echo "$line" >> "$temp_file"
+                elif [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]] && [[ "${BASH_REMATCH[1]}" == "$uuid" ]]; then
+                    task_found=true
+                    echo "$line" >> "$temp_file"
+                elif [[ "$task_found" == true ]] && [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+                    local checkbox="${BASH_REMATCH[1]}"
+                    local task_content="${BASH_REMATCH[2]}"
+                    
+                    # Remove existing metadata to update
+                    local clean_desc=$(echo "$task_content" | sed 's/ \[[^]]*\]//g')
+                    
+                    # Rebuild with updated metadata
+                    local updated_line="- [$checkbox] $clean_desc"
+                    
+                    # Priority
+                    if [[ -n "$new_priority" ]]; then
+                        updated_line="$updated_line [$new_priority]"
+                    elif [[ "$task_content" =~ \[(high|medium|low)\] ]]; then
+                        updated_line="$updated_line [${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    # Tags
+                    if [[ ${#new_tags[@]} -gt 0 ]]; then
+                        local tag_list=$(IFS=', '; echo "#${new_tags[*]}")
+                        updated_line="$updated_line [$tag_list]"
+                    elif [[ "$task_content" =~ \[#([^]]+)\] ]]; then
+                        updated_line="$updated_line [#${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    # Due date
+                    if [[ -n "$new_due" ]]; then
+                        updated_line="$updated_line [due:$new_due]"
+                    elif [[ "$task_content" =~ \[due:([^]]+)\] ]]; then
+                        updated_line="$updated_line [due:${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    # Assignee
+                    if [[ -n "$new_assignee" ]]; then
+                        updated_line="$updated_line [$new_assignee]"
+                    elif [[ "$task_content" =~ \[@([^]]+)\] ]]; then
+                        updated_line="$updated_line [@${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    # Estimate
+                    if [[ -n "$new_estimate" ]]; then
+                        updated_line="$updated_line [$new_estimate]"
+                    elif [[ "$task_content" =~ \[([0-9]+[hd])\] ]]; then
+                        updated_line="$updated_line [${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    # Preserve status-specific metadata
+                    if [[ "$task_content" =~ \[started:([^]]+)\] ]]; then
+                        updated_line="$updated_line [started:${BASH_REMATCH[1]}]"
+                    fi
+                    if [[ "$task_content" =~ \[completed:([^]]+)\] ]]; then
+                        updated_line="$updated_line [completed:${BASH_REMATCH[1]}]"
+                    fi
+                    if [[ "$task_content" =~ \[blocked:([^]]+)\] ]]; then
+                        updated_line="$updated_line [blocked:${BASH_REMATCH[1]}]"
+                    fi
+                    
+                    echo "$updated_line" >> "$temp_file"
+                    task_found=false
+                else
+                    echo "$line" >> "$temp_file"
+                fi
+            done < ROADMAP.md
+            
+            mv "$temp_file" ROADMAP.md
+            echo "Updated task $uuid"
             ;;
             
         *)
             echo "Unknown task subcommand: $subcommand"
-            echo "Available: add, list, done, block"
+            echo "Available: add, list, start, done, block, update"
             exit 1
             ;;
     esac
+}
+
+# Migrate old CPM::TASK format to new human-readable format
+migrate_tasks() {
+    if [[ ! -f "ROADMAP.md" ]]; then
+        return 0
+    fi
+    
+    # Check if migration is needed
+    if ! grep -q "CPM::TASK::" ROADMAP.md; then
+        return 0
+    fi
+    
+    echo "Migrating tasks to new human-readable format..."
+    
+    # Create temp file
+    local temp_file=$(mktemp)
+    local migrated_count=0
+    
+    # Read and categorize old tasks
+    local todo_tasks=()
+    local in_progress_tasks=()
+    local blocked_tasks=()
+    local done_tasks=()
+    
+    while IFS= read -r line; do
+        if [[ "$line" =~ CPM::TASK::([^:]+)::([^:]+)::([^:]+)::(.+) ]]; then
+            local uuid="${BASH_REMATCH[1]}"
+            local status="${BASH_REMATCH[2]}"
+            local date="${BASH_REMATCH[3]}"
+            local desc="${BASH_REMATCH[4]}"
+            
+            # Parse additional metadata from description
+            local priority=""
+            local tags=""
+            local due=""
+            local assignee=""
+            local estimate=""
+            local blocked_reason=""
+            
+            # Extract metadata patterns from description
+            if [[ "$desc" =~ \|\|priority:([^|]+)\|\| ]]; then
+                priority="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/||priority:[^|]*||//g")
+            fi
+            
+            if [[ "$desc" =~ \|\|tags:([^|]+)\|\| ]]; then
+                tags="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/||tags:[^|]*||//g")
+            fi
+            
+            if [[ "$desc" =~ \|\|due:([^|]+)\|\| ]]; then
+                due="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/||due:[^|]*||//g")
+            fi
+            
+            if [[ "$desc" =~ \|\|assignee:([^|]+)\|\| ]]; then
+                assignee="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/||assignee:[^|]*||//g")
+            fi
+            
+            if [[ "$desc" =~ \|\|estimate:([^|]+)\|\| ]]; then
+                estimate="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/||estimate:[^|]*||//g")
+            fi
+            
+            if [[ "$desc" =~ \(Blocked:[[:space:]]([^\)]+)\) ]]; then
+                blocked_reason="${BASH_REMATCH[1]}"
+                desc=$(echo "$desc" | sed "s/ (Blocked: [^)]*)//g")
+            fi
+            
+            # Build new format task line
+            local checkbox="[ ]"
+            [[ "$status" == "DONE" ]] && checkbox="[x]"
+            
+            local task_line="- $checkbox $desc"
+            [[ -n "$priority" ]] && task_line="$task_line [$priority]"
+            [[ -n "$tags" ]] && task_line="$task_line [#$tags]"
+            [[ -n "$due" ]] && task_line="$task_line [due:$due]"
+            [[ -n "$assignee" ]] && task_line="$task_line [$assignee]"
+            [[ -n "$estimate" ]] && task_line="$task_line [$estimate]"
+            
+            # Add status-specific metadata
+            case "$status" in
+                TODO)
+                    todo_tasks+=("$task_line\n  ID: $uuid\n")
+                    ;;
+                IN_PROGRESS)
+                    task_line="$task_line [started:$date]"
+                    in_progress_tasks+=("$task_line\n  ID: $uuid\n")
+                    ;;
+                BLOCKED)
+                    [[ -n "$blocked_reason" ]] && task_line="$task_line [blocked:$blocked_reason]"
+                    blocked_tasks+=("$task_line\n  ID: $uuid\n")
+                    ;;
+                DONE)
+                    task_line="$task_line [completed:$date]"
+                    done_tasks+=("$task_line\n  ID: $uuid\n")
+                    ;;
+            esac
+            
+            ((migrated_count++))
+        fi
+    done < ROADMAP.md
+    
+    # Write non-task content and new task sections
+    local in_old_tasks=false
+    while IFS= read -r line; do
+        # Skip old task lines
+        if [[ "$line" =~ CPM::TASK:: ]]; then
+            in_old_tasks=true
+            continue
+        fi
+        
+        # Check if we're leaving the old tasks section
+        if [[ "$in_old_tasks" == true ]] && ! [[ "$line" =~ CPM::TASK:: ]] && [[ -n "$line" ]]; then
+            in_old_tasks=false
+        fi
+        
+        if [[ "$in_old_tasks" == false ]]; then
+            echo "$line" >> "$temp_file"
+        fi
+    done < ROADMAP.md
+    
+    # Add new Tasks section
+    {
+        echo ""
+        echo "## Tasks"
+        echo ""
+        echo "### TODO"
+        for task in "${todo_tasks[@]}"; do
+            echo -e "$task"
+        done
+        echo ""
+        echo "### IN PROGRESS"
+        for task in "${in_progress_tasks[@]}"; do
+            echo -e "$task"
+        done
+        echo ""
+        echo "### BLOCKED"
+        for task in "${blocked_tasks[@]}"; do
+            echo -e "$task"
+        done
+        echo ""
+        echo "### DONE"
+        for task in "${done_tasks[@]}"; do
+            echo -e "$task"
+        done
+    } >> "$temp_file"
+    
+    # Backup and replace
+    cp ROADMAP.md ROADMAP.md.backup_$(date +%Y%m%d_%H%M%S)
+    mv "$temp_file" ROADMAP.md
+    
+    echo "Migrated $migrated_count tasks to new format"
+    echo "Backup saved as ROADMAP.md.backup_*"
 }
 
 # Upgrade project templates
@@ -468,6 +1247,9 @@ upgrade_project() {
     
     echo "Upgrading from v$current_version to v$CLAUDEPM_VERSION..."
     
+    # Migrate tasks if needed
+    migrate_tasks
+    
     # Update version marker
     sed -i.bak "s/template_version=.*/template_version=$CLAUDEPM_VERSION/" .claudepm
     sed -i.bak "s/last_update_check=.*/last_update_check=$(date +%Y-%m-%d)/" .claudepm
@@ -483,9 +1265,20 @@ upgrade_project() {
 # Find blocked items
 find_blocked() {
     echo "=== Blocked Tasks ==="
-    grep "CPM::TASK::.*::BLOCKED" ROADMAP.md 2>/dev/null | \
-        cut -d'::' -f6- | \
-        sed 's/^/  - /'
+    
+    local in_blocked=false
+    while IFS= read -r line; do
+        if [[ "$line" == "### BLOCKED" ]]; then
+            in_blocked=true
+        elif [[ "$line" =~ ^### ]]; then
+            in_blocked=false
+        elif [[ "$in_blocked" == true ]] && [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+            local task="${BASH_REMATCH[1]}"
+            # Extract just the description without metadata
+            task=$(echo "$task" | sed 's/ \[[^]]*\]//g')
+            echo "  - $task"
+        fi
+    done < ROADMAP.md 2>/dev/null
     
     echo -e "\n=== Blocked in Logs ==="
     grep -A2 "^Blocked:" LOG.md 2>/dev/null | tail -20
@@ -547,9 +1340,30 @@ get_context() {
     # Active tasks
     echo "ACTIVE_TASKS:"
     if [[ -f "ROADMAP.md" ]]; then
-        local todo_count=$(grep -c "CPM::TASK::.*::TODO::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
-        local progress_count=$(grep -c "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
-        local blocked_count=$(grep -c "CPM::TASK::.*::BLOCKED::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
+        # Count tasks in each section
+        local todo_count=0
+        local progress_count=0
+        local blocked_count=0
+        local in_section=""
+        local in_progress_tasks=()
+        
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                in_section="${BASH_REMATCH[1]}"
+            elif [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]] && [[ -n "$in_section" ]]; then
+                case "$in_section" in
+                    TODO) ((todo_count++)) ;;
+                    "IN PROGRESS") 
+                        ((progress_count++))
+                        local task="${BASH_REMATCH[1]}"
+                        # Extract just the description without metadata
+                        task=$(echo "$task" | sed 's/ \[[^]]*\]//g')
+                        in_progress_tasks+=("$task")
+                        ;;
+                    BLOCKED) ((blocked_count++)) ;;
+                esac
+            fi
+        done < ROADMAP.md
         
         echo "  TODO: $todo_count tasks"
         echo "  IN_PROGRESS: $progress_count tasks"
@@ -559,10 +1373,8 @@ get_context() {
         if [[ "$progress_count" -gt 0 ]]; then
             echo ""
             echo "  Currently in progress:"
-            grep "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md | while IFS= read -r line; do
-                local parts=$(echo "$line" | sed 's/::/|/g')
-                local desc=$(echo "$parts" | cut -d'|' -f6-)
-                echo "    - $desc"
+            for task in "${in_progress_tasks[@]}"; do
+                echo "    - $task"
             done
         fi
     else
@@ -636,40 +1448,75 @@ suggest_next() {
     
     # Check for in-progress tasks first
     if [[ -f "ROADMAP.md" ]]; then
-        local in_progress=$(grep "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md)
-        if [[ -n "$in_progress" ]]; then
-            echo "Continue in-progress work:"
-            echo "$in_progress" | while IFS= read -r line; do
-                local parts=$(echo "$line" | sed 's/::/|/g')
-                local uuid=$(echo "$parts" | cut -d'|' -f3)
-                local desc=$(echo "$parts" | cut -d'|' -f6-)
-                echo "  [$uuid] $desc"
-            done
-            echo ""
+        local in_section=""
+        local task_count=0
+        
+        # First check IN PROGRESS section
+        echo "Continue in-progress work:"
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                in_section="${BASH_REMATCH[1]}"
+            elif [[ "$in_section" == "IN PROGRESS" ]] && [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+                local task="${BASH_REMATCH[2]}"
+            elif [[ "$in_section" == "IN PROGRESS" ]] && [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]]; then
+                local uuid="${BASH_REMATCH[1]}"
+                if [[ -n "$task" ]]; then
+                    # Extract just the description without metadata
+                    local desc=$(echo "$task" | sed 's/ \[[^]]*\]//g')
+                    echo "  [$uuid] $desc"
+                    ((task_count++))
+                    task=""
+                fi
+            fi
+        done < ROADMAP.md
+        
+        if [[ $task_count -eq 0 ]]; then
+            echo "  No tasks in progress"
         fi
+        echo ""
         
         # Then show TODO tasks
-        local todos=$(grep "CPM::TASK::.*::TODO::" ROADMAP.md | head -5)
-        if [[ -n "$todos" ]]; then
-            echo "Available TODO tasks:"
-            echo "$todos" | while IFS= read -r line; do
-                local parts=$(echo "$line" | sed 's/::/|/g')
-                local uuid=$(echo "$parts" | cut -d'|' -f3)
-                local desc=$(echo "$parts" | cut -d'|' -f6-)
-                echo "  [$uuid] $desc"
-            done
+        echo "Available TODO tasks:"
+        task_count=0
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                in_section="${BASH_REMATCH[1]}"
+            elif [[ "$in_section" == "TODO" ]] && [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+                local task="${BASH_REMATCH[2]}"
+            elif [[ "$in_section" == "TODO" ]] && [[ "$line" =~ ^[[:space:]]+ID:[[:space:]](.+) ]]; then
+                local uuid="${BASH_REMATCH[1]}"
+                if [[ -n "$task" ]] && [[ $task_count -lt 5 ]]; then
+                    # Extract just the description without metadata
+                    local desc=$(echo "$task" | sed 's/ \[[^]]*\]//g')
+                    echo "  [$uuid] $desc"
+                    ((task_count++))
+                    task=""
+                fi
+            fi
+        done < ROADMAP.md
+        
+        if [[ $task_count -eq 0 ]]; then
+            echo "  No TODO tasks"
         fi
         
         # Show blocked tasks
-        local blocked=$(grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md)
-        if [[ -n "$blocked" ]]; then
-            echo ""
-            echo "Blocked tasks (resolve blockers first):"
-            echo "$blocked" | while IFS= read -r line; do
-                local parts=$(echo "$line" | sed 's/::/|/g')
-                local desc=$(echo "$parts" | cut -d'|' -f6-)
+        echo ""
+        echo "Blocked tasks (resolve blockers first):"
+        task_count=0
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^###[[:space:]]+(TODO|IN\ PROGRESS|BLOCKED|DONE) ]]; then
+                in_section="${BASH_REMATCH[1]}"
+            elif [[ "$in_section" == "BLOCKED" ]] && [[ "$line" =~ ^-[[:space:]]\[([[:space:]]x)\][[:space:]](.+) ]]; then
+                local task="${BASH_REMATCH[2]}"
+                # Extract just the description without metadata
+                local desc=$(echo "$task" | sed 's/ \[[^]]*\]//g')
                 echo "  - $desc"
-            done
+                ((task_count++))
+            fi
+        done < ROADMAP.md
+        
+        if [[ $task_count -eq 0 ]]; then
+            echo "  No blocked tasks"
         fi
     else
         echo "No ROADMAP.md found"
