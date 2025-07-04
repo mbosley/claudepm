@@ -4,9 +4,9 @@
 [One paragraph summary of where the project stands right now]
 
 ## Active Work
-- [ ] Current task being worked on
-- [ ] Next immediate priority
-- [ ] Task with deadline [DUE: 2025-07-01]
+- [ ] Current task being worked on [high] [#feature]
+- [ ] Next immediate priority [medium] [@alice]
+- [ ] Task with deadline [high] [due:2025-07-01]
 
 ## Upcoming
 
@@ -40,6 +40,12 @@ ROADMAP.md is for WHAT & WHY - context, plans, decisions
 Put project philosophy, design rationale, and architecture decisions here
 Keep behavioral instructions (HOW to work) in CLAUDE.md
 
+Task Format:
+- Use markdown checkboxes with inline metadata
+- Each task must have a UUID on the line below (ID: <uuid>)
+- Example: - [ ] Fix auth bug [high] [#auth] [due:2025-01-15]
+           ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+
 This template version: See TEMPLATE_CHANGELOG.md for version history
 -->
 
@@ -56,8 +62,9 @@ This template version: See TEMPLATE_CHANGELOG.md for version history
 ### Development Notes
 - This roadmap drives development - each version can become a git branch
 - Structure enables future automation: "work on v0.2 features"
-- Add [DUE: YYYY-MM-DD] to any task with a deadline
+- Use rich metadata for tasks: [priority] [#tags] [due:date] [@assignee] [estimate]
 - Manager Claude can scan all projects for upcoming deadlines
+- Tasks are managed with: `claudepm task add/list/done/block/start/update`
 
 ---
 Last updated: YYYY-MM-DD HH:MM

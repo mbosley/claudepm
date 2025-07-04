@@ -58,6 +58,35 @@ This prevents confusion when reading logs later!
 - **Think git branches**: Each version could be a feature branch
 - **Enable automation**: Clear enough that future Claude could execute
 
+## Task Management
+
+**IMPORTANT**: Use claudepm commands for all task operations. Never manually edit task formats.
+
+```bash
+# Add a new task
+claudepm task add "Fix authentication bug" -p high -t auth -d 2025-01-15
+
+# List tasks
+claudepm task list                # All tasks
+claudepm task list --todo         # Only TODO tasks
+claudepm task list -p high        # High priority tasks
+
+# Work on tasks
+claudepm task start <uuid>        # Move to IN PROGRESS
+claudepm task done <uuid>         # Mark as complete
+claudepm task block <uuid> "reason"  # Mark as blocked
+
+# Update task metadata
+claudepm task update <uuid> -p medium -d 2025-01-20
+```
+
+Tasks use human-readable markdown format with rich metadata:
+- `[priority]` - high, medium, low
+- `[#tags]` - For categorization
+- `[due:date]` - Deadlines
+- `[@assignee]` - Responsibility
+- `[estimate]` - Time estimates (2h, 1d, 1w)
+
 ## Log Examples
 
 Good log entry:
