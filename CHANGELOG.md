@@ -8,10 +8,21 @@ Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing
 - **claudepm as Protocol**: Complete rewrite to teach claudepm as Claude's native protocol
 - **New Protocol Commands**:
   - `claudepm context` - Get complete session context on startup
-  - `claudepm log <message> --next <task>` - Log work with proper format
+  - `claudepm log <title> [options]` - Rich logging with multiple did items, blockers, and notes
   - `claudepm next` - Suggest what to work on based on state
 - **Protocol Layers**: Clear hierarchy from commands to direct file access
 - **Evolution Principle**: Protocol grows based on Claude's patterns
+- **Ultra-Rich Log Command**: 
+  - `--did` flag for multiple accomplishments (repeatable)
+  - `--blocked` flag for documenting blockers
+  - `--notes` flag for additional context
+  - `--tag` flag for searchable keywords/hashtags (repeatable)
+  - `--commit` flag for git commit references (repeatable)
+  - `--with` flag for people mentions with @-tags (repeatable)
+  - `--time` flag for time tracking (e.g., "2h", "30m")
+  - `--pr` flag for PR/issue references
+  - `--error` flag for error tracking
+  - `--decided` flag for decision logging
 
 ### Changed
 - Templates completely rewritten to teach protocol usage instead of file manipulation
@@ -19,6 +30,7 @@ Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing
 - Fixed delimiter parsing bug in task list display (replaced :: with | internally)
 - Fixed date resolution in initial LOG.md entries
 - Fixed count parsing issues with proper whitespace stripping
+- Log command enhanced to support rich formatting matching manual logs
 
 ### Fixed
 - Task list display now properly handles :: delimiters in descriptions
