@@ -20,6 +20,13 @@ All core commands tested and working:
 
 ## Active Work
 
+### User Experience Improvements (v0.2.6)
+Based on real usage feedback:
+- [ ] Make task format human-readable (markdown tasks instead of CPM::TASK)
+- [ ] Clarify NOTES.md vs LOG.md usage in templates
+- [ ] Add Gemini PR review workflow (compare implementation to architectural plan)
+- [ ] Improve role boundaries between Manager and Project Lead Claude
+
 ### Documentation & Deployment
 - [ ] Test v0.2.5.1 with actual Claude sessions
 - [ ] Deploy v0.2.5.1 to personal projects
