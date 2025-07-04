@@ -40,13 +40,13 @@ First, let me check where I am and what claudepm structure exists here.
    
    Checking claudepm files...
    ✓ CLAUDE.md found - reading project instructions
-   ✓ PROJECT_ROADMAP.md found - checking current status
+   ✓ ROADMAP.md found - checking current status
    ✓ CLAUDE_LOG.md found - reviewing recent work
    ✓ .claudepm found - checking version
    
    Project: [name from CLAUDE.md]
    Type: [from Project Context section]
-   Current Status: [from PROJECT_ROADMAP.md]
+   Current Status: [from ROADMAP.md]
    Template Version: [version from .claudepm]
    [If outdated: "⚠️ Templates outdated (current: vX.X, latest: v0.1.4) - run /update to refresh"]
    
@@ -54,7 +54,7 @@ First, let me check where I am and what claudepm structure exists here.
    [Show last log entry with Next: items]
    
    Active Work:
-   [List items from PROJECT_ROADMAP.md Active Work]
+   [List items from ROADMAP.md Active Work]
    
    Your immediate focus:
    1. Check git status for uncommitted work
@@ -101,7 +101,7 @@ First, let me check where I am and what claudepm structure exists here.
    
    Key Files Status:
    - CLAUDE.md: [✓/✗]
-   - PROJECT_ROADMAP.md: [✓/✗]  
+   - ROADMAP.md: [✓/✗]  
    - CLAUDE_LOG.md: [✓/✗]
    - .claudepm: [✓/✗]
    

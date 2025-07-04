@@ -56,15 +56,15 @@ Next: Commit these changes as v0.1
 Notes: This prevents rewriting history and maintains trust in the log. Mistakes become learning opportunities when preserved.
 
 ---
-### 2024-06-29 17:35 - Added PROJECT_ROADMAP.md as third core document
+### 2024-06-29 17:35 - Added ROADMAP.md as third core document
 Did:
 - Created PROJECT_ROADMAP_TEMPLATE.md for living project state
 - Updated all templates to read roadmap first, then logs
 - Added roadmap update step to work block instructions
-- Created claudepm's own PROJECT_ROADMAP.md
+- Created claudepm's own ROADMAP.md
 - Updated install.sh to copy roadmap template
 Next: Test the three-document system with a real project
-Notes: This completes the three-document system: CLAUDE.md (process), CLAUDE_LOG.md (history), PROJECT_ROADMAP.md (current state). Manager Claude can now quickly scan roadmaps instead of parsing logs.
+Notes: This completes the three-document system: CLAUDE.md (process), CLAUDE_LOG.md (history), ROADMAP.md (current state). Manager Claude can now quickly scan roadmaps instead of parsing logs.
 
 ---
 
@@ -131,7 +131,7 @@ Notes: Claude doesn't work in time blocks like humans - might do 10 tasks in 5 m
 ### 2025-06-29 18:01 - Caught myself creating new file instead of editing
 Did:
 - Initially created BETA_FEATURES.md (wrong\!)
-- User pointed out this should go in PROJECT_ROADMAP.md
+- User pointed out this should go in ROADMAP.md
 - Moved all content to roadmap's Upcoming section
 - Deleted unnecessary file
 Next: Test the three-document system with a real project
@@ -172,7 +172,7 @@ Notes: These are aspirational features - door is open for proper git workflow, b
 
 ---
 
-### 2025-06-29 18:16 - Clarified PROJECT_ROADMAP.md as future automation driver
+### 2025-06-29 18:16 - Clarified ROADMAP.md as future automation driver
 Did:
 - Added 'Future Vision' section explaining deeper purpose
 - Roadmap isn't just docs - it's structured context for automation
@@ -338,10 +338,10 @@ Notes: Dynamic scoping prevents information overload - agents only read what's r
 
 ### 2025-06-29 19:22 - Added manager report persistence to roadmap and updated progress
 Did:
-- PLANNED: Manager report persistence feature in PROJECT_ROADMAP.md v0.7
+- PLANNED: Manager report persistence feature in ROADMAP.md v0.7
 - PLANNED: Reports will save to ~/.claudepm/reports/ for searchability
 - IMPLEMENTED: Dynamic scoping in CLAUDE_MANAGER.md sub-agent patterns
-- UPDATED: PROJECT_ROADMAP.md Active Work section with accomplishments
+- UPDATED: ROADMAP.md Active Work section with accomplishments
 - DOCUMENTED: v0.1 complete with 28 specific items in Completed section
 Next: Commit and wrap up productive session
 Notes: Manager report persistence creates hierarchical memory - project logs → daily summaries → weekly reports → monthly analysis. Each level aggregates the one below. Makes long-term patterns visible.
@@ -376,7 +376,7 @@ Did:
 - IMPLEMENTED: Brain dump processing pattern in CLAUDE_MANAGER.md
 - DESIGNED: Intelligent inbox that routes unstructured updates to projects
 - ADDED: Simple [DUE: YYYY-MM-DD] deadline notation to templates
-- PLANNED: Brain dump processing feature in PROJECT_ROADMAP.md v0.7
+- PLANNED: Brain dump processing feature in ROADMAP.md v0.7
 - DOCUMENTED: How Manager Claude extracts deadlines, blockers, and priorities
 Next: Commit these additions and close productive session
 Notes: This creates a powerful pattern - users can brain dump to Manager Claude, which parses the input and spawns sub-agents to update each affected project's roadmap. Keeps the core simple (just markdown patterns) while enabling sophisticated multi-project updates.
@@ -385,7 +385,7 @@ Notes: This creates a powerful pattern - users can brain dump to Manager Claude,
 
 ### 2025-06-29 19:55 - Clarified what works today vs future CLI features
 Did:
-- UPDATED: PROJECT_ROADMAP.md to distinguish current capabilities from future CLI
+- UPDATED: ROADMAP.md to distinguish current capabilities from future CLI
 - DOCUMENTED: Brain dump processing works TODAY through Claude's intelligence
 - CLARIFIED: Search, deadline scanning, and reports work with grep/bash + Claude
 - ADDED: "What Already Works" section highlighting no-CLI-needed features
@@ -432,9 +432,9 @@ Notes: The first line of each command file now serves as the descriptor that sho
 ### 2025-06-29 20:12 - Added pre-commit roadmap check guidance
 Did:
 - IMPLEMENTED: "Before committing" guidance in all templates
-- EMPHASIZED: Always update PROJECT_ROADMAP.md before creating commit
+- EMPHASIZED: Always update ROADMAP.md before creating commit
 - ADDED: Checklist for roadmap updates (completed items, new tasks, status)
-- UPDATED: PROJECT_ROADMAP.md timestamp as example of the practice
+- UPDATED: ROADMAP.md timestamp as example of the practice
 Next: Commit all improvements and push to GitHub
 Notes: This prevents the common issue of commits not reflecting roadmap state. Now Claude will always check: Are completed items moved? New tasks added? Status current? This maintains accurate project state.
 
@@ -457,7 +457,7 @@ Notes: Adoption works TODAY through Manager Claude! The /adopt-project command a
 Did:
 - FIXED: /adopt-project now includes complete CLAUDE.md template content
 - IMPROVED: Clear instructions to preserve ALL template sections
-- ADDED: Proper PROJECT_ROADMAP.md generation with template structure
+- ADDED: Proper ROADMAP.md generation with template structure
 - ENHANCED: Initial CLAUDE_LOG.md with header and detailed first entry
 - DOCUMENTED: Guidance for future log entries in the initial log
 Next: Update cv-scraping with proper template content
@@ -469,7 +469,7 @@ Notes: The original /adopt-project was creating minimal files. Now it properly u
 Did:
 - PLANNED: Kanban-style project organization as optional module
 - DESIGNED: Simple markdown-based board (Backlog/Ready/In Progress/Review/Done)
-- PROPOSED: Integration with existing PROJECT_ROADMAP.md structure
+- PROPOSED: Integration with existing ROADMAP.md structure
 - ENVISIONED: /kanban slash command for visual project state
 - MAINTAINED: Keep it simple - just markdown, no complex tooling
 Next: Continue testing adoption functionality
@@ -479,14 +479,14 @@ Notes: Kanban would be an optional enhancement that builds on the existing roadm
 
 ### 2025-06-29 20:45 - Fleshed out Kanban and Work Item ID system design
 Did:
-- REFINED: Kanban as a VIEW of PROJECT_ROADMAP.md, not new storage
+- REFINED: Kanban as a VIEW of ROADMAP.md, not new storage
 - DESIGNED: Work Item ID system (TYPE-## format) for full traceability
 - PLANNED: IDs flow through roadmap → logs → git commits
 - ENVISIONED: Cross-referencing enables "Show me everything about AUTH-01"
 - PROPOSED: HTML comments for metadata to keep roadmaps readable
 - DETAILED: Worker Claude rules for state transitions
 Next: Test existing functionality before implementing new features
-Notes: Key insight - PROJECT_ROADMAP.md already IS a kanban board, we just need to surface it differently. The ID system would enable powerful queries like feature timelines, velocity tracking, and cross-project pattern analysis. Keeping this as future enhancement to avoid feature creep.
+Notes: Key insight - ROADMAP.md already IS a kanban board, we just need to surface it differently. The ID system would enable powerful queries like feature timelines, velocity tracking, and cross-project pattern analysis. Keeping this as future enhancement to avoid feature creep.
 
 ---
 
@@ -607,7 +607,7 @@ Did:
 - DISCUSSED: How to integrate macOS apps (Mail, Calendar, Notes) with claudepm
 - INSTALLED: apple-mcp server for primitive macOS app access
 - DOCUMENTED: Philosophy that MCP servers provide primitives, not workflows
-- ADDED: MCP Integration Philosophy section to PROJECT_ROADMAP.md
+- ADDED: MCP Integration Philosophy section to ROADMAP.md
 Next: Create example slash commands for common integration patterns
 Notes: Key insight - orchestration intelligence belongs in Claude, not in MCP tools. Natural language + slash commands provide the workflow layer on top of MCP primitives.
 
@@ -621,7 +621,7 @@ Did:
 - IMPLEMENTED: Safe append pattern using cat >> with heredoc
 - UPDATED: All templates (CLAUDE.md, CLAUDE_PROJECT_TEMPLATE.md, CLAUDE_MANAGER.md)
 - ADDED: Critical warnings to never use Write/Edit on CLAUDE_LOG.md
-Next: Update PROJECT_ROADMAP.md and test with other projects
+Next: Update ROADMAP.md and test with other projects
 Notes: This pattern makes it mechanically impossible to overwrite logs. The >> operator only appends, and heredoc makes multi-line entries clean. This is a perfect example of "make the right thing easy and the wrong thing impossible."
 
 ---
@@ -643,7 +643,7 @@ Notes: Now it's mechanically impossible to overwrite. The uappnd flag prevents a
 Did:
 - TESTED: Multiline append with heredoc
 - VERIFIED: No extra END_OF_LOG output
-Next: Update PROJECT_ROADMAP.md with append-only documentation
+Next: Update ROADMAP.md with append-only documentation
 Notes: This is a test entry to ensure clean output
 
 ---
@@ -655,7 +655,7 @@ Did:
 - DISCOVERED: System reminders show shell artifacts, not our commands
 - TESTED: Multiple variations to find cleanest approach
 - DOCUMENTED: Proper pattern in all templates
-Next: Re-apply uappnd flag and update PROJECT_ROADMAP.md
+Next: Re-apply uappnd flag and update ROADMAP.md
 Notes: The cat >> with unquoted heredoc is the cleanest pattern. Allows date substitution and multiline content.
 
 ---
@@ -665,7 +665,7 @@ Did:
 - SIMPLIFIED: Using command grouping with braces
 - AVOIDED: Heredoc quirks and shell artifacts
 - UPDATED: All templates with this cleaner pattern
-Next: Re-apply uappnd flag and update PROJECT_ROADMAP.md
+Next: Re-apply uappnd flag and update ROADMAP.md
 Notes: This pattern is simple, readable, and always works correctly
 
 ---
@@ -688,7 +688,7 @@ Notes: Now every claudepm project gets automatic log protection on macOS. The pa
 Did:
 - CREATED: CONTRIBUTING.md with comprehensive feature checklist
 - DOCUMENTED: What to update when adding features (code, templates, version, docs)
-- ADDED: Development process section to PROJECT_ROADMAP.md
+- ADDED: Development process section to ROADMAP.md
 - UPDATED: CLAUDE.md to reference the checklist
 - PROVIDED: Example using append-only protection feature
 Next: Commit these improvements
@@ -697,15 +697,15 @@ Notes: Now we have a systematic process for feature development. This prevents m
 ---
 
 
-### 2025-07-01 11:50 - Clarified CLAUDE.md vs PROJECT_ROADMAP.md separation
+### 2025-07-01 11:50 - Clarified CLAUDE.md vs ROADMAP.md separation
 Did:
 - IDENTIFIED: Overlap caused by dogfooding (using claudepm to develop claudepm)
 - CLARIFIED: CLAUDE.md = HOW to act (behavioral), ROADMAP = WHAT/WHY (context)
-- MOVED: Project philosophy from CLAUDE.md to PROJECT_ROADMAP.md Notes
+- MOVED: Project philosophy from CLAUDE.md to ROADMAP.md Notes
 - REPLACED: Philosophy with specific commands in CLAUDE.md
 - DOCUMENTED: Three-document architecture clearly in roadmap
 Next: Continue using this clearer separation
-Notes: The overlap was natural but confusing. Now each file has a clear purpose: CLAUDE.md instructs behavior, PROJECT_ROADMAP.md holds context and decisions, CLAUDE_LOG.md records history.
+Notes: The overlap was natural but confusing. Now each file has a clear purpose: CLAUDE.md instructs behavior, ROADMAP.md holds context and decisions, CLAUDE_LOG.md records history.
 
 ---
 
@@ -779,7 +779,7 @@ Did:
 - ADDED: 'Architect first' as Core Principle #3 in CLAUDE.md
 - ADDED: Architectural Planning step to Feature Development Checklist
 - DOCUMENTED: When to use architect-first vs direct implementation
-- UPDATED: PROJECT_ROADMAP.md Development Process with architect-first model
+- UPDATED: ROADMAP.md Development Process with architect-first model
 - UPDATED: README.md Philosophy section with AI-powered planning
 Next: Commit and merge to dev branch
 Notes: This formalizes what we learned from template reorg - AI architectural planning dramatically improves implementation quality
@@ -819,7 +819,7 @@ Did:
 - CREATED: /email-check command in .claude/commands/email-check.md
 - UPDATED: templates/manager/CLAUDE.md - added /email-check to slash commands list
 - UPDATED: templates/project/CLAUDE.md - added Available Slash Commands section with /email-check
-- UPDATED: PROJECT_ROADMAP.md - added email ingestion to v0.7 section with full details
+- UPDATED: ROADMAP.md - added email ingestion to v0.7 section with full details
 - TESTED: Read all files to verify correct implementation
 Next: Commit changes and create PR back to dev branch
 Notes: Implementation follows Gemini's architectural plan exactly. Maintains MCP philosophy of primitives over workflows. Human approval required for all suggested updates.
@@ -872,7 +872,7 @@ Next: Review other documentation that might need updates
 Did:
 - RENAMED: TEMPLATE_VERSION → VERSION
 - RENAMED: TEMPLATE_CHANGELOG.md → CHANGELOG.md
-- UPDATED: All references in install.sh, README.md, CLAUDE.md, templates/, and PROJECT_ROADMAP.md
+- UPDATED: All references in install.sh, README.md, CLAUDE.md, templates/, and ROADMAP.md
 - TESTED: Verified renamed files work correctly
 - RATIONALE: Follows standard naming conventions (CHANGELOG.md is universally recognized)
 Next: Continue directory cleanup and prepare for v0.2.0 release
@@ -896,7 +896,7 @@ Notes: This follows standard project organization - executable utilities in thei
 
 ### 2025-07-02 13:34 - Added MCP server integration to roadmap
 Did:
-- ADDED: MCP Server Integration & Dependencies section to v0.7 in PROJECT_ROADMAP.md
+- ADDED: MCP Server Integration & Dependencies section to v0.7 in ROADMAP.md
 - DOCUMENTED: Need to harmonize MCP server installation with claudepm
 - ADDED: Placeholder section in README.md about MCP integration (Coming Soon)
 - IDENTIFIED: Key challenges - dependency management, API keys, fallback options
@@ -1020,7 +1020,7 @@ Did:
 - UPDATED: install.sh for v0.2.5 architecture
 - ADDED: CONVENTIONS.md documenting CPM::TASK format
 - CREATED: 5 slash commands (brain-dump, doctor, daily-standup, weekly-review, start-work)
-- RENAMED: PROJECT_ROADMAP.md to ROADMAP.md throughout
+- RENAMED: ROADMAP.md to ROADMAP.md throughout
 - ADDED: NOTES.md templates for project and manager
 - TESTED: Installation successful, claudepm v0.2.5 working
 Next: Test adopt command on a real project
@@ -1082,5 +1082,33 @@ Did:
 - IDENTIFIED: Core issue - claudepm should be Claude's native interface
 Next: Implement new commands starting with 'claudepm context'
 Notes: This transforms claudepm from 'CLI that creates files' to 'Claude's memory interface'
+
+---
+
+
+### 2025-07-04 16:01 - [feature/human-readable-tasks] Implemented human-readable task format
+Did:
+- REPLACED: CPM::TASK format with markdown checkboxes and inline metadata
+- IMPLEMENTED: Rich task metadata in square brackets [high] [#tag] [due:date] [@assignee] [estimate]
+- ADDED: New commands - task start, task update with metadata options
+- CREATED: Automatic migration from old format during upgrade
+- UPDATED: All functions to work with new format (health_check, adopt_project, etc.)
+- FIXED: Bash regex patterns for cross-platform compatibility
+- DOCUMENTED: New task management system in README.md
+Next: Fix task movement logic and complete PR
+Notes: Tasks are now human-readable while maintaining parseability for code
+
+---
+
+
+### 2025-07-04 16:30 - Completed human-readable task implementation
+Did: 
+- Implemented Parse-Mutate-Render architecture as recommended by Gemini
+- Updated all task commands (add, list, start, done, block, update) to use new format
+- Fixed bash compatibility issues (removed associative arrays for older bash versions)
+- Fixed regex issues with special characters
+- Thoroughly tested all commands with comprehensive demo
+Next: Update PR with completed implementation
+Notes: The new format successfully replaces CPM::TASK:: with markdown checkboxes and inline metadata
 
 ---

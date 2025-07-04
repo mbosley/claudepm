@@ -1,5 +1,5 @@
 #!/bin/bash
-# install.sh - Install claudepm v0.2.5
+# install.sh - Install claudepm v0.2.6
 set -euo pipefail
 
 # Colors
@@ -8,7 +8,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-echo "Installing claudepm v0.2.5..."
+# Read version from VERSION file
+VERSION=$(cat VERSION)
+
+echo "Installing claudepm v$VERSION..."
 echo "=============================="
 
 # 1. Create directory structure

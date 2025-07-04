@@ -44,7 +44,7 @@ This command operates within claudepm's three-level Claude hierarchy:
 ## When to Use
 
 - Features from /architect-feature command
-- Items from PROJECT_ROADMAP.md
+- Items from ROADMAP.md
 - Bug fixes requiring investigation
 - Any change touching multiple files
 

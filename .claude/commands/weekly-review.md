@@ -18,10 +18,10 @@ Analyze the past week's progress using PARALLEL sub-agents for speed and accurac
    ```python
    # CRITICAL: Launch all reviews simultaneously!
    Task: "Weekly review auth-service",
-     prompt: "In auth-service/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from PROJECT_ROADMAP.md"
+     prompt: "In auth-service/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from ROADMAP.md"
    
    Task: "Weekly review blog",
-     prompt: "In blog/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from PROJECT_ROADMAP.md"
+     prompt: "In blog/, analyze past 7 days: Read CLAUDE_LOG.md entries, check git log --since='7 days ago', note completed items from ROADMAP.md"
    
    # ... one Task per project - ALL AT ONCE
    ```

@@ -34,7 +34,7 @@ First, let me check the overall claudepm environment:
 
 4. **For each claudepm project, the sub-agent checks**:
    - CLAUDE.md exists and readable
-   - PROJECT_ROADMAP.md exists
+   - ROADMAP.md exists
    - CLAUDE_LOG.md exists
    - .claudepm marker file exists
    - Template version (from .claudepm)
@@ -121,7 +121,7 @@ Issues: 1 ❌
 Run /update [project] to refresh templates
 
 ### Projects with Issues
-❌ payment-api: Missing PROJECT_ROADMAP.md
+❌ payment-api: Missing ROADMAP.md
 ```
 
 **IMPORTANT**: After running doctor, add an entry to ~/projects/CLAUDE_LOG.md documenting what was found!

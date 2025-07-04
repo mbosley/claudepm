@@ -67,6 +67,79 @@ At the project level, you can:
 - `/dispatch-task [feature]` - Create isolated worktrees for Task Agents
 - `/email-check` - Process project-specific emails and update roadmap
 - Manage PRs and coordinate multiple feature implementations
+- Manage tasks with human-readable markdown format
+
+### Task Management
+
+claudepm includes a built-in task management system that uses human-readable markdown format in your ROADMAP.md file.
+
+#### Adding Tasks
+```bash
+# Simple task
+claudepm task add "Fix authentication bug"
+
+# Task with metadata
+claudepm task add "Implement search" -p high -t feature -t search -d 2025-01-15 -e 2d
+
+# Full example with all options
+claudepm task add "Refactor database layer" \
+  -p medium \
+  -t backend -t refactor \
+  -d 2025-02-01 \
+  -a @alice \
+  -e 1w
+```
+
+#### Task Format
+Tasks are stored in a human-readable markdown format:
+```markdown
+## Tasks
+
+### TODO
+- [ ] Fix authentication bug [high] [#auth] [due:2025-01-15] [@alice] [8h]
+  ID: e9ad54d0-b374-4265-a446-50b9d505de79
+
+### IN PROGRESS
+- [ ] Implement search functionality [high] [#search, #feature] [started:2025-01-04]
+  ID: f8bc34e1-c485-5376-b557-61cad606e68a
+
+### BLOCKED
+- [ ] Deploy to production [blocked:AWS credentials needed]
+  ID: b8de45g1-e697-5498-d779-83ecd828g8ac
+
+### DONE
+- [x] Set up CI/CD pipeline [completed:2025-01-03]
+  ID: c9ef56h2-f7a8-6509-e88a-94fde939h9bd
+```
+
+#### Task Commands
+```bash
+# List all tasks
+claudepm task list
+
+# Filter tasks
+claudepm task list --todo           # Show only TODO tasks
+claudepm task list --in-progress    # Show tasks being worked on
+claudepm task list -p high          # Filter by priority
+claudepm task list -t bug           # Filter by tag
+claudepm task list --overdue        # Show overdue tasks
+claudepm task list -f               # Show full details
+
+# Start working on a task
+claudepm task start <uuid>          # Moves to IN PROGRESS
+
+# Complete a task
+claudepm task done <uuid>           # Marks as complete
+
+# Block a task
+claudepm task block <uuid> "Waiting for API keys"
+
+# Update task metadata
+claudepm task update <uuid> -p high -d 2025-01-20
+```
+
+#### Migration from Old Format
+If you have existing tasks in the old `CPM::TASK` format, they will be automatically migrated when you run `claudepm upgrade`.
 
 ### 4. Deploy Task Agents for Implementation
 ```bash
@@ -96,13 +169,13 @@ Task Agents work in isolated `worktrees/` directories, implementing features wit
 │       │   └── CLAUDE.md
 │       └── project/         # Project-level templates
 │           ├── CLAUDE.md
-│           ├── PROJECT_ROADMAP.md
+│           ├── ROADMAP.md
 │           └── TASK_PROMPT.template.md
 │
 ├── my-web-app/              # Individual project
 │   ├── CLAUDE.md           # Project instructions
 │   ├── CLAUDE_LOG.md       # Project work history
-│   ├── PROJECT_ROADMAP.md  # Plans and current state
+│   ├── ROADMAP.md  # Plans and current state
 │   ├── .claudepm           # Metadata (gitignored)
 │   ├── tools/              # Utility scripts
 │   │   ├── claudepm-admin.sh # Git worktree management
@@ -123,7 +196,7 @@ Each project has three markdown files:
 
 1. **CLAUDE.md** - Instructions for how to work on this project
 2. **CLAUDE_LOG.md** - Append-only work history (your shared memory)
-3. **PROJECT_ROADMAP.md** - Current state, plans, and roadmap
+3. **ROADMAP.md** - Current state, plans, and roadmap
 
 ## Common Workflows
 
@@ -248,7 +321,7 @@ Blocked: Need Firebase credentials from client
 
 - **Install once, use everywhere** - One installation at project root manages all projects
 - **Three Claude modes** - Manager (orchestration), Project Lead (review), Task Agent (implementation)
-- **Three documents only** - CLAUDE.md, CLAUDE_LOG.md, PROJECT_ROADMAP.md per project
+- **Three documents only** - CLAUDE.md, CLAUDE_LOG.md, ROADMAP.md per project
 - **Logs are append-only** - Never edit past entries
 - **Simple tooling** - Just markdown and slash commands
 - **Architect-first development** - AI assistance for planning complex features

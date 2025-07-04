@@ -1,48 +1,56 @@
-# Project Roadmap - claudepm
+# Test ROADMAP
 
-*Last updated: 2025-07-03*
+## Tasks
 
-## Current Status
-v0.2.5.1 complete! claudepm is now a protocol for Claude, not just a tool.
+### TODO
+- [ ] Another test task [high] [#documentation] [due:2025-07-15] [@@alice]
+  ID: cfc0137a-ebb9-4e7e-87eb-6d917f772b2d
 
-claudepm v0.2.5 solves the version drift problem without introducing complexity. Following the principle of "do one thing well," this version adds centralized template management while maintaining the dead-simple markdown-based workflow. The system now uses four core files: CLAUDE.md (instructions), LOG.md (history), ROADMAP.md (plans), and NOTES.md (wisdom).
+### IN PROGRESS
 
-All core commands tested and working:
-- `claudepm init` creates projects with all 4 files
-- `claudepm adopt` imports existing projects with TODOs
-- `claudepm task add/list/done/block` manages tasks without delimiter errors
-- `claudepm health` and `doctor` provide project status
-- `claudepm upgrade` updates templates to latest version
-- **NEW in v0.2.5.1:**
-  - `claudepm context` - Complete session context for Claude
-  - `claudepm log <message> --next <task>` - Structured logging
-  - `claudepm next` - Task prioritization
+### BLOCKED
+- [ ] Write comprehensive documentation for v0.2.6 [high] [#docs] [due:2025-01-10] [blocked:Need to finalize feature list first]
+  ID: e575b07c-0e15-418d-9a21-5126a5144201
 
-## Active Work
+- [ ] Testing human-readable tasks [high] [#testing] [blocked:Waiting for review]
+  ID: 13160c3a-1324-4b0c-b499-7081da20f571
 
-### User Experience Improvements (v0.2.6)
+### DONE
+- [x] Fix edge case in task parser [medium] [#bug] [2h] [started:2025-07-04] [completed:2025-07-04]
+  ID: aaee19d2-e0cb-470f-a8f4-ceda6f03251e
+
+- [x] Test task [high] [#testing] [started:2025-07-04] [completed:2025-07-04]
+  ID: test-123
+
+### User Experience Improvements (v0.2.7)
 Based on real usage feedback:
-- [ ] Make task format human-readable (markdown tasks instead of CPM::TASK)
+- [x] Make task format human-readable (markdown tasks instead of CPM::TASK)
 - [ ] Clarify NOTES.md vs LOG.md usage in templates
 - [ ] Add Gemini PR review workflow (compare implementation to architectural plan)
 - [ ] Improve role boundaries between Manager and Project Lead Claude
 
+### v0.2.6 - Scope Workflow (Complete! 🎉)
+- [x] Implement `claudepm scope` command for structured feature planning
+- [x] Integrate scoping output with worktree creation
+- [x] Add Gemini consultation to scoping workflow
+- [x] Create `.scoping/` directory for preserving planning artifacts
+- [x] Auto-generate TASK_PROMPT from scoping sessions
+- [x] Add PR review that compares implementation to original scope
+
 ### Documentation & Deployment
-- [ ] Test v0.2.5.1 with actual Claude sessions
-- [ ] Deploy v0.2.5.1 to personal projects
+- [ ] Test v0.2.7 with actual Claude sessions
+- [ ] Deploy v0.2.7 to personal projects
 - [ ] Create QUICKSTART.md guide
 - [ ] Monitor Claude's usage patterns for protocol evolution
 
 ## Upcoming
 
 ### v0.3 - Frictionless Feature Development
-Based on the discovered meta-pattern (Scope → Setup → Execute):
-- [ ] Implement `claudepm scope` command for structured feature planning
-- [ ] Integrate scoping output with worktree creation
-- [ ] Add Gemini consultation to scoping workflow
-- [ ] Create `.scoping/` directory for preserving planning artifacts
-- [ ] Auto-generate TASK_PROMPT from scoping sessions
-- [ ] Add PR review that compares implementation to original scope
+Building on the scope workflow foundation:
+- [ ] Enhance scope command with more templates
+- [ ] Add automated PR creation from scope
+- [ ] Improve Gemini integration for complex features
+- [ ] Add scope validation and refinement workflow
 
 ### v0.1 Release (Complete! 🎉)
 - [x] Create GitHub repository
@@ -511,4 +519,4 @@ This ensures consistency and prevents missing components. The full checklist liv
 claudepm now follows an 'architect-first' development model for non-trivial changes. Before writing code, we use the /architect-feature command to generate comprehensive implementation plans. This approach ensures changes are well-considered, aligned with project principles, and have a clear path to completion. The architect-first approach was validated during the v0.1.5 template reorganization and is now standard practice.
 
 ---
-Last updated: 2025-07-01 12:49CPM::TASK::e9ad54d0-b374-4265-a446-50b9d505de79::TODO::2025-07-03::Implement search functionality||priority:high||tags:feature,search||due:2025-07-15||assignee:@alice||estimate:8h
+Last updated: 2025-07-01 12:49
