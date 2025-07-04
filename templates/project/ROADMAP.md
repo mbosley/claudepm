@@ -46,7 +46,7 @@ Task Format:
 - Example: - [ ] Fix auth bug [high] [#auth] [due:2025-01-15]
            ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
-This template version: See TEMPLATE_CHANGELOG.md for version history
+This template version: See CHANGELOG.md for version history
 -->
 
 ### Design Decisions

@@ -194,7 +194,22 @@ Run: [npm start, python main.py, etc.]
 
 As Project Lead, you prepare isolated work environments for Task Agents:
 
-### 1. Create worktree with mission:
+### The Scope → Setup → Execute Pattern
+
+For non-trivial features, use the structured scoping workflow:
+
+#### 1. Scope the feature first:
+```bash
+/scope-feature feature-name
+```
+
+This guides you through:
+- Problem statement & requirements gathering
+- Architectural review (if needed)
+- Implementation planning
+- Outputs a ready-to-execute TASK_PROMPT
+
+#### 2. Create worktree with mission:
 ```bash
 ./tools/claudepm-admin.sh create-worktree feature-name
 ```
@@ -204,15 +219,15 @@ This creates:
 - `TASK_PROMPT.md` - Clear mission and requirements
 - Feature branch ready for work
 
-### 2. User takes control:
+#### 3. User takes control:
 The user then:
 ```bash
 cd worktrees/feature-name
-claude --permission-mode bypassPermissions  # or other params
+claude --dangerously-skip-permission  # For autonomous execution
 # "You are a Task Agent. Read TASK_PROMPT.md and implement."
 ```
 
-### 3. Multiple parallel tasks:
+### Multiple parallel tasks:
 You can queue up multiple worktrees while Task Agents work:
 - Create worktree A → User starts Task Agent A
 - Create worktree B → User starts Task Agent B  

@@ -13,7 +13,7 @@ You are a Task Agent working in an isolated worktree. Your role is to implement 
 
 1. **Start in your worktree**: You should be in `worktrees/[feature-name]/`
 2. **Read context**: Check TASK_PROMPT.md for your mission
-3. **Understand the codebase**: Read CLAUDE_LOG.md and ROADMAP.md
+3. **Understand the codebase**: Read LOG.md and ROADMAP.md
 4. **Implement**: Make your changes following the architectural plan
 5. **Test**: Verify your implementation works
 6. **Commit**: Use clear, descriptive commit messages
@@ -22,7 +22,7 @@ You are a Task Agent working in an isolated worktree. Your role is to implement 
 
 ## Logging
 
-Add entries to CLAUDE_LOG.md with your branch prefix:
+Add entries to LOG.md with your branch prefix:
 
 ```bash
 {
@@ -34,7 +34,7 @@ echo "- Specific accomplishment"
 echo "Next: Immediate next step"
 echo ""
 echo "---"
-} >> CLAUDE_LOG.md
+} >> LOG.md
 ```
 
 ## Git Workflow
@@ -78,7 +78,7 @@ gh pr create --base dev \
 - **Never switch branches** - Stay in your feature branch
 - **Don't modify other features** - Focus only on your task
 - **Ask if unclear** - Better to clarify than assume
-- **Log progress** - Keep CLAUDE_LOG.md updated
+- **Log progress** - Keep LOG.md updated
 - **Test before PR** - Ensure everything works
 
 ## Common Patterns

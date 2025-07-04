@@ -27,14 +27,15 @@ Purpose: Simple memory system for Claude Code sessions
 
 #### Feature Development Checklist
 
-**0. Architectural Planning (for non-trivial features)**
+**0. Feature Scoping and Planning (for non-trivial features)**
 - [ ] Define the feature clearly - what problem does it solve?
-- [ ] Run `/architect-feature` with a comprehensive description
-- [ ] **REVIEW: Read Gemini's complete architectural plan carefully**
+- [ ] For structured scoping: Run `/scope-feature` for guided requirements gathering
+- [ ] For architectural review: Run `/architect-feature` with a comprehensive description
+- [ ] **REVIEW: Read the complete plan carefully**
 - [ ] **DECIDE: Approve, adjust, or cancel based on the plan's alignment**
 - [ ] Use the plan to guide all subsequent implementation steps
 
-**Note:** Use architect-first for: features touching multiple files, new concepts, refactoring, complex integrations. Skip for: typo fixes, simple doc updates, single-line changes.
+**Note:** Use scope-first for: new features, user-facing changes, workflow improvements. Use architect-first for: features touching multiple files, new concepts, refactoring, complex integrations. Skip both for: typo fixes, simple doc updates, single-line changes.
 
 **1. Code/Script Updates**
 - [ ] Update `install.sh` if feature affects installation
@@ -69,7 +70,7 @@ Purpose: Simple memory system for Claude Code sessions
 - [ ] Verify slash commands work as expected
 
 **6. Logging and Commit**
-- [ ] Add CLAUDE_LOG.md entry using the append pattern
+- [ ] Add LOG.md entry using the append pattern
 - [ ] Update ROADMAP.md before committing
 - [ ] **COMMIT NOW** - Don't wait, commit completed work immediately
 - [ ] Push if appropriate (after testing or when requested)
@@ -96,13 +97,13 @@ Purpose: Simple memory system for Claude Code sessions
 - **Design decisions** → ROADMAP.md Notes section  
 - **Development tips** → This file (CLAUDE.md)
 - **User guides** → README.md or QUICKSTART.md
-- **Work history** → CLAUDE_LOG.md
+- **Work history** → LOG.md
 
 Examples of files NOT to create: BETA_FEATURES.md, ARCHITECTURE.md, DESIGN.md, TODO.md
 
 ## Handling Parallel Work
 
-When merging CLAUDE_LOG.md conflicts from branches/worktrees:
+When merging LOG.md conflicts from branches/worktrees:
 1. Keep BOTH sections (yours and theirs)
 2. Add a merge marker entry
 3. Continue from the most recent Next: entry

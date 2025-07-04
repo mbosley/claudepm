@@ -70,7 +70,7 @@ echo "Projects affected: [List projects touched]"
 echo "Next: [Manager-level priorities]"
 echo ""
 echo "---"
-} >> CLAUDE_LOG.md
+} >> LOG.md
 ```
 
 Note: At manager level, we still use append for logs since there's no `claudepm log` command here yet.

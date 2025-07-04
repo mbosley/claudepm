@@ -27,7 +27,7 @@ If you can't answer yes to all four, don't create it.
 
 ### Where Things Go (Don't Create New Files!)
 - **Feature plans, roadmaps, TODOs** → ROADMAP.md
-- **Work notes, discoveries, decisions** → CLAUDE_LOG.md
+- **Work notes, discoveries, decisions** → LOG.md
 - **Setup instructions, guidelines** → CLAUDE.md or README.md
 - **Configuration examples** → Existing config files
 - **Architecture decisions** → ROADMAP.md Notes section
@@ -35,7 +35,7 @@ If you can't answer yes to all four, don't create it.
 Creating BETA_FEATURES.md or ARCHITECTURE.md or TODO.md = ❌ Wrong!
 Adding sections to existing files = ✅ Right!
 
-### CLAUDE_LOG.md is Append-Only
+### LOG.md is Append-Only
 - **Never edit previous entries** - They are historical record
 - **Only add new entries at the bottom** - Chronological order
 - **If you made a mistake** - Add a new entry with the correction
@@ -43,7 +43,7 @@ Adding sections to existing files = ✅ Right!
 
 ## On Session Start
 
-1. Read CLAUDE_LOG.md at manager level (if exists)
+1. Read LOG.md at manager level (if exists)
 2. Check for recent manager-level activities
 3. Run quick status check or use /orient
 4. **Log that you've started a manager session**
@@ -61,7 +61,7 @@ Manager Claude should log MORE frequently than project Claude because coordinati
 
 ## Log Entry Format
 
-Add to CLAUDE_LOG.md at this level using append-only pattern:
+Add to LOG.md at this level using append-only pattern:
 ```bash
 # Simple, clean append that always works
 {
@@ -73,12 +73,12 @@ echo "Projects affected: [List projects touched]"
 echo "Next: [What manager-level work is needed]"
 echo ""
 echo "---"
-} >> CLAUDE_LOG.md
+} >> LOG.md
 ```
 
-**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator
+**CRITICAL: NEVER use Write or Edit tools on LOG.md** - only append with >> operator
 
-**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
+**macOS Protection**: On macOS, LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd LOG.md`
 
 Examples of when to log:
 
@@ -138,9 +138,9 @@ Check auth-service, then blog, then payment-api...
 **2. Project Analysis - ALWAYS parallelize:**
 ```python
 # ✅ GOOD - Each agent focuses on one project
-Task: "Analyze auth-service", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in auth-service/"
-Task: "Analyze blog", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in blog/"
-Task: "Analyze payments", prompt: "Read CLAUDE_LOG.md and summarize last 3 days of work in payment-api/"
+Task: "Analyze auth-service", prompt: "Read LOG.md and summarize last 3 days of work in auth-service/"
+Task: "Analyze blog", prompt: "Read LOG.md and summarize last 3 days of work in blog/"
+Task: "Analyze payments", prompt: "Read LOG.md and summarize last 3 days of work in payment-api/"
 
 # ❌ BAD - Loading everything into Manager's context
 Reading all logs myself and trying to remember everything...
@@ -170,8 +170,8 @@ Task: "Check project health", prompt: "In blog/, check for: 1) CLAUDE.md exists,
 **/weekly-review should use:**
 ```python
 # Parallel weekly analysis
-Task: "Weekly review", prompt: "In auth-service/, read last 7 days of CLAUDE_LOG.md and summarize: accomplishments, blockers, patterns"
-Task: "Weekly review", prompt: "In blog/, read last 7 days of CLAUDE_LOG.md and summarize: accomplishments, blockers, patterns"
+Task: "Weekly review", prompt: "In auth-service/, read last 7 days of LOG.md and summarize: accomplishments, blockers, patterns"
+Task: "Weekly review", prompt: "In blog/, read last 7 days of LOG.md and summarize: accomplishments, blockers, patterns"
 # Aggregate results after all complete
 ```
 
@@ -193,7 +193,7 @@ For comprehensive project summaries, spawn sub-agents with dynamic scope:
 ```bash
 claude -p "You are in [project] directory. For DAILY STANDUP:
 1. Read ROADMAP.md Active Work section
-2. Read CLAUDE_LOG.md - only last 3 entries or yesterday's entries
+2. Read LOG.md - only last 3 entries or yesterday's entries
 3. Identify: What's planned for today based on 'Next:' items
 4. Report using this format:
    **[Project Name] - Daily Standup**
@@ -205,7 +205,7 @@ claude -p "You are in [project] directory. For DAILY STANDUP:
 ```bash
 claude -p "You are in [project] directory. For DAILY REVIEW:
 1. Read ROADMAP.md for context
-2. Read CLAUDE_LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
+2. Read LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
 3. Check git commits from today
 4. Report using this format:
    ## Daily Review - [Project Name] - [Date]
@@ -223,7 +223,7 @@ claude -p "You are in [project] directory. For DAILY REVIEW:
 ```bash
 claude -p "You are in [project] directory. For WEEKLY REVIEW:
 1. Read ROADMAP.md - note completed items
-2. Read CLAUDE_LOG.md - entries from last 7 days
+2. Read LOG.md - entries from last 7 days
 3. Check git commits from: $(date -d '7 days ago' +%Y-%m-%d) to today
 4. Report using this format:
    ## Weekly Review - [Project Name]
@@ -245,7 +245,7 @@ claude -p "You are in [project] directory. For WEEKLY REVIEW:
 ```bash
 claude -p "You are in [project] directory. For PROJECT HEALTH:
 1. Check ROADMAP.md Blocked section
-2. Search CLAUDE_LOG.md for recent 'Blocked:' entries
+2. Search LOG.md for recent 'Blocked:' entries
 3. Run git status for uncommitted changes
 4. Report using this format:
    **[Project Name] Health: [🟢/🟠/🔴/⚫]**
@@ -258,7 +258,7 @@ claude -p "You are in [project] directory. For PROJECT HEALTH:
 ### Cross-Project Pattern Analysis
 ```bash
 claude -p "You are in [project] directory. For PATTERN ANALYSIS:
-1. Read CLAUDE_LOG.md focusing on Error:, Solved:, and Notes: sections
+1. Read LOG.md focusing on Error:, Solved:, and Notes: sections
 2. Look for recurring themes and lessons learned
 3. Report using this format:
    ## Pattern Analysis - [Project Name]
@@ -326,7 +326,7 @@ See https://www.anthropic.com/engineering/claude-code-best-practices for more on
 
 When the user wants to work on a project:
 1. Remind them to `cd [project]`
-2. In the new Claude session, first read CLAUDE_LOG.md
+2. In the new Claude session, first read LOG.md
 3. Check git status
 4. Look for "Next:" in the last log entry
 
@@ -336,7 +336,7 @@ When creating a new project:
 1. Create directory and init git
 2. Create CLAUDE.md from template
 3. Create ROADMAP.md from template
-4. Create initial CLAUDE_LOG.md entry
+4. Create initial LOG.md entry
 5. Update roadmap with initial goals
 6. Create .claudepm marker file (see below)
 
@@ -393,7 +393,7 @@ Purpose: [From README or package.json description]
 [Any roadmap/TODO files content]
 ```
 
-**CLAUDE_LOG.md**: First entry documenting adoption
+**LOG.md**: First entry documenting adoption
 ```markdown
 ### YYYY-MM-DD HH:MM - Adopted project into claudepm
 Did:
@@ -447,12 +447,12 @@ Remember: Roadmaps aren't just plans - they're executable specifications for fut
 # Project: [Name]
 
 ## Start Every Session
-1. Read CLAUDE_LOG.md - understand where we left off
+1. Read LOG.md - understand where we left off
 2. Run git status - see uncommitted work
 3. Look for "Next:" in recent logs
 
 ## After Each Work Block
-Add to CLAUDE_LOG.md (use `date '+%Y-%m-%d %H:%M'` for timestamp):
+Add to LOG.md (use `date '+%Y-%m-%d %H:%M'` for timestamp):
 ```
 ### YYYY-MM-DD HH:MM - [What you did]
 Did: [Specific accomplishments]
@@ -470,11 +470,12 @@ Remember: The log is our shared memory. Keep it updated.
 
 Every Claude session is ephemeral. The logs are permanent. Write logs as if you're leaving notes for a colleague (yourself tomorrow).
 
-## Quick Reference: The Three Core Documents
+## Quick Reference: The Four Core Files
 
-1. **CLAUDE.md** - How to work (instructions, principles)
-2. **CLAUDE_LOG.md** - What happened (append-only history)  
-3. **ROADMAP.md** - What's next (current state, plans, features)
+1. **CLAUDE.md** - HOW to work (instructions, principles)
+2. **LOG.md** - WHAT happened (append-only history by Claude)  
+3. **ROADMAP.md** - WHAT's next (current state, plans, features)
+4. **NOTES.md** - WHY it matters (human insights and patterns)
 
 That's it. Don't create other planning/tracking documents.
 
@@ -532,15 +533,15 @@ Create an executive summary with:
 Teach sub-agents to filter logs by date:
 ```bash
 # Today's entries only
-grep "^### $(date +%Y-%m-%d)" CLAUDE_LOG.md -A 20
+grep "^### $(date +%Y-%m-%d)" LOG.md -A 20
 
 # This week's entries
 for i in {0..6}; do
   date -d "$i days ago" +%Y-%m-%d
-done | xargs -I {} grep "^### {}" CLAUDE_LOG.md -A 20
+done | xargs -I {} grep "^### {}" LOG.md -A 20
 
 # Last N entries
-tail -n 100 CLAUDE_LOG.md | awk '/^###/{p=1} p'
+tail -n 100 LOG.md | awk '/^###/{p=1} p'
 ```
 
 This ensures sub-agents read only relevant portions, making reports faster and more focused.

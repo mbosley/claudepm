@@ -16,7 +16,7 @@ Implement the feature: **{{FEATURE_NAME}}**
 3. Implement the feature as described in requirements.
 4. Update all relevant documentation and tests.
 5. Test your changes thoroughly.
-6. Log your work to `CLAUDE_LOG.md` with prefix `[feature/{{FEATURE_NAME}}]`.
+6. Log your work to `LOG.md` with prefix `[feature/{{FEATURE_NAME}}]`.
 
 ## Git Workflow (CRITICAL - DO NOT SKIP)
 After implementation is complete, you MUST:

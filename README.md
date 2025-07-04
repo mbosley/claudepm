@@ -62,6 +62,7 @@ cd ~/projects/my-web-app
 
 At the project level, you can:
 
+- `/scope-feature [name]` - Structured feature scoping with guided requirements gathering
 - `/architect-feature` - Plan complex features with AI assistance
 - `/dispatch-task [feature]` - Create isolated worktrees for Task Agents
 - `/email-check` - Process project-specific emails and update roadmap
@@ -207,6 +208,22 @@ cd ~/projects
 
 This analyzes your project and creates the three files with discovered information.
 
+### Frictionless Feature Development
+
+The Scope → Setup → Execute pattern reduces friction from idea to implementation:
+
+```bash
+# 1. Scope: Structured requirements gathering
+/scope-feature user-notifications
+
+# 2. Setup: Worktree automatically created with TASK_PROMPT
+# 3. Execute: Task Agent implements autonomously
+cd worktrees/user-notifications
+claude --dangerously-skip-permission
+```
+
+Note: The `/scope-feature` slash command handles the scoping workflow. A future `claudepm scope` CLI command may provide this from the command line.
+
 ### Processing Meeting Notes
 ```bash
 /brain-dump
@@ -217,9 +234,29 @@ Blog post about launch should go out next week.
 
 Manager Claude will parse this and update the appropriate project roadmaps.
 
-### Planning Complex Features
+### Structured Feature Development
+
+claudepm provides a frictionless workflow from idea to implementation:
+
+#### 1. Scope the Feature
 ```bash
 cd ~/projects/my-app
+/scope-feature real-time-collab
+
+# Guided prompts:
+> What problem does this solve?
+Users can't see who else is editing...
+
+> Key requirements?
+1. WebSocket connection management
+2. Presence indicators
+3. Conflict resolution
+```
+
+The scoping session outputs a complete TASK_PROMPT ready for execution.
+
+#### 2. Architectural Review (for complex features)
+```bash
 /architect-feature
 
 I need to add real-time collaboration with WebSockets, 
@@ -228,14 +265,27 @@ including presence indicators and conflict resolution.
 
 Gemini will analyze your codebase and provide a complete architectural plan.
 
+#### 3. Execute with Task Agent
+```bash
+# After scoping, the worktree is ready
+cd worktrees/real-time-collab
+claude --dangerously-skip-permission
+# "You are a Task Agent. Read TASK_PROMPT.md and implement."
+```
+
 ### Deploying Task Agents
 ```bash
-# After architectural review or for any feature
-./claudepm-admin.sh create-worktree add-websockets
+# Option 1: Use the scope workflow (recommended for non-trivial features)
+/scope-feature add-websockets
+# ... go through scoping process ...
+
+# Option 2: Direct worktree creation (for simple tasks)
+./tools/claudepm-admin.sh create-worktree add-websockets
 
 # Start new Claude conversation with generated TASK_PROMPT
-# Task Agent works in worktrees/add-websockets/
-# Creates PR when complete
+cd worktrees/add-websockets
+claude --dangerously-skip-permission
+# "You are a Task Agent. Read TASK_PROMPT.md and implement."
 
 # After PR merge
 ./tools/claudepm-admin.sh remove-worktree add-websockets
