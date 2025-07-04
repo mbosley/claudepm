@@ -12,7 +12,7 @@ Implement the feature: **{{FEATURE_NAME}}**
 
 ## Process
 1. You are already in the correct worktree: `worktrees/{{FEATURE_NAME}}`.
-2. Start by reading `CLAUDE.md` and `PROJECT_ROADMAP.md` for context.
+2. Start by reading `CLAUDE.md` and `ROADMAP.md` for context.
 3. Implement the feature as described in requirements.
 4. Update all relevant documentation and tests.
 5. Test your changes thoroughly.

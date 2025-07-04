@@ -4,7 +4,7 @@ Create a consolidated morning overview showing today's priorities, active work, 
 
 ## Instructions:
 1. For each project directory that contains CLAUDE_LOG.md:
-   - Check PROJECT_ROADMAP.md Active Work section
+   - Check ROADMAP.md Active Work section
    - Read last 3 entries from CLAUDE_LOG.md
    - Look for items marked [DUE: today] or [DUE: within 3 days]
    - Note any items marked as BLOCKED

@@ -20,13 +20,13 @@ $ARGUMENTS
    # After parsing brain dump and identifying which projects need updates:
    
    Task: "Update auth roadmap",
-     prompt: "In auth-service/, update PROJECT_ROADMAP.md: Add 'JWT implementation [DUE: 2025-07-01]' to Active Work"
+     prompt: "In auth-service/, update ROADMAP.md: Add 'JWT implementation [DUE: 2025-07-01]' to Active Work"
    
    Task: "Update payment roadmap", 
-     prompt: "In payment-api/, update PROJECT_ROADMAP.md: Move 'Stripe integration' to Blocked section with note 'Waiting for API keys'"
+     prompt: "In payment-api/, update ROADMAP.md: Move 'Stripe integration' to Blocked section with note 'Waiting for API keys'"
    
    Task: "Update blog roadmap",
-     prompt: "In blog/, update PROJECT_ROADMAP.md: Add 'Publish claudepm article [DUE: this week]' to Active Work"
+     prompt: "In blog/, update ROADMAP.md: Add 'Publish claudepm article [DUE: this week]' to Active Work"
    
    # ALL tasks launch together - don't wait between them!
    ```

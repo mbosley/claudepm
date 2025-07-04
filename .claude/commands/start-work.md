@@ -5,7 +5,7 @@ Generate a briefing with current status, recent work, and immediate priorities f
 ## Instructions:
 1. Navigate to the specified project directory
 2. Read the project's CLAUDE_LOG.md to understand recent work
-3. Check PROJECT_ROADMAP.md for current priorities
+3. Check ROADMAP.md for current priorities
 4. Run git status to see any uncommitted work
 5. Look for "Next:" in the most recent log entries
 
@@ -14,7 +14,7 @@ Generate a briefing with current status, recent work, and immediate priorities f
 ## Starting Work on: $ARGUMENTS
 
 ### Current Status
-[From PROJECT_ROADMAP.md Current Status section]
+[From ROADMAP.md Current Status section]
 
 ### Last Session ([Date])
 **Completed:**

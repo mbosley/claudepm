@@ -46,8 +46,8 @@ Set up claudepm for an existing project by analyzing its structure and generatin
      - Git commit guidance
      - claudepm Files listing
 
-4. **Generate PROJECT_ROADMAP.md** using the template:
-   - Start with ~/.claude/templates/project/PROJECT_ROADMAP.md
+4. **Generate ROADMAP.md** using the template:
+   - Start with ~/.claude/templates/project/ROADMAP.md
    - Fill in sections based on analysis:
    
    ```markdown
@@ -88,7 +88,7 @@ Set up claudepm for an existing project by analyzing its structure and generatin
    - DISCOVERED: Test command: [cmd], Build: [cmd], Run: [cmd]
    - CREATED: claudepm files based on project analysis
    - PRESERVED: Existing documentation and roadmap items
-   Next: Review imported TODOs in PROJECT_ROADMAP.md and prioritize
+   Next: Review imported TODOs in ROADMAP.md and prioritize
    Blocked: [Check if any missing dependencies or credentials noted]
    Notes: [Any interesting findings during adoption - architecture, patterns, concerns]
    ```
@@ -147,10 +147,10 @@ Discovered:
 
 Created:
 ✓ CLAUDE.md with project-specific commands
-✓ PROJECT_ROADMAP.md with 7 imported TODOs
+✓ ROADMAP.md with 7 imported TODOs
 ✓ CLAUDE_LOG.md with adoption entry
 ✓ .claudepm marker file
 ✓ Updated .gitignore
 
-Ready to use! Next: Review PROJECT_ROADMAP.md and organize imported items.
+Ready to use! Next: Review ROADMAP.md and organize imported items.
 ```

@@ -81,7 +81,7 @@ Lives at `~/projects/my-app/`, always on dev branch, dispatches Task Agents.
 - Edits existing code rather than rewriting
 - Makes minimal changes that solve problems
 - Logs after each work block with precise PLANNED vs IMPLEMENTED
-- Updates PROJECT_ROADMAP.md before committing
+- Updates ROADMAP.md before committing
 - Creates and manages worktrees for Task Agents
 - Reviews and merges Task Agent PRs
 
@@ -143,9 +143,9 @@ ALL levels use append-only logging to LOG.md:
 #### 2. File Creation Discipline
 Strong preference against creating new files:
 ```
-Feature plans → PROJECT_ROADMAP.md (NOT new TODO.md)
+Feature plans → ROADMAP.md (NOT new TODO.md)
 Work notes → LOG.md (NOT new NOTES.md)
-Architecture → PROJECT_ROADMAP.md Notes section (NOT ARCHITECTURE.md)
+Architecture → ROADMAP.md Notes section (NOT ARCHITECTURE.md)
 ```
 
 #### 3. Parallel Sub-Agent Pattern (Manager Level)
@@ -195,11 +195,11 @@ Ask yourself:
 If you can't answer yes to all four, don't create it.
 
 ### Where Things Go (Don't Create New Files!)
-- **Feature plans, roadmaps, TODOs** → PROJECT_ROADMAP.md
+- **Feature plans, roadmaps, TODOs** → ROADMAP.md
 - **Work notes, discoveries, decisions** → LOG.md
 - **Setup instructions, guidelines** → CLAUDE.md or README.md
 - **Configuration examples** → Existing config files
-- **Architecture decisions** → PROJECT_ROADMAP.md Notes section
+- **Architecture decisions** → ROADMAP.md Notes section
 
 Creating BETA_FEATURES.md or ARCHITECTURE.md or TODO.md = ❌ Wrong!
 Adding sections to existing files = ✅ Right!
@@ -318,7 +318,7 @@ Reading all logs myself and trying to remember everything...
 **3. Brain Dump Routing - ALWAYS parallelize updates:**
 ```python
 # ✅ GOOD - After parsing brain dump, route in parallel
-Task: "Update auth roadmap", prompt: "In auth-service/, add 'Deploy by Friday [DUE: 2025-07-05]' to PROJECT_ROADMAP.md"
+Task: "Update auth roadmap", prompt: "In auth-service/, add 'Deploy by Friday [DUE: 2025-07-05]' to ROADMAP.md"
 Task: "Update blog roadmap", prompt: "In blog/, move 'Publish announcement' to Active Work"
 Task: "Update payment roadmap", prompt: "In payment-api/, move 'Stripe integration' to Blocked section"
 
@@ -361,7 +361,7 @@ For comprehensive project summaries, spawn sub-agents with dynamic scope:
 ### Daily Standup (Morning)
 ```bash
 claude -p "You are in [project] directory. For DAILY STANDUP:
-1. Read PROJECT_ROADMAP.md Active Work section
+1. Read ROADMAP.md Active Work section
 2. Read LOG.md - only last 3 entries or yesterday's entries
 3. Identify: What's planned for today based on 'Next:' items
 4. Report using this format:
@@ -373,7 +373,7 @@ claude -p "You are in [project] directory. For DAILY STANDUP:
 ### Daily Review (Evening)
 ```bash
 claude -p "You are in [project] directory. For DAILY REVIEW:
-1. Read PROJECT_ROADMAP.md for context
+1. Read ROADMAP.md for context
 2. Read LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
 3. Check git commits from today
 4. Report using this format:
@@ -391,7 +391,7 @@ claude -p "You are in [project] directory. For DAILY REVIEW:
 ### Weekly Review
 ```bash
 claude -p "You are in [project] directory. For WEEKLY REVIEW:
-1. Read PROJECT_ROADMAP.md - note completed items
+1. Read ROADMAP.md - note completed items
 2. Read LOG.md - entries from last 7 days
 3. Check git commits from: $(date -d '7 days ago' +%Y-%m-%d) to today
 4. Report using this format:
@@ -413,7 +413,7 @@ claude -p "You are in [project] directory. For WEEKLY REVIEW:
 ### Project Health Check
 ```bash
 claude -p "You are in [project] directory. For PROJECT HEALTH:
-1. Check PROJECT_ROADMAP.md Blocked section
+1. Check ROADMAP.md Blocked section
 2. Search LOG.md for recent 'Blocked:' entries
 3. Run git status for uncommitted changes
 4. Report using this format:
@@ -504,7 +504,7 @@ When the user wants to work on a project:
 When creating a new project:
 1. Create directory and init git
 2. Create CLAUDE.md from template
-3. Create PROJECT_ROADMAP.md from template
+3. Create ROADMAP.md from template
 4. Create initial LOG.md entry
 5. Update roadmap with initial goals
 6. Create .claudepm marker file (see below)
@@ -549,7 +549,7 @@ Purpose: [From README or package.json description]
 - Run: [npm start, python main.py, etc.]
 ```
 
-**PROJECT_ROADMAP.md**: Import existing TODOs and infer from recent commits
+**ROADMAP.md**: Import existing TODOs and infer from recent commits
 ```markdown
 ## Current Status
 [Summarize from README and recent commits]
@@ -595,14 +595,14 @@ Add `.claudepm` to the project's .gitignore to keep it local
 
 ## Roadmap Best Practices
 
-When updating any PROJECT_ROADMAP.md:
+When updating any ROADMAP.md:
 - **Version features**: Group into v0.1, v0.2, etc. (future git branches)
 - **Make actionable**: "Add auth" → "Add JWT authentication with refresh tokens"
 - **Include why**: Brief rationale for each feature
 - **Think PR-sized**: Each version should be one coherent pull request
 - **Enable automation**: Clear enough that "work on v0.2" is unambiguous
 
-**Before ANY commit**: Always check if PROJECT_ROADMAP.md needs updating:
+**Before ANY commit**: Always check if ROADMAP.md needs updating:
 - Have you completed items that should move to Completed?
 - Are there new tasks discovered during work?
 - Has the Current Status changed?
@@ -643,7 +643,7 @@ Every Claude session is ephemeral. The logs are permanent. Write logs as if you'
 
 1. **CLAUDE.md** - How to work (instructions, principles)
 2. **LOG.md** - What happened (append-only history)  
-3. **PROJECT_ROADMAP.md** - What's next (current state, plans, features)
+3. **ROADMAP.md** - What's next (current state, plans, features)
 
 That's it. Don't create other planning/tracking documents.
 
@@ -748,7 +748,7 @@ I need to process this update and route items to relevant projects:
 For each item:
 1. Identify which project it relates to (check */ directories)
 2. Extract any deadlines, blockers, or priority changes
-3. Spawn sub-agent to update that project's PROJECT_ROADMAP.md
+3. Spawn sub-agent to update that project's ROADMAP.md
 4. Report what was updated and what couldn't be matched"
 ```
 
@@ -784,7 +784,7 @@ Manager Claude spawns focused updates:
 ```bash
 # For each identified project
 claude -p "You are in auth-system/ directory.
-Update PROJECT_ROADMAP.md:
+Update ROADMAP.md:
 - Add to Active Work: Deploy to production [DUE: 2025-07-01]
 - Note in context: Hard deadline from client meeting 2025-06-29"
 ```
@@ -821,7 +821,7 @@ This pattern scales from quick notes to meeting transcripts!
 6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
-1. Read PROJECT_ROADMAP.md - see current state and priorities
+1. Read ROADMAP.md - see current state and priorities
 2. Read recent LOG.md - understand last session's work
 3. Run git status - see uncommitted work
 
@@ -859,7 +859,7 @@ If working on a feature branch, include branch name in the summary:
 - `FIXED: Login redirect loop issue` (bug resolved)
 This prevents confusion when reading logs later!
 
-2. Update PROJECT_ROADMAP.md following these principles:
+2. Update ROADMAP.md following these principles:
 - Check off completed items
 - Update status of in-progress work
 - Add any new tasks discovered
@@ -914,17 +914,17 @@ Next: Continue working
 - Will this make the project harder to understand?
 
 ### STOP! Before creating ANY new markdown file:
-- **Planning/Features/Ideas** → Goes in PROJECT_ROADMAP.md
+- **Planning/Features/Ideas** → Goes in ROADMAP.md
 - **Work history/decisions** → Goes in LOG.md  
 - **Instructions/setup** → Goes in CLAUDE.md or README.md
 - **Only create new files for actual code or truly new categories**
 
-Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROADMAP.md, not new files!
+Example: Beta features, roadmaps, plans, ideas, TODOs → All go in ROADMAP.md, not new files!
 
 ### claudepm Files
 - **CLAUDE.md** - Project-specific instructions (check in to git)
 - **LOG.md** - Append-only work history (check in to git)  
-- **PROJECT_ROADMAP.md** - Living state document (check in to git)
+- **ROADMAP.md** - Living state document (check in to git)
 - **.claudepm** - Local metadata marker (add to .gitignore)
 
 ## Git Commits vs Logs (Claude-specific)
@@ -944,7 +944,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
 - Before risky changes
 
 ### Before committing - ALWAYS check:
-1. **Update PROJECT_ROADMAP.md first**:
+1. **Update ROADMAP.md first**:
    - Move completed items from Active Work to Completed
    - Update progress on any in-progress items
    - Add any new work discovered
@@ -963,7 +963,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
    
    - IMPLEMENTED: Dynamic date filtering in manager templates
    - PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
-   - UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
+   - UPDATED: ROADMAP.md to show v0.1 complete
    ```
    
    **Bad commit message:**
@@ -1116,7 +1116,7 @@ Requirements:
 
 Process:
 1. cd worktrees/add-search
-2. Read LOG.md and PROJECT_ROADMAP.md for context
+2. Read LOG.md and ROADMAP.md for context
 3. Implement the feature
 4. Test thoroughly
 5. Update documentation
@@ -1208,7 +1208,7 @@ You are a Task Agent working in an isolated worktree. Your role is to implement 
 
 1. **Start in your worktree**: You should be in `worktrees/[feature-name]/`
 2. **Read context**: Check TASK_PROMPT.md for your mission
-3. **Understand the codebase**: Read LOG.md and PROJECT_ROADMAP.md
+3. **Understand the codebase**: Read LOG.md and ROADMAP.md
 4. **Implement**: Make your changes following the architectural plan
 5. **Test**: Verify your implementation works
 6. **Commit**: Use clear, descriptive commit messages

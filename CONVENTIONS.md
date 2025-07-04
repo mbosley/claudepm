@@ -25,7 +25,7 @@ CPM::TASK::c3d4e5f6-a7b8-9012-cdef-345678901234::BLOCKED::2025-07-01::Deploy to 
 
 - **CLAUDE.md** - Project-specific instructions (never LOG.md or Claude.md)
 - **LOG.md** - Append-only work log (never CLAUDE_LOG.md)
-- **ROADMAP.md** - Project roadmap and tasks (never PROJECT_ROADMAP.md)
+- **ROADMAP.md** - Project roadmap and tasks (never ROADMAP.md)
 - **NOTES.md** - Project insights and notes
 
 ## Git Conventions

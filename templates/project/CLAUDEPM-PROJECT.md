@@ -9,7 +9,7 @@
 6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
-1. Read PROJECT_ROADMAP.md - see current state and priorities
+1. Read ROADMAP.md - see current state and priorities
 2. Read recent CLAUDE_LOG.md - understand last session's work
 3. Run git status - see uncommitted work
 
@@ -47,7 +47,7 @@ If working on a feature branch, include branch name in the summary:
 - `FIXED: Login redirect loop issue` (bug resolved)
 This prevents confusion when reading logs later!
 
-2. Update PROJECT_ROADMAP.md following these principles:
+2. Update ROADMAP.md following these principles:
 - Check off completed items
 - Update status of in-progress work
 - Add any new tasks discovered
@@ -102,17 +102,17 @@ Next: Continue working
 - Will this make the project harder to understand?
 
 ### STOP! Before creating ANY new markdown file:
-- **Planning/Features/Ideas** → Goes in PROJECT_ROADMAP.md
+- **Planning/Features/Ideas** → Goes in ROADMAP.md
 - **Work history/decisions** → Goes in CLAUDE_LOG.md  
 - **Instructions/setup** → Goes in CLAUDE.md or README.md
 - **Only create new files for actual code or truly new categories**
 
-Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROADMAP.md, not new files!
+Example: Beta features, roadmaps, plans, ideas, TODOs → All go in ROADMAP.md, not new files!
 
 ### claudepm Files
 - **CLAUDE.md** - Project-specific instructions (check in to git)
 - **CLAUDE_LOG.md** - Append-only work history (check in to git)  
-- **PROJECT_ROADMAP.md** - Living state document (check in to git)
+- **ROADMAP.md** - Living state document (check in to git)
 - **.claudepm** - Local metadata marker (add to .gitignore)
 
 ## Git Commits vs Logs (Claude-specific)
@@ -132,7 +132,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
 - Before risky changes
 
 ### Before committing - ALWAYS check:
-1. **Update PROJECT_ROADMAP.md first**:
+1. **Update ROADMAP.md first**:
    - Move completed items from Active Work to Completed
    - Update progress on any in-progress items
    - Add any new work discovered
@@ -151,7 +151,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
    
    - IMPLEMENTED: Dynamic date filtering in manager templates
    - PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
-   - UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
+   - UPDATED: ROADMAP.md to show v0.1 complete
    ```
    
    **Bad commit message:**
@@ -304,7 +304,7 @@ Requirements:
 
 Process:
 1. cd worktrees/add-search
-2. Read CLAUDE_LOG.md and PROJECT_ROADMAP.md for context
+2. Read CLAUDE_LOG.md and ROADMAP.md for context
 3. Implement the feature
 4. Test thoroughly
 5. Update documentation

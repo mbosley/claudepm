@@ -5,7 +5,7 @@ Check all projects for blockers, overdue items, and stale work to prioritize int
 ## Instructions:
 1. For each project directory, check:
    - Last activity date (from CLAUDE_LOG.md)
-   - Number of blocked items (in PROJECT_ROADMAP.md)
+   - Number of blocked items (in ROADMAP.md)
    - Git status (uncommitted changes)
    - Overdue deadlines (search for [DUE: dates] that have passed)
    - Days since last commit

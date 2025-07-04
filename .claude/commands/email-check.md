@@ -25,7 +25,7 @@ When run at the manager level (~projects/), it:
 
 When run within a project directory, it:
 - Filters emails for this project's context
-- Suggests updates to PROJECT_ROADMAP.md
+- Suggests updates to ROADMAP.md
 - Identifies action items and deadlines
 - Extracts decisions and blockers
 
@@ -70,7 +70,7 @@ emails=$(mcp_email_read --since "24 hours ago")
 echo "$emails" | claude-code -p "Analyze these emails for project updates:
 1. Identify which projects are mentioned
 2. Extract deadlines, decisions, and action items  
-3. Suggest specific updates to PROJECT_ROADMAP.md or CLAUDE_LOG.md
+3. Suggest specific updates to ROADMAP.md or CLAUDE_LOG.md
 4. Group by project
 5. Present as review-and-approve suggestions"
 ```

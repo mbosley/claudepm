@@ -13,7 +13,7 @@ You are a Task Agent working in an isolated worktree. Your role is to implement 
 
 1. **Start in your worktree**: You should be in `worktrees/[feature-name]/`
 2. **Read context**: Check TASK_PROMPT.md for your mission
-3. **Understand the codebase**: Read CLAUDE_LOG.md and PROJECT_ROADMAP.md
+3. **Understand the codebase**: Read CLAUDE_LOG.md and ROADMAP.md
 4. **Implement**: Make your changes following the architectural plan
 5. **Test**: Verify your implementation works
 6. **Commit**: Use clear, descriptive commit messages

@@ -36,7 +36,7 @@
 
 ## Notes
 <!-- 
-PROJECT_ROADMAP.md is for WHAT & WHY - context, plans, decisions
+ROADMAP.md is for WHAT & WHY - context, plans, decisions
 Put project philosophy, design rationale, and architecture decisions here
 Keep behavioral instructions (HOW to work) in CLAUDE.md
 

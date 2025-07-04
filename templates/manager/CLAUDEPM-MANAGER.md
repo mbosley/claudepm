@@ -26,11 +26,11 @@ Ask yourself:
 If you can't answer yes to all four, don't create it.
 
 ### Where Things Go (Don't Create New Files!)
-- **Feature plans, roadmaps, TODOs** → PROJECT_ROADMAP.md
+- **Feature plans, roadmaps, TODOs** → ROADMAP.md
 - **Work notes, discoveries, decisions** → CLAUDE_LOG.md
 - **Setup instructions, guidelines** → CLAUDE.md or README.md
 - **Configuration examples** → Existing config files
-- **Architecture decisions** → PROJECT_ROADMAP.md Notes section
+- **Architecture decisions** → ROADMAP.md Notes section
 
 Creating BETA_FEATURES.md or ARCHITECTURE.md or TODO.md = ❌ Wrong!
 Adding sections to existing files = ✅ Right!
@@ -149,7 +149,7 @@ Reading all logs myself and trying to remember everything...
 **3. Brain Dump Routing - ALWAYS parallelize updates:**
 ```python
 # ✅ GOOD - After parsing brain dump, route in parallel
-Task: "Update auth roadmap", prompt: "In auth-service/, add 'Deploy by Friday [DUE: 2025-07-05]' to PROJECT_ROADMAP.md"
+Task: "Update auth roadmap", prompt: "In auth-service/, add 'Deploy by Friday [DUE: 2025-07-05]' to ROADMAP.md"
 Task: "Update blog roadmap", prompt: "In blog/, move 'Publish announcement' to Active Work"
 Task: "Update payment roadmap", prompt: "In payment-api/, move 'Stripe integration' to Blocked section"
 
@@ -192,7 +192,7 @@ For comprehensive project summaries, spawn sub-agents with dynamic scope:
 ### Daily Standup (Morning)
 ```bash
 claude -p "You are in [project] directory. For DAILY STANDUP:
-1. Read PROJECT_ROADMAP.md Active Work section
+1. Read ROADMAP.md Active Work section
 2. Read CLAUDE_LOG.md - only last 3 entries or yesterday's entries
 3. Identify: What's planned for today based on 'Next:' items
 4. Report using this format:
@@ -204,7 +204,7 @@ claude -p "You are in [project] directory. For DAILY STANDUP:
 ### Daily Review (Evening)
 ```bash
 claude -p "You are in [project] directory. For DAILY REVIEW:
-1. Read PROJECT_ROADMAP.md for context
+1. Read ROADMAP.md for context
 2. Read CLAUDE_LOG.md - ONLY entries from today ($(date +%Y-%m-%d))
 3. Check git commits from today
 4. Report using this format:
@@ -222,7 +222,7 @@ claude -p "You are in [project] directory. For DAILY REVIEW:
 ### Weekly Review
 ```bash
 claude -p "You are in [project] directory. For WEEKLY REVIEW:
-1. Read PROJECT_ROADMAP.md - note completed items
+1. Read ROADMAP.md - note completed items
 2. Read CLAUDE_LOG.md - entries from last 7 days
 3. Check git commits from: $(date -d '7 days ago' +%Y-%m-%d) to today
 4. Report using this format:
@@ -244,7 +244,7 @@ claude -p "You are in [project] directory. For WEEKLY REVIEW:
 ### Project Health Check
 ```bash
 claude -p "You are in [project] directory. For PROJECT HEALTH:
-1. Check PROJECT_ROADMAP.md Blocked section
+1. Check ROADMAP.md Blocked section
 2. Search CLAUDE_LOG.md for recent 'Blocked:' entries
 3. Run git status for uncommitted changes
 4. Report using this format:
@@ -335,7 +335,7 @@ When the user wants to work on a project:
 When creating a new project:
 1. Create directory and init git
 2. Create CLAUDE.md from template
-3. Create PROJECT_ROADMAP.md from template
+3. Create ROADMAP.md from template
 4. Create initial CLAUDE_LOG.md entry
 5. Update roadmap with initial goals
 6. Create .claudepm marker file (see below)
@@ -380,7 +380,7 @@ Purpose: [From README or package.json description]
 - Run: [npm start, python main.py, etc.]
 ```
 
-**PROJECT_ROADMAP.md**: Import existing TODOs and infer from recent commits
+**ROADMAP.md**: Import existing TODOs and infer from recent commits
 ```markdown
 ## Current Status
 [Summarize from README and recent commits]
@@ -426,14 +426,14 @@ Add `.claudepm` to the project's .gitignore to keep it local
 
 ## Roadmap Best Practices
 
-When updating any PROJECT_ROADMAP.md:
+When updating any ROADMAP.md:
 - **Version features**: Group into v0.1, v0.2, etc. (future git branches)
 - **Make actionable**: "Add auth" → "Add JWT authentication with refresh tokens"
 - **Include why**: Brief rationale for each feature
 - **Think PR-sized**: Each version should be one coherent pull request
 - **Enable automation**: Clear enough that "work on v0.2" is unambiguous
 
-**Before ANY commit**: Always check if PROJECT_ROADMAP.md needs updating:
+**Before ANY commit**: Always check if ROADMAP.md needs updating:
 - Have you completed items that should move to Completed?
 - Are there new tasks discovered during work?
 - Has the Current Status changed?
@@ -474,7 +474,7 @@ Every Claude session is ephemeral. The logs are permanent. Write logs as if you'
 
 1. **CLAUDE.md** - How to work (instructions, principles)
 2. **CLAUDE_LOG.md** - What happened (append-only history)  
-3. **PROJECT_ROADMAP.md** - What's next (current state, plans, features)
+3. **ROADMAP.md** - What's next (current state, plans, features)
 
 That's it. Don't create other planning/tracking documents.
 
@@ -579,7 +579,7 @@ I need to process this update and route items to relevant projects:
 For each item:
 1. Identify which project it relates to (check */ directories)
 2. Extract any deadlines, blockers, or priority changes
-3. Spawn sub-agent to update that project's PROJECT_ROADMAP.md
+3. Spawn sub-agent to update that project's ROADMAP.md
 4. Report what was updated and what couldn't be matched"
 ```
 
@@ -615,7 +615,7 @@ Manager Claude spawns focused updates:
 ```bash
 # For each identified project
 claude -p "You are in auth-system/ directory.
-Update PROJECT_ROADMAP.md:
+Update ROADMAP.md:
 - Add to Active Work: Deploy to production [DUE: 2025-07-01]
 - Note in context: Hard deadline from client meeting 2025-06-29"
 ```
