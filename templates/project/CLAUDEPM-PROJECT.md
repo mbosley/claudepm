@@ -103,16 +103,25 @@ Next: Continue working
 
 ### STOP! Before creating ANY new markdown file:
 - **Planning/Features/Ideas** → Goes in ROADMAP.md
-- **Work history/decisions** → Goes in LOG.md  
+- **Work history** → Goes in LOG.md
+- **Patterns/insights** → Goes in NOTES.md  
 - **Instructions/setup** → Goes in CLAUDE.md or README.md
 - **Only create new files for actual code or truly new categories**
 
 Example: Beta features, roadmaps, plans, ideas, TODOs → All go in ROADMAP.md, not new files!
 
-### claudepm Files
-- **CLAUDE.md** - Project-specific instructions (check in to git)
-- **LOG.md** - Append-only work history (check in to git)  
-- **ROADMAP.md** - Living state document (check in to git)
+### The Four Core Files
+- **CLAUDE.md** - HOW to work (instructions, behavioral patterns)
+- **LOG.md** - WHAT happened (append-only chronological history)  
+- **ROADMAP.md** - WHAT's next (plans, priorities, current state)
+- **NOTES.md** - WHY it matters (patterns, insights, meta-observations)
+
+### File Usage Distinction
+- **LOG.md** - Written by Claude during work (chronological record)
+- **NOTES.md** - Written by humans observing patterns (insights and reflections)
+- Both provide memory, but from different perspectives
+
+### Local Files
 - **.claudepm** - Local metadata marker (add to .gitignore)
 
 ## Git Commits vs Logs (Claude-specific)

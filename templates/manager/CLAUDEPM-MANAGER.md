@@ -470,11 +470,12 @@ Remember: The log is our shared memory. Keep it updated.
 
 Every Claude session is ephemeral. The logs are permanent. Write logs as if you're leaving notes for a colleague (yourself tomorrow).
 
-## Quick Reference: The Three Core Documents
+## Quick Reference: The Four Core Files
 
-1. **CLAUDE.md** - How to work (instructions, principles)
-2. **LOG.md** - What happened (append-only history)  
-3. **ROADMAP.md** - What's next (current state, plans, features)
+1. **CLAUDE.md** - HOW to work (instructions, principles)
+2. **LOG.md** - WHAT happened (append-only history by Claude)  
+3. **ROADMAP.md** - WHAT's next (current state, plans, features)
+4. **NOTES.md** - WHY it matters (human insights and patterns)
 
 That's it. Don't create other planning/tracking documents.
 
