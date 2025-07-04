@@ -30,6 +30,9 @@ Commands:
   doctor [paths]   Check health of all projects
   health           Check current project health
   task <subcommand> Manage tasks in ROADMAP.md
+  context          Get complete session context (NEW)
+  log <message>    Log work with proper format (NEW)
+  next             Suggest what to work on (NEW)
   version          Show claudepm version
 
 Task subcommands:
@@ -68,6 +71,16 @@ case "${1:-}" in
     task)
         shift
         task_command "$@"
+        ;;
+    context)
+        get_context
+        ;;
+    log)
+        shift
+        log_work "$@"
+        ;;
+    next)
+        suggest_next
         ;;
     version|--version|-v)
         echo "claudepm v$CLAUDEPM_VERSION"
