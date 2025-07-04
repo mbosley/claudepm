@@ -7,3 +7,5 @@ worktrees/
 !templates/
 # Archive of TASK_PROMPT files from completed/removed worktrees
 .prompts_archive/
+# Scoping artifacts (local only)
+.scoping/

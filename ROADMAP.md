@@ -35,6 +35,15 @@ Based on real usage feedback:
 
 ## Upcoming
 
+### v0.3 - Frictionless Feature Development
+Based on the discovered meta-pattern (Scope → Setup → Execute):
+- [ ] Implement `claudepm scope` command for structured feature planning
+- [ ] Integrate scoping output with worktree creation
+- [ ] Add Gemini consultation to scoping workflow
+- [ ] Create `.scoping/` directory for preserving planning artifacts
+- [ ] Auto-generate TASK_PROMPT from scoping sessions
+- [ ] Add PR review that compares implementation to original scope
+
 ### v0.1 Release (Complete! 🎉)
 - [x] Create GitHub repository
 - [x] Tag v0.1 release
