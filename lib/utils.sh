@@ -522,6 +522,14 @@ task_command() {
                 exit 1
             fi
             
+            # Validate task description
+            if ! validate_task_description "$description"; then
+                exit 1
+            fi
+            
+            # Escape special characters in description
+            description=$(escape_for_markdown "$description")
+            
             local uuid=$(generate_uuid)
             
             # Build task line
@@ -740,7 +748,9 @@ task_command() {
             
             # Add blocked reason if not present
             if ! [[ "$task_line" =~ \[blocked: ]]; then
-                task_line="$task_line [blocked:$reason]"
+                # Escape the reason
+                local escaped_reason=$(escape_for_markdown "$reason")
+                task_line="$task_line [blocked:$escaped_reason]"
                 TASK_LINES[$idx]="$task_line"
             fi
             
@@ -884,162 +894,6 @@ task_command() {
     esac
 }
 
-# Migrate old CPM::TASK format to new human-readable format
-migrate_tasks() {
-    if [[ ! -f "ROADMAP.md" ]]; then
-        return 0
-    fi
-    
-    # Check if migration is needed
-    if ! grep -q "CPM::TASK::" ROADMAP.md; then
-        return 0
-    fi
-    
-    echo "Migrating tasks to new human-readable format..."
-    
-    # Create temp file
-    local temp_file=$(mktemp)
-    local migrated_count=0
-    
-    # Read and categorize old tasks
-    local todo_tasks=()
-    local in_progress_tasks=()
-    local blocked_tasks=()
-    local done_tasks=()
-    
-    while IFS= read -r line; do
-        if [[ "$line" =~ CPM::TASK::([^:]+)::([^:]+)::([^:]+)::(.+) ]]; then
-            local uuid="${BASH_REMATCH[1]}"
-            local status="${BASH_REMATCH[2]}"
-            local date="${BASH_REMATCH[3]}"
-            local desc="${BASH_REMATCH[4]}"
-            
-            # Parse additional metadata from description
-            local priority=""
-            local tags=""
-            local due=""
-            local assignee=""
-            local estimate=""
-            local blocked_reason=""
-            
-            # Extract metadata patterns from description
-            if [[ "$desc" =~ \|\|priority:([^|]+)\|\| ]]; then
-                priority="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/||priority:[^|]*||//g")
-            fi
-            
-            if [[ "$desc" =~ \|\|tags:([^|]+)\|\| ]]; then
-                tags="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/||tags:[^|]*||//g")
-            fi
-            
-            if [[ "$desc" =~ \|\|due:([^|]+)\|\| ]]; then
-                due="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/||due:[^|]*||//g")
-            fi
-            
-            if [[ "$desc" =~ \|\|assignee:([^|]+)\|\| ]]; then
-                assignee="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/||assignee:[^|]*||//g")
-            fi
-            
-            if [[ "$desc" =~ \|\|estimate:([^|]+)\|\| ]]; then
-                estimate="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/||estimate:[^|]*||//g")
-            fi
-            
-            if [[ "$desc" =~ \(Blocked:[[:space:]]([^\)]+)\) ]]; then
-                blocked_reason="${BASH_REMATCH[1]}"
-                desc=$(echo "$desc" | sed "s/ (Blocked: [^)]*)//g")
-            fi
-            
-            # Build new format task line
-            local checkbox="[ ]"
-            [[ "$status" == "DONE" ]] && checkbox="[x]"
-            
-            local task_line="- $checkbox $desc"
-            [[ -n "$priority" ]] && task_line="$task_line [$priority]"
-            [[ -n "$tags" ]] && task_line="$task_line [#$tags]"
-            [[ -n "$due" ]] && task_line="$task_line [due:$due]"
-            [[ -n "$assignee" ]] && task_line="$task_line [$assignee]"
-            [[ -n "$estimate" ]] && task_line="$task_line [$estimate]"
-            
-            # Add status-specific metadata
-            case "$status" in
-                TODO)
-                    todo_tasks+=("$task_line\n  ID: $uuid\n")
-                    ;;
-                IN_PROGRESS)
-                    task_line="$task_line [started:$date]"
-                    in_progress_tasks+=("$task_line\n  ID: $uuid\n")
-                    ;;
-                BLOCKED)
-                    [[ -n "$blocked_reason" ]] && task_line="$task_line [blocked:$blocked_reason]"
-                    blocked_tasks+=("$task_line\n  ID: $uuid\n")
-                    ;;
-                DONE)
-                    task_line="$task_line [completed:$date]"
-                    done_tasks+=("$task_line\n  ID: $uuid\n")
-                    ;;
-            esac
-            
-            ((migrated_count++))
-        fi
-    done < ROADMAP.md
-    
-    # Write non-task content and new task sections
-    local in_old_tasks=false
-    while IFS= read -r line; do
-        # Skip old task lines
-        if [[ "$line" =~ CPM::TASK:: ]]; then
-            in_old_tasks=true
-            continue
-        fi
-        
-        # Check if we're leaving the old tasks section
-        if [[ "$in_old_tasks" == true ]] && ! [[ "$line" =~ CPM::TASK:: ]] && [[ -n "$line" ]]; then
-            in_old_tasks=false
-        fi
-        
-        if [[ "$in_old_tasks" == false ]]; then
-            echo "$line" >> "$temp_file"
-        fi
-    done < ROADMAP.md
-    
-    # Add new Tasks section
-    {
-        echo ""
-        echo "## Tasks"
-        echo ""
-        echo "### TODO"
-        for task in "${todo_tasks[@]}"; do
-            echo -e "$task"
-        done
-        echo ""
-        echo "### IN PROGRESS"
-        for task in "${in_progress_tasks[@]}"; do
-            echo -e "$task"
-        done
-        echo ""
-        echo "### BLOCKED"
-        for task in "${blocked_tasks[@]}"; do
-            echo -e "$task"
-        done
-        echo ""
-        echo "### DONE"
-        for task in "${done_tasks[@]}"; do
-            echo -e "$task"
-        done
-    } >> "$temp_file"
-    
-    # Backup and replace
-    cp ROADMAP.md ROADMAP.md.backup_$(date +%Y%m%d_%H%M%S)
-    mv "$temp_file" ROADMAP.md
-    
-    echo "Migrated $migrated_count tasks to new format"
-    echo "Backup saved as ROADMAP.md.backup_*"
-}
-
 # Upgrade project templates
 upgrade_project() {
     if [[ ! -f ".claudepm" ]]; then
@@ -1056,9 +910,6 @@ upgrade_project() {
     fi
     
     echo "Upgrading from v$current_version to v$CLAUDEPM_VERSION..."
-    
-    # Migrate tasks if needed
-    migrate_tasks
     
     # Update version marker
     sed -i.bak "s/template_version=.*/template_version=$CLAUDEPM_VERSION/" .claudepm
@@ -1342,6 +1193,37 @@ declare -a TASK_ORDER
 declare -a PRE_TASK_LINES
 declare -a POST_TASK_LINES
 
+# Escape special characters for safe markdown
+escape_for_markdown() {
+    local str="$1"
+    # Escape square brackets
+    str="${str//\[/\\[}"
+    str="${str//\]/\\]}"
+    # Escape asterisks
+    str="${str//\*/\\*}"
+    # Escape underscores
+    str="${str//_/\\_}"
+    echo "$str"
+}
+
+# Validate task description doesn't contain problematic patterns
+validate_task_description() {
+    local desc="$1"
+    # Check for ID: pattern which could conflict with our ID line
+    if [[ "$desc" =~ ID:[[:space:]] ]]; then
+        echo "Error: Task description cannot contain 'ID:' pattern" >&2
+        return 1
+    fi
+    # Check for excessive brackets that might break parsing
+    local open_count=$(echo "$desc" | tr -cd '[' | wc -c)
+    local close_count=$(echo "$desc" | tr -cd ']' | wc -c)
+    if [[ $open_count -ne $close_count ]]; then
+        echo "Error: Unmatched brackets in task description" >&2
+        return 1
+    fi
+    return 0
+}
+
 # Parse ROADMAP.md into structured data
 parse_roadmap() {
     # Clear previous state
@@ -1420,6 +1302,9 @@ find_task_index() {
 render_roadmap() {
     local temp_file=$(mktemp)
     
+    # Set up cleanup trap
+    trap "rm -f '$temp_file'" EXIT
+    
     # Write pre-task content
     if [[ ${#PRE_TASK_LINES[@]} -gt 0 ]]; then
         for line in "${PRE_TASK_LINES[@]}"; do
@@ -1474,5 +1359,13 @@ render_roadmap() {
     fi
     
     # Atomic replacement
-    mv "$temp_file" ROADMAP.md
+    if ! mv "$temp_file" ROADMAP.md; then
+        echo "Error: Failed to update ROADMAP.md" >&2
+        rm -f "$temp_file"
+        trap - EXIT
+        return 1
+    fi
+    
+    # Reset trap
+    trap - EXIT
 }
