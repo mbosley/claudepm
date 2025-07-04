@@ -1071,3 +1071,16 @@ Next: Deploy v0.2.5 to personal projects, create migration guide
 Notes: Clean separation achieved - v0.2.5 core is merged, testing infrastructure saved for later
 
 ---
+
+
+### 2025-07-03 17:48 - Started v0.2.5.1 Claude-first implementation
+Did:
+- CREATED: feature/v0.2.5.1-claude-first branch
+- ANALYZED: Current templates teach file manipulation instead of claudepm usage
+- DESIGNED: Claude-centric commands (status, context, log, next)
+- DOCUMENTED: Complete implementation plan in v0.2.5.1-implementation-plan.md
+- IDENTIFIED: Core issue - claudepm should be Claude's native interface
+Next: Implement new commands starting with 'claudepm context'
+Notes: This transforms claudepm from 'CLI that creates files' to 'Claude's memory interface'
+
+---

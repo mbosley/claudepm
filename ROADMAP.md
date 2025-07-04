@@ -3,7 +3,7 @@
 *Last updated: 2025-07-03*
 
 ## Current Status
-v0.2.5 complete and merged! Core infrastructure with centralized templates working perfectly.
+v0.2.5.1 complete! claudepm is now a protocol for Claude, not just a tool.
 
 claudepm v0.2.5 solves the version drift problem without introducing complexity. Following the principle of "do one thing well," this version adds centralized template management while maintaining the dead-simple markdown-based workflow. The system now uses four core files: CLAUDE.md (instructions), LOG.md (history), ROADMAP.md (plans), and NOTES.md (wisdom).
 
@@ -13,11 +13,18 @@ All core commands tested and working:
 - `claudepm task add/list/done/block` manages tasks without delimiter errors
 - `claudepm health` and `doctor` provide project status
 - `claudepm upgrade` updates templates to latest version
+- **NEW in v0.2.5.1:**
+  - `claudepm context` - Complete session context for Claude
+  - `claudepm log <message> --next <task>` - Structured logging
+  - `claudepm next` - Task prioritization
 
 ## Active Work
-- [ ] Document v0.2.5 migration path from v0.2.0
+
+### Documentation & Deployment
+- [ ] Test v0.2.5.1 with actual Claude sessions
+- [ ] Deploy v0.2.5.1 to personal projects
 - [ ] Create QUICKSTART.md guide
-- [ ] Deploy v0.2.5 to personal projects
+- [ ] Monitor Claude's usage patterns for protocol evolution
 
 ## Upcoming
 
@@ -44,6 +51,15 @@ All core commands tested and working:
 - [x] Create claudepm slash commands
 - [x] Rename PROJECT_ROADMAP.md to ROADMAP.md
 - [x] Build comprehensive testing infrastructure
+
+### v0.2.5.1 - Claude-First Design (Complete! 🎉)
+- [x] Add Claude-centric commands (context, log, next)
+- [x] Rewrite templates to teach claudepm as protocol
+- [x] Improve command output for Claude parsing
+- [x] Fix delimiter parsing bug in task commands
+- [x] Fix date resolution in initial log entries
+- [x] Implement protocol layers concept
+- [x] Add evolution principle for protocol growth
 
 ### v0.3 - Perfect the Within-Project Experience
 - [ ] Refine templates based on real usage patterns

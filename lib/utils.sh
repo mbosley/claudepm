@@ -59,12 +59,42 @@ EOF
             safe_copy_template "project/LOG.md" "LOG.md"
             safe_copy_template "project/ROADMAP.md" "ROADMAP.md"
             safe_copy_template "project/NOTES.md" "NOTES.md"
+            
+            # Add initial log entry if LOG.md was just created
+            if [[ -f "LOG.md" ]] && grep -q "<!-- Initial entry will be added by claudepm init -->" LOG.md 2>/dev/null; then
+                # Replace the placeholder with actual log entry
+                {
+                    echo "# Work Log"
+                    echo ""
+                    echo "### $(date '+%Y-%m-%d %H:%M') - Project initialized with claudepm"
+                    echo "Did: Set up claudepm for project memory management"
+                    echo "Next: Update ROADMAP.md with initial goals and tasks"
+                    echo "Notes: Remember to log after each work session"
+                    echo ""
+                    echo "---"
+                } > LOG.md
+            fi
             ;;
         manager)
             safe_copy_template "manager/CLAUDE.md" "CLAUDE.md"
             safe_copy_template "manager/LOG.md" "LOG.md"
             safe_copy_template "manager/ROADMAP.md" "ROADMAP.md"
             safe_copy_template "manager/NOTES.md" "NOTES.md"
+            
+            # Add initial log entry if LOG.md was just created
+            if [[ -f "LOG.md" ]] && grep -q "<!-- Initial entry will be added by claudepm init -->" LOG.md 2>/dev/null; then
+                # Replace the placeholder with actual log entry
+                {
+                    echo "# Manager Activity Log"
+                    echo ""
+                    echo "### $(date '+%Y-%m-%d %H:%M') - Manager workspace initialized"
+                    echo "Did: Set up claudepm manager-level coordination"
+                    echo "Projects affected: All future projects"
+                    echo "Next: Use 'claudepm doctor' to scan for existing projects"
+                    echo ""
+                    echo "---"
+                } > LOG.md
+            fi
             ;;
         *)
             echo "Error: Unknown type '$type'. Use 'project' or 'manager'"
@@ -459,4 +489,193 @@ find_blocked() {
     
     echo -e "\n=== Blocked in Logs ==="
     grep -A2 "^Blocked:" LOG.md 2>/dev/null | tail -20
+}
+
+# Get session context - new command for v0.2.5.1
+get_context() {
+    echo "PROJECT: $(basename "$PWD")"
+    echo ""
+    
+    # Git status summary
+    echo "GIT_STATUS:"
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        local changes=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+        if [[ "$changes" -gt 0 ]]; then
+            echo "  Uncommitted changes: $changes files"
+            echo "  Modified files:"
+            git status --porcelain | head -5 | sed 's/^/    /'
+            [[ "$changes" -gt 5 ]] && echo "    ... and $((changes - 5)) more"
+        else
+            echo "  Clean (no uncommitted changes)"
+        fi
+    else
+        echo "  Not a git repository"
+    fi
+    echo ""
+    
+    # Recent log entries
+    echo "RECENT_WORK:"
+    if [[ -f "LOG.md" ]]; then
+        # Get last 3 log entries
+        local entries=$(grep -n "^### " LOG.md | tail -3)
+        if [[ -n "$entries" ]]; then
+            while IFS= read -r line; do
+                local line_num=$(echo "$line" | cut -d':' -f1)
+                local header=$(echo "$line" | cut -d':' -f2-)
+                echo "  $header"
+                # Get the "Did:" line
+                local did_line=$((line_num + 1))
+                sed -n "${did_line}p" LOG.md | sed 's/^/    /'
+                # Get the "Next:" line if it exists
+                local next_line=$((line_num + 2))
+                while IFS= read -r content; do
+                    if [[ "$content" =~ ^Next: ]]; then
+                        echo "    $content"
+                        break
+                    fi
+                    next_line=$((next_line + 1))
+                done < <(tail -n +$next_line LOG.md | head -5)
+                echo ""
+            done <<< "$entries"
+        else
+            echo "  No log entries found"
+        fi
+    else
+        echo "  LOG.md not found"
+    fi
+    
+    # Active tasks
+    echo "ACTIVE_TASKS:"
+    if [[ -f "ROADMAP.md" ]]; then
+        local todo_count=$(grep -c "CPM::TASK::.*::TODO::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
+        local progress_count=$(grep -c "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
+        local blocked_count=$(grep -c "CPM::TASK::.*::BLOCKED::" ROADMAP.md 2>/dev/null | tr -d ' \n' || echo 0)
+        
+        echo "  TODO: $todo_count tasks"
+        echo "  IN_PROGRESS: $progress_count tasks"
+        echo "  BLOCKED: $blocked_count tasks"
+        
+        # Show in-progress tasks
+        if [[ "$progress_count" -gt 0 ]]; then
+            echo ""
+            echo "  Currently in progress:"
+            grep "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md | while IFS= read -r line; do
+                local parts=$(echo "$line" | sed 's/::/|/g')
+                local desc=$(echo "$parts" | cut -d'|' -f6-)
+                echo "    - $desc"
+            done
+        fi
+    else
+        echo "  ROADMAP.md not found"
+    fi
+    echo ""
+    
+    # What to work on next
+    echo "NEXT_SUGGESTED:"
+    # First check for explicit "Next:" in last log
+    if [[ -f "LOG.md" ]]; then
+        local last_next=$(grep "^Next:" LOG.md | tail -1 | sed 's/^Next: *//')
+        if [[ -n "$last_next" ]]; then
+            echo "  From last log: $last_next"
+        fi
+    fi
+    # Then check for in-progress tasks
+    if [[ "$progress_count" -gt 0 ]]; then
+        echo "  Continue in-progress work (see above)"
+    elif [[ "$todo_count" -gt 0 ]]; then
+        echo "  Start a TODO task (run: claudepm next)"
+    else
+        echo "  No tasks found - check ROADMAP.md"
+    fi
+}
+
+# Log work with consistent format - new command for v0.2.5.1
+log_work() {
+    local message="$1"
+    local next_task=""
+    
+    # Parse arguments
+    shift
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --next)
+                next_task="$2"
+                shift 2
+                ;;
+            *)
+                echo "Unknown option: $1"
+                echo "Usage: claudepm log \"message\" [--next \"task\"]"
+                exit 1
+                ;;
+        esac
+    done
+    
+    if [[ -z "$message" ]]; then
+        echo "Error: Log message required"
+        echo "Usage: claudepm log \"message\" [--next \"task\"]"
+        exit 1
+    fi
+    
+    # Append to LOG.md
+    {
+        echo ""
+        echo ""
+        echo "### $(date '+%Y-%m-%d %H:%M') - $message"
+        echo "Did: $message"
+        if [[ -n "$next_task" ]]; then
+            echo "Next: $next_task"
+        fi
+        echo ""
+        echo "---"
+    } >> LOG.md
+    
+    echo "Logged: $message"
+    [[ -n "$next_task" ]] && echo "Next: $next_task"
+}
+
+# Suggest next task - new command for v0.2.5.1
+suggest_next() {
+    echo "SUGGESTED_TASKS:"
+    echo ""
+    
+    # Check for in-progress tasks first
+    if [[ -f "ROADMAP.md" ]]; then
+        local in_progress=$(grep "CPM::TASK::.*::IN_PROGRESS::" ROADMAP.md)
+        if [[ -n "$in_progress" ]]; then
+            echo "Continue in-progress work:"
+            echo "$in_progress" | while IFS= read -r line; do
+                local parts=$(echo "$line" | sed 's/::/|/g')
+                local uuid=$(echo "$parts" | cut -d'|' -f3)
+                local desc=$(echo "$parts" | cut -d'|' -f6-)
+                echo "  [$uuid] $desc"
+            done
+            echo ""
+        fi
+        
+        # Then show TODO tasks
+        local todos=$(grep "CPM::TASK::.*::TODO::" ROADMAP.md | head -5)
+        if [[ -n "$todos" ]]; then
+            echo "Available TODO tasks:"
+            echo "$todos" | while IFS= read -r line; do
+                local parts=$(echo "$line" | sed 's/::/|/g')
+                local uuid=$(echo "$parts" | cut -d'|' -f3)
+                local desc=$(echo "$parts" | cut -d'|' -f6-)
+                echo "  [$uuid] $desc"
+            done
+        fi
+        
+        # Show blocked tasks
+        local blocked=$(grep "CPM::TASK::.*::BLOCKED::" ROADMAP.md)
+        if [[ -n "$blocked" ]]; then
+            echo ""
+            echo "Blocked tasks (resolve blockers first):"
+            echo "$blocked" | while IFS= read -r line; do
+                local parts=$(echo "$line" | sed 's/::/|/g')
+                local desc=$(echo "$parts" | cut -d'|' -f6-)
+                echo "  - $desc"
+            done
+        fi
+    else
+        echo "No ROADMAP.md found"
+    fi
 }

@@ -2,6 +2,29 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.2.5.1 - 2025-07-03
+
+### Added
+- **claudepm as Protocol**: Complete rewrite to teach claudepm as Claude's native protocol
+- **New Protocol Commands**:
+  - `claudepm context` - Get complete session context on startup
+  - `claudepm log <message> --next <task>` - Log work with proper format
+  - `claudepm next` - Suggest what to work on based on state
+- **Protocol Layers**: Clear hierarchy from commands to direct file access
+- **Evolution Principle**: Protocol grows based on Claude's patterns
+
+### Changed
+- Templates completely rewritten to teach protocol usage instead of file manipulation
+- Emphasized "You MUST use claudepm commands for ALL project memory operations"
+- Fixed delimiter parsing bug in task list display (replaced :: with | internally)
+- Fixed date resolution in initial LOG.md entries
+- Fixed count parsing issues with proper whitespace stripping
+
+### Fixed
+- Task list display now properly handles :: delimiters in descriptions
+- Initial log entries now show resolved dates instead of literal $(date) commands
+- Count operations no longer throw syntax errors from whitespace
+
 ## v0.2.0 - 2025-01-02
 
 ### Added
