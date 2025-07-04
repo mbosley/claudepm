@@ -495,4 +495,4 @@ This ensures consistency and prevents missing components. The full checklist liv
 claudepm now follows an 'architect-first' development model for non-trivial changes. Before writing code, we use the /architect-feature command to generate comprehensive implementation plans. This approach ensures changes are well-considered, aligned with project principles, and have a clear path to completion. The architect-first approach was validated during the v0.1.5 template reorganization and is now standard practice.
 
 ---
-Last updated: 2025-07-01 12:49
+Last updated: 2025-07-01 12:49CPM::TASK::e9ad54d0-b374-4265-a446-50b9d505de79::TODO::2025-07-03::Implement search functionality||priority:high||tags:feature,search||due:2025-07-15||assignee:@alice||estimate:8h

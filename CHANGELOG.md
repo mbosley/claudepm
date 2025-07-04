@@ -2,6 +2,29 @@
 
 Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing projects.
 
+## v0.2.5.2 - 2025-07-03
+
+### Changed
+- **Simplified logging protocol**: Removed prescriptive options in favor of free-form content
+  - `claudepm log "title" "content"` - Structure provided by Claude, not flags
+  - Reduced log_work() from 183 to 37 lines
+  - Removed time tracking (Claude isn't good at estimating)
+- **Protocol philosophy**: "Structure + Freedom"
+  - Minimal structure: timestamp, title, consistent format
+  - Maximum freedom: Claude decides content format based on context
+  - No prescriptive fields or forced categories
+
+### Removed
+- All log option flags (--did, --tag, --time, --with, --commit, etc.)
+- Time estimation features
+- Complex argument parsing
+
+### Benefits
+- Simpler code (utils.sh reduced from 820 to 676 lines)
+- More natural logging (like taking notes, not filling forms)
+- Flexible formatting (Claude adapts to context)
+- Easier to maintain and extend
+
 ## v0.2.5.1 - 2025-07-03
 
 ### Added

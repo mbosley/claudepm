@@ -71,3 +71,35 @@ With: @alice @bob
 Notes: Chose WebSocket for bidirectional communication needs, fallback to SSE
 
 ---
+
+
+### 2025-07-03 21:05 - Implemented ultra-rich logging #enhancement #logging #v0.2.5.1
+Did:
+- Added tags with #hashtag format for searchability
+- Added git commit tracking with --commit flag
+- Added people mentions with @-tags via --with flag
+- Added time tracking with --time flag
+- Added PR/issue references with --pr flag
+- Added error tracking with --error flag
+- Added decision logging with --decided flag
+- Updated templates with comprehensive examples
+Next: Commit and test with real Claude sessions
+Time: 30m
+Notes: This provides full context for every work session and makes logs highly searchable
+
+---
+
+
+### 2025-07-03 21:27 - Simplified claudepm protocol
+Did:
+- Removed prescriptive log options (--did, --tag, --time, etc.)
+- Reduced log_work from 183 to 37 lines
+- Updated templates to show flexible formatting
+- Embraced 'structure + freedom' philosophy
+
+Key insight: The protocol should provide minimal structure (timestamp, title) and let Claude decide how to format the content based on context.
+
+Next: Split utils.sh into modules for v0.3
+#refactoring #simplification
+
+---

@@ -51,52 +51,33 @@ This intelligently prioritizes based on in-progress work, blockers, and dependen
 
 ```bash
 # Simple log
-claudepm log "Fixed authentication bug" --next "Run integration tests"
+claudepm log "Fixed authentication bug"
 
-# Rich log with accomplishments and metadata
-claudepm log "Implemented OAuth flow" \
-  --did "Added Google OAuth provider" \
-  --did "Created JWT token generation" \
-  --did "Set up refresh token rotation" \
-  --tag "feature" --tag "auth" \
-  --commit "abc123" --commit "def456" \
-  --time "4h" \
-  --pr "#89" \
-  --next "Add OAuth tests"
+# Log with details (structure as you see fit)
+claudepm log "Implemented OAuth flow" "Did:
+- Added Google OAuth provider  
+- Created JWT token generation
+- Set up refresh token rotation
+Commits: abc123, def456
+PR: #89
+Next: Add OAuth tests"
 
-# Error tracking
-claudepm log "Debug session" \
-  --error "Memory leak in WebSocket handler" \
-  --did "Found unclosed event listeners" \
-  --tag "bug" --tag "memory-leak" \
-  --time "3h"
+# Error tracking (your format choice)
+claudepm log "Debug session" "Found memory leak in WebSocket handler
+Error: MaxListenersExceededWarning
+Did: Identified unclosed event listeners
+Next: Add cleanup in componentWillUnmount
+#bug #memory-leak"
 
 # Decision logging
-claudepm log "Architecture review" \
-  --decided "Use event-driven architecture" \
-  --with "@alice" --with "@bob" \
-  --tag "architecture" --tag "decision" \
-  --notes "Chose WebSocket for real-time needs"
-
-# Blocked work
-claudepm log "Payment integration" \
-  --did "Created Stripe webhook endpoints" \
-  --blocked "Waiting for production API keys" \
-  --with "@payment-team"
+claudepm log "Architecture review" "Decided: Use event-driven architecture
+Reasoning: Need real-time updates, bidirectional communication
+Participants: @alice @bob
+Options considered: Polling, SSE, WebSocket
+#architecture #decision"
 ```
 
-Full options:
-- `--did` - Accomplishments (repeatable)
-- `--next` - Next task
-- `--blocked` - Blocker reason
-- `--notes` - Additional context
-- `--tag` - Searchable keywords (repeatable)
-- `--commit` - Git commits (repeatable)
-- `--with` - People involved (repeatable)
-- `--time` - Duration (e.g., "2h", "30m")
-- `--pr` - PR/issue reference
-- `--error` - Error encountered
-- `--decided` - Decision made
+The protocol provides structure (timestamp + title). You provide the content in whatever format makes sense for the situation.
 
 **NEVER** use manual appends (`>>`) or heredocs. This breaks the protocol and risks data loss.
 
