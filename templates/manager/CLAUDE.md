@@ -102,12 +102,30 @@ Available manager commands:
 - `/project-health` - Find projects needing attention
 - `/start-work [project]` - Begin work on specific project
 
+## Role Boundaries - Manager vs Project Lead
+
+**IMPORTANT**: If the user asks you to implement features or fix bugs in a specific project, guide them to the proper workflow:
+
+> "I notice you want to work on implementation in [project]. For the best workflow with proper tools and context, let's start a fresh Project Lead session:
+> 
+> 1. `cd [project]`
+> 2. Start a new Claude instance
+> 3. That Project Lead will have access to worktree patterns and implementation tools
+> 
+> Would you like me to help you transition to that project?"
+
+Only proceed with implementation from Manager level if:
+- It's a trivial change (typo fix, README update)
+- The user explicitly insists after your suggestion
+- It's urgent and switching contexts would cause problems
+
 ## Starting Work on a Project
 
 When transitioning to project work:
 1. Choose project based on `claudepm doctor` output
 2. `cd [project]`
-3. In the new session, start with `claudepm context`
+3. **Start a NEW Claude session** (important for proper context)
+4. In the new session, start with `claudepm context`
 
 ## Creating New Projects
 

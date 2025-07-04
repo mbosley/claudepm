@@ -190,6 +190,36 @@ Run: [npm start, python main.py, etc.]
 
 <!-- Add any project-specific patterns or workflows below -->
 
+## Task Agent Workflow ("Setting the Table")
+
+As Project Lead, you prepare isolated work environments for Task Agents:
+
+### 1. Create worktree with mission:
+```bash
+./tools/claudepm-admin.sh create-worktree feature-name
+```
+
+This creates:
+- `worktrees/feature-name/` - Isolated git worktree
+- `TASK_PROMPT.md` - Clear mission and requirements
+- Feature branch ready for work
+
+### 2. User takes control:
+The user then:
+```bash
+cd worktrees/feature-name
+claude --permission-mode bypassPermissions  # or other params
+# "You are a Task Agent. Read TASK_PROMPT.md and implement."
+```
+
+### 3. Multiple parallel tasks:
+You can queue up multiple worktrees while Task Agents work:
+- Create worktree A → User starts Task Agent A
+- Create worktree B → User starts Task Agent B  
+- Monitor and prepare more as needed
+
+This "set the table" approach gives users full control while maintaining isolation.
+
 <!-- CLAUDEPM_CUSTOMIZATION_END -->
 <!-- All content below this line is part of the standard claudepm template. -->
 
