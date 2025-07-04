@@ -10,6 +10,7 @@ Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing
   - Guided scoping session with problem statement, requirements, and planning
   - Outputs ready-to-execute TASK_PROMPT for Task Agents
   - Automatic worktree creation with scoped requirements
+  - `.scoping/` directory for preserving scoping artifacts (gitignored)
 - **Documentation Updates**:
   - Task Agent workflow now mentions `/scope-feature` as preferred method
   - Feature development checklist updated with scope-first approach
@@ -19,6 +20,11 @@ Track changes to CLAUDE.md and PROJECT_ROADMAP.md templates that affect existing
 - Fixed outdated `--permission-mode bypassPermissions` flag to `--dangerously-skip-permission`
 - Enhanced project template to document the Scope → Setup → Execute meta-pattern
 - Updated feature development guidance to prefer scoping for non-trivial features
+
+### Fixed
+- Added `.scoping/` to .gitignore for local-only scoping artifacts
+- Simplified `lib/scope.sh` to focus on worktree creation (removed interactive CLI mode)
+- Added proper error handling and validation to scope.sh
 
 ### Benefits
 - Reduced friction from idea to implementation-ready Task Agent

@@ -149,7 +149,7 @@ cd worktrees/user-notifications
 claude --dangerously-skip-permission
 ```
 
-Future: `claudepm scope` command will provide this workflow from the command line.
+Note: The `/scope-feature` slash command handles the scoping workflow. A future `claudepm scope` CLI command may provide this from the command line.
 
 ### Processing Meeting Notes
 ```bash

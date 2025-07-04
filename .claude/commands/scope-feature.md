@@ -36,9 +36,9 @@ I'll guide you through a structured feature scoping session for: $ARGUMENTS
 
 4. **Output Generation**
    After we complete scoping, I'll:
-   - Save our conversation to `.scoping/[feature-name].md`
-   - Generate a complete TASK_PROMPT.md
-   - Create the worktree with: !`./lib/scope.sh create-worktree $ARGUMENTS`
+   - Generate a complete TASK_PROMPT.md with all requirements
+   - Save the scoped content to `.scoping/` for future reference
+   - Create the worktree with the scoped TASK_PROMPT ready to go
 
 The Task Agent will run with `--dangerously-skip-permission` flag for autonomous execution.
 
