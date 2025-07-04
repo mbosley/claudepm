@@ -589,188 +589,44 @@ get_context() {
     fi
 }
 
-# Log work with consistent format - new command for v0.2.5.1
+# Log work with consistent format - simplified for v0.2.5.2
 log_work() {
-    local title="$1"
-    local did_items=()
-    local next_task=""
-    local blocked_reason=""
-    local notes=""
-    local tags=()
-    local commits=()
-    local people=()
-    local time_spent=""
-    local pr=""
-    local error=""
-    local decided=""
-    
-    # Parse arguments
+    local title="${1:-}"
     shift
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --did)
-                did_items+=("$2")
-                shift 2
-                ;;
-            --next)
-                next_task="$2"
-                shift 2
-                ;;
-            --blocked)
-                blocked_reason="$2"
-                shift 2
-                ;;
-            --notes)
-                notes="$2"
-                shift 2
-                ;;
-            --tag)
-                tags+=("$2")
-                shift 2
-                ;;
-            --commit)
-                commits+=("$2")
-                shift 2
-                ;;
-            --with)
-                people+=("$2")
-                shift 2
-                ;;
-            --time)
-                time_spent="$2"
-                shift 2
-                ;;
-            --pr)
-                pr="$2"
-                shift 2
-                ;;
-            --error)
-                error="$2"
-                shift 2
-                ;;
-            --decided)
-                decided="$2"
-                shift 2
-                ;;
-            *)
-                echo "Unknown option: $1"
-                echo "Usage: claudepm log \"title\" [options]"
-                echo ""
-                echo "Options:"
-                echo "  --did \"item\"        What was accomplished (repeatable)"
-                echo "  --next \"task\"       What to work on next"
-                echo "  --blocked \"reason\"  Why work is blocked"
-                echo "  --notes \"text\"      Additional context"
-                echo "  --tag \"keyword\"     Tags for searching (repeatable)"
-                echo "  --commit \"sha\"      Related git commits (repeatable)"
-                echo "  --with \"@person\"    People involved (repeatable)"
-                echo "  --time \"duration\"   Time spent (e.g., \"2h\", \"30m\")"
-                echo "  --pr \"#123\"         Related PR number"
-                echo "  --error \"message\"   Error encountered"
-                echo "  --decided \"choice\"  Decision made"
-                echo ""
-                echo "Examples:"
-                echo "  claudepm log \"Fixed auth bug\" --commit abc123 --time 2h --tag security"
-                echo "  claudepm log \"Team meeting\" --with @alice --with @bob --decided \"Use PostgreSQL\""
-                echo "  claudepm log \"Debug session\" --error \"Memory leak in auth module\" --tag bug"
-                exit 1
-                ;;
-        esac
-    done
     
     if [[ -z "$title" ]]; then
         echo "Error: Log title required"
-        echo "Usage: claudepm log \"title\" [options]"
+        echo "Usage: claudepm log \"title\" [content]"
+        echo ""
+        echo "Examples:"
+        echo '  claudepm log "Fixed auth bug"'
+        echo '  claudepm log "Fixed auth bug" "Found race condition. Applied mutex lock."'
+        echo ""
+        echo "Claude can structure content as needed:"
+        echo '  claudepm log "Debug session" "Did: Found memory leak'
+        echo '  Error: MaxListenersExceeded in WebSocket'
+        echo '  Next: Add cleanup in unmount"'
         exit 1
     fi
     
-    # Append to LOG.md
+    # Collect any additional content as free-form text
+    local content="$*"
+    
+    # Append to LOG.md with minimal structure
     {
         echo ""
         echo ""
-        # Include tags in header if present
-        if [[ ${#tags[@]} -gt 0 ]]; then
-            local tag_string=""
-            for tag in "${tags[@]}"; do
-                tag_string="$tag_string #$tag"
-            done
-            echo "### $(date '+%Y-%m-%d %H:%M') - $title$tag_string"
-        else
-            echo "### $(date '+%Y-%m-%d %H:%M') - $title"
-        fi
-        
-        # Handle Did section
-        if [[ ${#did_items[@]} -gt 0 ]]; then
-            echo "Did:"
-            for item in "${did_items[@]}"; do
-                echo "- $item"
-            done
+        echo "### $(date '+%Y-%m-%d %H:%M') - $title"
+        if [[ -n "$content" ]]; then
+            echo "$content"
         else
             echo "Did: $title"
         fi
-        
-        # Add Error if provided
-        if [[ -n "$error" ]]; then
-            echo "Error: $error"
-        fi
-        
-        # Add Decided if provided
-        if [[ -n "$decided" ]]; then
-            echo "Decided: $decided"
-        fi
-        
-        # Add Next if provided
-        if [[ -n "$next_task" ]]; then
-            echo "Next: $next_task"
-        fi
-        
-        # Add Blocked if provided
-        if [[ -n "$blocked_reason" ]]; then
-            echo "Blocked: $blocked_reason"
-        fi
-        
-        # Add Time if provided
-        if [[ -n "$time_spent" ]]; then
-            echo "Time: $time_spent"
-        fi
-        
-        # Add People if provided
-        if [[ ${#people[@]} -gt 0 ]]; then
-            echo -n "With:"
-            for person in "${people[@]}"; do
-                echo -n " $person"
-            done
-            echo ""
-        fi
-        
-        # Add Commits if provided
-        if [[ ${#commits[@]} -gt 0 ]]; then
-            echo -n "Commits:"
-            for commit in "${commits[@]}"; do
-                echo -n " $commit"
-            done
-            echo ""
-        fi
-        
-        # Add PR if provided
-        if [[ -n "$pr" ]]; then
-            echo "PR: $pr"
-        fi
-        
-        # Add Notes if provided
-        if [[ -n "$notes" ]]; then
-            echo "Notes: $notes"
-        fi
-        
         echo ""
         echo "---"
     } >> LOG.md
     
     echo "Logged: $title"
-    [[ ${#did_items[@]} -gt 0 ]] && echo "Items: ${#did_items[@]} completed"
-    [[ -n "$next_task" ]] && echo "Next: $next_task"
-    [[ -n "$blocked_reason" ]] && echo "Blocked: $blocked_reason"
-    [[ ${#tags[@]} -gt 0 ]] && echo "Tags: ${tags[*]}"
 }
 
 # Suggest next task - new command for v0.2.5.1

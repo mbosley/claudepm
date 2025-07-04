@@ -36,10 +36,26 @@ Commands:
   version          Show claudepm version
 
 Task subcommands:
-  task add <description>    Add new task
-  task list [--blocked]     List tasks (optionally filtered)
-  task done <uuid>          Mark task as done
-  task block <uuid> <reason> Mark task as blocked
+  task add <description> [options]  Add new task with metadata
+  task list [options]               List tasks with filters
+  task start <uuid>                 Mark task as IN_PROGRESS
+  task done <uuid>                  Mark task as DONE
+  task block <uuid> <reason>        Mark task as BLOCKED
+  task update <uuid> [options]      Update task metadata
+
+Task add options:
+  -p high|medium|low    Set priority
+  -t <tag>              Add tag (repeatable)
+  -d YYYY-MM-DD         Set due date
+  -a @person            Assign to someone
+  -e <time>             Time estimate (2h, 1d)
+
+Task list options:
+  --todo, --done, --blocked    Filter by status
+  -p <priority>                Filter by priority
+  -t <tag>                     Filter by tag
+  --overdue                    Show overdue tasks
+  -f, --full                   Show full details
 
 Examples:
   claudepm init project      # Start new project
