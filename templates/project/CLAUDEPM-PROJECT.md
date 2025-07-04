@@ -5,16 +5,16 @@
 2. **Small changes** - Make the minimal change that solves the problem
 3. **Test immediately** - Verify each change before moving on
 4. **Preserve what works** - Don't break working features for elegance
-5. **CLAUDE_LOG.md is append-only** - Never edit past entries, only add new ones
+5. **LOG.md is append-only** - Never edit past entries, only add new ones
 6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
-1. Read PROJECT_ROADMAP.md - see current state and priorities
-2. Read recent CLAUDE_LOG.md - understand last session's work
+1. Read ROADMAP.md - see current state and priorities
+2. Read recent LOG.md - understand last session's work
 3. Run git status - see uncommitted work
 
 ## After Each Work Block
-1. Add to CLAUDE_LOG.md using append-only pattern:
+1. Add to LOG.md using append-only pattern:
 ```bash
 # Simple, clean append that always works
 {
@@ -28,12 +28,12 @@ echo "Next: [Immediate next task]"
 echo "Blocked: [Any blockers - only if blocked]"
 echo ""
 echo "---"
-} >> CLAUDE_LOG.md
+} >> LOG.md
 ```
 
-**CRITICAL: NEVER use Write or Edit tools on CLAUDE_LOG.md** - only append with >> operator. This prevents accidental history loss.
+**CRITICAL: NEVER use Write or Edit tools on LOG.md** - only append with >> operator. This prevents accidental history loss.
 
-**macOS Protection**: On macOS, CLAUDE_LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd CLAUDE_LOG.md`
+**macOS Protection**: On macOS, LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd LOG.md`
 
 If working on a feature branch, include branch name in the summary:
 ```bash
@@ -47,7 +47,7 @@ If working on a feature branch, include branch name in the summary:
 - `FIXED: Login redirect loop issue` (bug resolved)
 This prevents confusion when reading logs later!
 
-2. Update PROJECT_ROADMAP.md following these principles:
+2. Update ROADMAP.md following these principles:
 - Check off completed items
 - Update status of in-progress work
 - Add any new tasks discovered
@@ -102,17 +102,17 @@ Next: Continue working
 - Will this make the project harder to understand?
 
 ### STOP! Before creating ANY new markdown file:
-- **Planning/Features/Ideas** → Goes in PROJECT_ROADMAP.md
-- **Work history/decisions** → Goes in CLAUDE_LOG.md  
+- **Planning/Features/Ideas** → Goes in ROADMAP.md
+- **Work history/decisions** → Goes in LOG.md  
 - **Instructions/setup** → Goes in CLAUDE.md or README.md
 - **Only create new files for actual code or truly new categories**
 
-Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROADMAP.md, not new files!
+Example: Beta features, roadmaps, plans, ideas, TODOs → All go in ROADMAP.md, not new files!
 
 ### claudepm Files
 - **CLAUDE.md** - Project-specific instructions (check in to git)
-- **CLAUDE_LOG.md** - Append-only work history (check in to git)  
-- **PROJECT_ROADMAP.md** - Living state document (check in to git)
+- **LOG.md** - Append-only work history (check in to git)  
+- **ROADMAP.md** - Living state document (check in to git)
 - **.claudepm** - Local metadata marker (add to .gitignore)
 
 ## Git Commits vs Logs (Claude-specific)
@@ -132,7 +132,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
 - Before risky changes
 
 ### Before committing - ALWAYS check:
-1. **Update PROJECT_ROADMAP.md first**:
+1. **Update ROADMAP.md first**:
    - Move completed items from Active Work to Completed
    - Update progress on any in-progress items
    - Add any new work discovered
@@ -151,7 +151,7 @@ Example: Beta features, roadmaps, plans, ideas, TODOs → All go in PROJECT_ROAD
    
    - IMPLEMENTED: Dynamic date filtering in manager templates
    - PLANNED: Manager report persistence to ~/.claudepm/reports/ (added to roadmap)
-   - UPDATED: PROJECT_ROADMAP.md to show v0.1 complete
+   - UPDATED: ROADMAP.md to show v0.1 complete
    ```
    
    **Bad commit message:**
@@ -165,7 +165,7 @@ Remember: Your "work session" might be 2 minutes or 2 hours - log based on tasks
 
 ## Handling Parallel Work (Branches/Worktrees)
 
-### When merging CLAUDE_LOG.md conflicts:
+### When merging LOG.md conflicts:
 1. **Keep BOTH sections** - Never delete parallel work history
 2. **Preserve chronological order** if easy, but don't stress about it
 3. **Add a merge marker entry**:
@@ -258,7 +258,7 @@ As a Task Agent, you:
 
 1. **Work in isolation**: cd worktrees/your-feature
 2. **Follow the plan**: Implement according to architectural guidance
-3. **Log everything**: Update CLAUDE_LOG.md with [feature/branch-name] prefix
+3. **Log everything**: Update LOG.md with [feature/branch-name] prefix
 4. **Commit often**: Small, atomic commits
 5. **Create PR when done**:
    ```bash
@@ -293,7 +293,7 @@ git worktree add worktrees/add-search feature/add-search
 ```
 You are a Task Agent for [project-name] working in the worktrees/add-search worktree.
 
-Your mission: Implement search functionality for CLAUDE_LOG.md files
+Your mission: Implement search functionality for LOG.md files
 
 Requirements:
 - Add a `search` command that searches log entries
@@ -304,7 +304,7 @@ Requirements:
 
 Process:
 1. cd worktrees/add-search
-2. Read CLAUDE_LOG.md and PROJECT_ROADMAP.md for context
+2. Read LOG.md and ROADMAP.md for context
 3. Implement the feature
 4. Test thoroughly
 5. Update documentation

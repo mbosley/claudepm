@@ -45,7 +45,7 @@ Purpose: Simple memory system for Claude Code sessions
 - [ ] Update `CLAUDE.md` (this file!)
 - [ ] Update `templates/project/CLAUDE.md` 
 - [ ] Update `templates/manager/CLAUDE.md` (if affects manager level)
-- [ ] Update `templates/project/PROJECT_ROADMAP.md` (if affects roadmap structure)
+- [ ] Update `templates/project/ROADMAP.md` (if affects roadmap structure)
 
 **3. Version Management**
 - [ ] Bump version in `VERSION`
@@ -56,7 +56,7 @@ Purpose: Simple memory system for Claude Code sessions
 
 **4. Documentation Updates**
 - [ ] Update `README.md` if feature is user-facing
-- [ ] Update `PROJECT_ROADMAP.md`:
+- [ ] Update `ROADMAP.md`:
   - Move feature from Upcoming to Active Work
   - Mark as completed when done
   - Update "Last updated" timestamp
@@ -69,13 +69,13 @@ Purpose: Simple memory system for Claude Code sessions
 - [ ] Verify slash commands work as expected
 
 **6. Logging and Commit**
-- [ ] Add CLAUDE_LOG.md entry using the append pattern
-- [ ] Update PROJECT_ROADMAP.md before committing
+- [ ] Add LOG.md entry using the append pattern
+- [ ] Update ROADMAP.md before committing
 - [ ] **COMMIT NOW** - Don't wait, commit completed work immediately
 - [ ] Push if appropriate (after testing or when requested)
 
 ### Before committing:
-1. **ALWAYS update PROJECT_ROADMAP.md first**
+1. **ALWAYS update ROADMAP.md first**
 2. Move completed items to Completed section
 3. Update Active Work with current state
 4. Check if any version milestones are complete
@@ -92,17 +92,17 @@ Purpose: Simple memory system for Claude Code sessions
 - Have we hit this issue more than twice?
 
 ### CRITICAL: Where claudepm content goes
-- **Feature plans** → PROJECT_ROADMAP.md Upcoming section
-- **Design decisions** → PROJECT_ROADMAP.md Notes section  
+- **Feature plans** → ROADMAP.md Upcoming section
+- **Design decisions** → ROADMAP.md Notes section  
 - **Development tips** → This file (CLAUDE.md)
 - **User guides** → README.md or QUICKSTART.md
-- **Work history** → CLAUDE_LOG.md
+- **Work history** → LOG.md
 
 Examples of files NOT to create: BETA_FEATURES.md, ARCHITECTURE.md, DESIGN.md, TODO.md
 
 ## Handling Parallel Work
 
-When merging CLAUDE_LOG.md conflicts from branches/worktrees:
+When merging LOG.md conflicts from branches/worktrees:
 1. Keep BOTH sections (yours and theirs)
 2. Add a merge marker entry
 3. Continue from the most recent Next: entry
