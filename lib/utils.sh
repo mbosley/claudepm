@@ -39,6 +39,12 @@ safe_copy_template() {
 ensure_claude_md_structure() {
     local type="${1:-project}"
     
+    # Validate type parameter
+    if [[ "$type" != "project" && "$type" != "manager" ]]; then
+        echo "Error: Invalid type specified: $type" >&2
+        return 1
+    fi
+    
     # Check if CLAUDE.md exists
     if [[ ! -f "CLAUDE.md" ]]; then
         # Create from template
@@ -61,26 +67,42 @@ ensure_claude_md_structure() {
         return 1
     fi
     
+    # Define markers for clarity
+    local start_marker="<!-- ==================== PROJECT CUSTOMIZATION START ==================== -->"
+    if [[ "$type" == "manager" ]]; then
+        start_marker="<!-- ==================== MANAGER CUSTOMIZATION START ==================== -->"
+    fi
+    
+    # Check that template has required marker
+    if ! grep -qF "$start_marker" "$template_file"; then
+        echo "Error: Template '$template_file' is missing the required start marker." >&2
+        return 1
+    fi
+    
     # Create temp file with new structure
     local temp_file=$(mktemp)
     
-    # Extract everything from template up to and including customization start
-    sed -n '1,/<!-- ==================== PROJECT CUSTOMIZATION START ==================== -->/p' "$template_file" > "$temp_file"
+    # Use trap for robust cleanup
+    trap 'rm -f "$temp_file"' EXIT
     
-    # Add a blank line for readability
+    # 1. Extract header (from line 1 up to and including the start marker)
+    sed "/${start_marker}/q" "$template_file" > "$temp_file"
+    
+    # 2. Add a blank line for readability, then the original CLAUDE.md content
     echo "" >> "$temp_file"
-    
-    # Add original CLAUDE.md content
     cat CLAUDE.md >> "$temp_file"
-    
-    # Add customization end marker
     echo "" >> "$temp_file"
-    echo "<!-- CLAUDEPM_CUSTOMIZATION_END -->" >> "$temp_file"
-    echo "<!-- ==================== PROJECT CUSTOMIZATION END ==================== -->" >> "$temp_file"
+    
+    # 3. Extract footer (from the line after the start marker to the end)
+    awk 'p; /'"$start_marker"'/ {p=1}' "$template_file" | tail -n +2 >> "$temp_file"
     
     # Replace original file
     mv "$temp_file" CLAUDE.md
-    echo "Updated: CLAUDE.md (prepended claudepm protocol)"
+    
+    # Remove trap
+    trap - EXIT
+    
+    echo "Updated: CLAUDE.md (wrapped with claudepm protocol)"
 }
 
 # Initialize project or manager
@@ -235,9 +257,9 @@ adopt_project() {
     # Find TODOs
     local todo_count=0
     if command -v rg >/dev/null 2>&1; then
-        todo_count=$(rg "TODO|FIXME" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+        todo_count=$(rg "TODO|FIXME" 2>/dev/null | wc -l | tr -d '[:space:]' || echo 0)
     else
-        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l | tr -d '[:space:]' || echo 0)
     fi
     
     if [[ "$dry_run" == "--dry-run" ]]; then
