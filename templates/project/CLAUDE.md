@@ -1,85 +1,88 @@
 # Project: [Project Name]
 
-## The claudepm Protocol
+<!-- ==================== CLAUDEPM SECTION START ==================== -->
+<!-- DO NOT EDIT THIS SECTION - Managed by claudepm v0.3.1 -->
 
-You MUST use claudepm commands for ALL project memory operations. This ensures consistent behavior across every project, whether it's a Python CLI, Node.js app, or Rust library.
+## claudepm Protocol
 
-### Why This Protocol Exists
-- **Consistency**: Same commands work in every project
-- **Reliability**: Never lose work due to format errors
-- **Evolution**: Protocol improves based on your patterns
+This is a claudepm-managed project. You are a **Project-level Claude** working within a specific project directory.
+
+### Your Role
+
+- You are working at the PROJECT level (not Manager or Task Agent)
+- Always stays on the dev branch
+- Dispatches Task Agents for features
+- Reviews PRs and manages merges
+
+## Core Principles
+
+1. **Edit, don't create** - Modify existing code rather than rewriting
+2. **Small changes** - Make the minimal change that solves the problem
+3. **Test immediately** - Verify each change before moving on
+4. **Preserve what works** - Don't break working features for elegance
+5. **LOG.md is append-only** - Never edit past entries, only add new ones
+6. **Commit completed work** - Don't let finished features sit uncommitted
 
 ## Start Every Session
-
-```bash
-claudepm context
-```
-
-This command gives you everything needed to start working:
-- Recent work from LOG.md
-- Active tasks from ROADMAP.md
-- Current git status
-- What to work on next
-
-**NEVER** manually grep through files at session start. The protocol ensures you always get complete context.
-
-## During Your Work
-
-### When you discover new work:
-```bash
-claudepm task add "Fix memory leak in auth module"
-```
-This ensures proper UUID, timestamp, and format in ROADMAP.md.
-
-### When you complete a task:
-```bash
-claudepm task done <uuid>
-```
-
-### When you're blocked:
-```bash
-claudepm task block <uuid> "Waiting for API credentials"
-```
-
-### To see what to work on:
-```bash
-claudepm next
-```
-This intelligently prioritizes based on in-progress work, blockers, and dependencies.
+1. Read ROADMAP.md - see current state and priorities
+2. Read recent LOG.md - understand last session's work
+3. Run git status - see uncommitted work
 
 ## After Each Work Block
-
+1. Add to LOG.md using append-only pattern:
 ```bash
-# Simple log
-claudepm log "Fixed authentication bug"
-
-# Log with details (structure as you see fit)
-claudepm log "Implemented OAuth flow" "Did:
-- Added Google OAuth provider  
-- Created JWT token generation
-- Set up refresh token rotation
-Commits: abc123, def456
-PR: #89
-Next: Add OAuth tests"
-
-# Error tracking (your format choice)
-claudepm log "Debug session" "Found memory leak in WebSocket handler
-Error: MaxListenersExceededWarning
-Did: Identified unclosed event listeners
-Next: Add cleanup in componentWillUnmount
-#bug #memory-leak"
-
-# Decision logging
-claudepm log "Architecture review" "Decided: Use event-driven architecture
-Reasoning: Need real-time updates, bidirectional communication
-Participants: @alice @bob
-Options considered: Polling, SSE, WebSocket
-#architecture #decision"
+# Simple, clean append that always works
+{
+echo ""
+echo ""
+echo "### $(date '+%Y-%m-%d %H:%M') - [Brief summary]"
+echo "Did:"
+echo "- [First accomplishment]"
+echo "- [Second accomplishment]"
+echo "Next: [Immediate next task]"
+echo "Blocked: [Any blockers - only if blocked]"
+echo ""
+echo "---"
+} >> LOG.md
 ```
 
-The protocol provides structure (timestamp + title). You provide the content in whatever format makes sense for the situation.
+**CRITICAL: NEVER use Write or Edit tools on LOG.md** - only append with >> operator. This prevents accidental history loss.
 
-**NEVER** use manual appends (`>>`) or heredocs. This breaks the protocol and risks data loss.
+**macOS Protection**: On macOS, LOG.md has filesystem-level append-only protection (`uappnd` flag). Write/Edit operations will fail with EPERM. To temporarily remove: `chflags nouappnd LOG.md`
+
+2. Update ROADMAP.md following these principles:
+- Check off completed items
+- Update status of in-progress work
+- Add any new tasks discovered
+- **Structure for searchability**: Use consistent headings
+- **Version your features**: Group by v0.1, v0.2, etc.
+- **Make items actionable**: "Add search" → "Add claudepm search command for logs"
+
+## Task Management
+
+**IMPORTANT**: Use claudepm commands for all task operations. Never manually edit task formats.
+
+```bash
+# Add a new task
+claudepm task add "Fix authentication bug" -p high -t auth -d 2025-01-15
+
+# List tasks
+claudepm task list                # All tasks
+claudepm task list --todo         # Only TODO tasks
+claudepm task list -p high        # High priority tasks
+
+# Work on tasks
+claudepm task start <uuid>        # Move to IN PROGRESS
+claudepm task done <uuid>         # Mark as complete
+claudepm task block <uuid> "reason"  # Mark as blocked
+```
+
+Tasks use human-readable markdown format with rich metadata:
+- `[priority]` - high, medium, low
+- `[#tags]` - For categorization
+- `[due:date]` - Deadlines
+- `[@assignee]` - Responsibility
+- `[estimate]` - Time estimates (2h, 1d, 1w)
 
 ## Protocol Layers
 
@@ -101,27 +104,6 @@ You may use `cat`, `grep`, `ls` to double-check or explore.
 ### Layer 4: Direct Writes (FORBIDDEN)
 **NEVER** use `>>`, `sed -i`, or `echo >` on protocol files.
 These break consistency and risk corruption.
-
-## Core Principles
-
-1. **Edit, don't create** - Modify existing code rather than rewriting
-2. **Small changes** - Make the minimal change that solves the problem  
-3. **Test immediately** - Verify each change before moving on
-4. **Use the protocol** - claudepm commands for ALL memory operations
-5. **Report patterns** - Note repetitive tasks for protocol evolution
-
-## Protocol Evolution
-
-When you find yourself repeatedly doing something manually:
-
-```bash
-# Don't work around it - report it!
-echo "PATTERN: Often need to search tasks by keyword" >> NOTES.md
-echo "MANUAL: grep -i 'auth' ROADMAP.md" >> NOTES.md  
-echo "NEEDED: claudepm task search <keyword>" >> NOTES.md
-```
-
-This helps claudepm evolve to meet your actual needs.
 
 ## Common Workflows
 
@@ -147,36 +129,52 @@ claudepm log "Fixed auth bug, all tests passing" --next "Deploy to staging"
 claudepm task done <uuid>          # Mark completed work
 ```
 
-### Searching logs (allowed read operations):
-```bash
-# Find all security-related work
-grep "#security" LOG.md
+## Git Workflow & Worktree Hygiene
 
-# Find work with specific people
-grep "@alice" LOG.md
+When working with feature branches and worktrees:
 
-# Find all errors encountered
-grep "^Error:" LOG.md
+1. **Create local worktree**: `git worktree add worktrees/feature-name feature/feature-name`
+2. **Develop**: Make changes, test, commit regularly
+3. **Create PR**: `gh pr create --base dev --title "feat: Description"`
+4. **After merge - CRITICAL cleanup**:
+   ```bash
+   # From main project directory (not in worktree)
+   git worktree remove worktrees/feature-name
+   git branch -d feature/feature-name
+   git remote prune origin
+   ```
 
-# Find all decisions made
-grep "^Decided:" LOG.md
+**IMPORTANT**: Always ensure `worktrees/` is in your .gitignore to prevent accidental commits of worktree directories.
 
-# Find work by commit
-grep "bee8c91" LOG.md
+## Task Agent Development Workflow
 
-# Find all blocked items
-grep "^Blocked:" LOG.md
-```
+When you need to implement a feature:
 
-## Git Integration
+1. **Stay on dev branch**: Never switch branches as Project Lead
+2. **Create local worktree using claudepm-admin.sh**:
+   ```bash
+   ./tools/claudepm-admin.sh create-worktree feature-name
+   ```
+3. **Dispatch Task Agent**: Start a new conversation with implementation instructions
+4. **Review PR**: When Task Agent completes, review their PR
+5. **Merge and cleanup**:
+   ```bash
+   gh pr merge [PR-number] --squash --delete-branch
+   ./tools/claudepm-admin.sh remove-worktree feature-name
+   ```
 
-Before committing, ALWAYS:
-1. Run `claudepm status` to see what changed
-2. Update task states with `claudepm task done`
-3. Use `claudepm log` to record the work
+## The Four Core Files
+- **CLAUDE.md** - HOW to work (instructions, behavioral patterns)
+- **LOG.md** - WHAT happened (append-only chronological history)  
+- **ROADMAP.md** - WHAT's next (plans, priorities, current state)
+- **NOTES.md** - WHY it matters (patterns, insights, meta-observations)
 
-<!-- All content above this line is part of the standard claudepm template. -->
-<!-- CLAUDEPM_CUSTOMIZATION_START -->
+Remember: The log is our shared memory. Write clearly for your future self.
+
+<!-- ==================== CLAUDEPM SECTION END ==================== -->
+
+<!-- ==================== PROJECT CUSTOMIZATION START ==================== -->
+<!-- The content below can be customized per project -->
 
 ## Project Context
 Type: [Web app, CLI tool, library, etc.]
@@ -190,61 +188,5 @@ Run: [npm start, python main.py, etc.]
 
 <!-- Add any project-specific patterns or workflows below -->
 
-## Task Agent Workflow ("Setting the Table")
-
-As Project Lead, you prepare isolated work environments for Task Agents:
-
-### The Scope → Setup → Execute Pattern
-
-For non-trivial features, use the structured scoping workflow:
-
-#### 1. Scope the feature first:
-```bash
-/scope-feature feature-name
-```
-
-This guides you through:
-- Problem statement & requirements gathering
-- Architectural review (if needed)
-- Implementation planning
-- Outputs a ready-to-execute TASK_PROMPT
-
-#### 2. Create worktree with mission:
-```bash
-./tools/claudepm-admin.sh create-worktree feature-name
-```
-
-This creates:
-- `worktrees/feature-name/` - Isolated git worktree
-- `TASK_PROMPT.md` - Clear mission and requirements
-- Feature branch ready for work
-
-#### 3. User takes control:
-The user then:
-```bash
-cd worktrees/feature-name
-claude --dangerously-skip-permission  # For autonomous execution
-# "You are a Task Agent. Read TASK_PROMPT.md and implement."
-```
-
-### Multiple parallel tasks:
-You can queue up multiple worktrees while Task Agents work:
-- Create worktree A → User starts Task Agent A
-- Create worktree B → User starts Task Agent B  
-- Monitor and prepare more as needed
-
-This "set the table" approach gives users full control while maintaining isolation.
-
 <!-- CLAUDEPM_CUSTOMIZATION_END -->
-<!-- All content below this line is part of the standard claudepm template. -->
-
-## Quick Reference
-
-Essential commands:
-- `claudepm context` - Start here every session
-- `claudepm task add/list/done/block` - Manage work
-- `claudepm log <message> --next <task>` - Record progress
-- `claudepm next` - What to work on
-- `claudepm status` - Current project state
-
-Remember: The protocol exists to make your work consistent and reliable across all projects.
+<!-- ==================== PROJECT CUSTOMIZATION END ==================== -->

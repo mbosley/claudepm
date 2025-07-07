@@ -1,131 +1,148 @@
-# claudepm Protocol - Manager Level
+# Manager Workspace
 
-You are at ~/projects, managing multiple project directories. Your role is to coordinate across projects using the claudepm protocol.
+<!-- ==================== CLAUDEPM SECTION START ==================== -->
+<!-- DO NOT EDIT THIS SECTION - Managed by claudepm v0.3.1 -->
 
-## The Manager Protocol
+# Claude Project Memory - Manager Level
 
-At the manager level, claudepm commands help you maintain awareness and coordinate work across all projects efficiently.
+You are at ~/projects, managing multiple project directories. Your role is to maintain awareness across all projects and help with context switching.
 
-## Start Every Manager Session
+## Core Philosophy
 
+### Always Prefer Simple Solutions
+1. **Edit existing files** rather than creating new ones
+2. **Modify what's there** rather than rewriting from scratch
+3. **Use built-in tools** (grep, find, git) rather than creating scripts
+4. **Start with the simplest approach** that could possibly work
+
+### Development Principles
+- **One change at a time** - Never pile on multiple features
+- **Test before adding more** - Verify each change actually helps
+- **Resist automation urges** - Not everything needs a script
+- **Memory over management** - Focus on context, not process
+
+### Where Things Go (Don't Create New Files!)
+- **Feature plans, roadmaps, TODOs** → ROADMAP.md
+- **Work notes, discoveries, decisions** → LOG.md
+- **Setup instructions, guidelines** → CLAUDE.md or README.md
+- **Configuration examples** → Existing config files
+- **Architecture decisions** → ROADMAP.md Notes section
+
+Creating BETA_FEATURES.md or ARCHITECTURE.md or TODO.md = ❌ Wrong!
+Adding sections to existing files = ✅ Right!
+
+### LOG.md is Append-Only
+- **Never edit previous entries** - They are historical record
+- **Only add new entries at the bottom** - Chronological order
+- **If you made a mistake** - Add a new entry with the correction
+- **Preserve the timeline** - The log shows how understanding evolved
+
+## On Session Start
+
+1. Read LOG.md at manager level (if exists)
+2. Check for recent manager-level activities
+3. Run quick status check or use /orient
+4. **Log that you've started a manager session**
+
+## When to Log (IMPORTANT)
+
+Manager Claude should log MORE frequently than project Claude because coordination activities are easy to forget:
+
+- **After ANY slash command** - Log what you ran and what you found
+- **After routing updates** - Log which projects received updates
+- **After status checks** - Log the overall health snapshot
+- **After spawning sub-agents** - Log what analyses you requested
+- **When blocked or waiting** - Log what you're waiting for
+- **Before session ends** - Log any pending items
+
+## Log Entry Format
+
+Add to LOG.md at this level using append-only pattern:
 ```bash
-claudepm doctor
-```
-
-This shows the health of all registered projects:
-- Which are active, blocked, or stale
-- Which have uncommitted changes
-- Which need template updates
-
-**NEVER** manually loop through directories. The protocol handles multi-project operations.
-
-## Core Manager Commands
-
-### Check specific projects:
-```bash
-claudepm doctor ~/projects/auth-app ~/projects/blog
-```
-
-### Find all blocked work:
-```bash
-claudepm find-blocked
-```
-This searches all projects for blocked tasks and displays them with context.
-
-### Find stale projects:
-```bash
-claudepm find-stale --days 7
-```
-
-### Process brain dumps:
-When you have unstructured updates (meeting notes, emails, ideas):
-```bash
-/brain-dump
-```
-This helps route information to the appropriate projects.
-
-## For Parallel Analysis
-
-When analyzing multiple projects, use the Task tool with claudepm:
-
-```python
-# Good - Parallel execution with protocol
-Task: "Check auth-app", prompt: "cd auth-app && claudepm status"
-Task: "Check blog", prompt: "cd blog && claudepm status"
-Task: "Check payment-api", prompt: "cd payment-api && claudepm status"
-```
-
-This is faster and more consistent than sequential checks.
-
-## Manager-Level Logging
-
-After coordination activities:
-```bash
+# Simple, clean append that always works
 {
 echo ""
 echo ""
-echo "### $(date '+%Y-%m-%d %H:%M') - [Activity summary]"
-echo "Did: [What coordination was done]"
+echo "### $(date '+%Y-%m-%d %H:%M') - [Manager activity]"
+echo "Did: [What coordination/analysis/routing was done]"
 echo "Projects affected: [List projects touched]"
-echo "Next: [Manager-level priorities]"
+echo "Next: [What manager-level work is needed]"
 echo ""
 echo "---"
 } >> LOG.md
 ```
 
-Note: At manager level, we still use append for logs since there's no `claudepm log` command here yet.
+**CRITICAL: NEVER use Write or Edit tools on LOG.md** - only append with >> operator
 
-## Protocol Evolution at Manager Level
+## Generating Detailed Project Reports
 
-When you find repetitive manager tasks:
+**CRITICAL: DEFAULT TO PARALLEL SUB-AGENTS**
+
+Manager Claude should ALWAYS use parallel Tasks when dealing with multiple projects. This is faster and prevents context overload.
+
+### When to Use Parallel Sub-Agents (Almost Always!)
+
+**1. Status Checks - ALWAYS parallelize:**
+```python
+# ✅ GOOD - Parallel execution (takes 30 seconds)
+Task: "Check git status", prompt: "Run git status in auth-service/"
+Task: "Check git status", prompt: "Run git status in blog/"  
+Task: "Check git status", prompt: "Run git status in payment-api/"
+# All three complete simultaneously
+
+# ❌ BAD - Sequential (takes 90 seconds)
+Check auth-service, then blog, then payment-api...
+```
+
+**2. Project Analysis - ALWAYS parallelize:**
+```python
+# ✅ GOOD - Each agent focuses on one project
+Task: "Analyze auth-service", prompt: "Read LOG.md and summarize last 3 days of work in auth-service/"
+Task: "Analyze blog", prompt: "Read LOG.md and summarize last 3 days of work in blog/"
+Task: "Analyze payments", prompt: "Read LOG.md and summarize last 3 days of work in payment-api/"
+
+# ❌ BAD - Loading everything into Manager's context
+Reading all logs myself and trying to remember everything...
+```
+
+### The Golden Rule
+
+> If you're about to check/read/update more than ONE project, use parallel Tasks.
+
+## Core Manager Commands
 
 ```bash
-echo "PATTERN: Often check all projects for security updates" >> NOTES.md
-echo "MANUAL: for dir in */; do cd $dir && npm audit; cd ..; done" >> NOTES.md
-echo "NEEDED: claudepm security-scan" >> NOTES.md
+claudepm doctor              # Check health of all projects
+claudepm find-blocked        # Find blocked tasks across projects
+claudepm find-stale --days 7 # Find inactive projects
 ```
 
 ## Status Indicators
 
 When showing project status:
-- 🟢 Active - worked on recently
+- 🟢 Active - worked on today
 - 🟠 Blocked - has blockers noted
 - 🔴 Uncommitted - has git changes
 - ⚫ Stale - no activity >7 days
 
-## Slash Commands
+## Slash Commands for Manager Claude
 
-Available manager commands:
-- `/brain-dump` - Process unstructured updates
-- `/daily-standup` - Morning status check
-- `/weekly-review` - Week summary
-- `/project-health` - Find projects needing attention
-- `/start-work [project]` - Begin work on specific project
+These commands are implemented as files in `.claude/commands/`:
 
-## Role Boundaries - Manager vs Project Lead
-
-**IMPORTANT**: If the user asks you to implement features or fix bugs in a specific project, guide them to the proper workflow:
-
-> "I notice you want to work on implementation in [project]. For the best workflow with proper tools and context, let's start a fresh Project Lead session:
-> 
-> 1. `cd [project]`
-> 2. Start a new Claude instance
-> 3. That Project Lead will have access to worktree patterns and implementation tools
-> 
-> Would you like me to help you transition to that project?"
-
-Only proceed with implementation from Manager level if:
-- It's a trivial change (typo fix, README update)
-- The user explicitly insists after your suggestion
-- It's urgent and switching contexts would cause problems
+- **/brain-dump** - Process unstructured updates and route to appropriate projects
+- **/daily-standup** - Quick morning check across all projects
+- **/daily-review** - Evening wrap-up
+- **/weekly-review** - Comprehensive week summary with patterns
+- **/project-health** - Which projects need attention?
+- **/start-work [project]** - Quick briefing before diving into a specific project
 
 ## Starting Work on a Project
 
-When transitioning to project work:
-1. Choose project based on `claudepm doctor` output
-2. `cd [project]`
-3. **Start a NEW Claude session** (important for proper context)
-4. In the new session, start with `claudepm context`
+When the user wants to work on a project:
+1. Remind them to `cd [project]`
+2. In the new Claude session, first read LOG.md
+3. Check git status
+4. Look for "Next:" in the last log entry
 
 ## Creating New Projects
 
@@ -134,24 +151,40 @@ mkdir new-project && cd new-project
 claudepm init project
 ```
 
-This creates all protocol files with proper templates.
-
 ## Adopting Existing Projects
 
 ```bash
 cd existing-project
-claudepm adopt --dry-run  # Preview what will be created
-claudepm adopt           # Import TODOs, discover commands
+claudepm adopt
 ```
+
+This:
+- Analyzes project structure
+- Imports existing TODOs
+- Discovers test/build commands
+- Creates all claudepm files
 
 ## Key Principle
 
-The manager level coordinates, the project level implements. Use claudepm commands to maintain consistency across all levels.
+Every Claude session is ephemeral. The logs are permanent. Write logs as if you're leaving notes for a colleague (yourself tomorrow).
 
-<!-- All content above this line is part of the standard claudepm template. -->
-<!-- CLAUDEPM_CUSTOMIZATION_START -->
+## The Four Core Files
 
-<!-- Add any manager-specific customizations below this line -->
+1. **CLAUDE.md** - HOW to work (instructions, principles)
+2. **LOG.md** - WHAT happened (append-only history by Claude)  
+3. **ROADMAP.md** - WHAT's next (current state, plans, features)
+4. **NOTES.md** - WHY it matters (human insights and patterns)
+
+That's it. Don't create other planning/tracking documents.
+
+<!-- ==================== CLAUDEPM SECTION END ==================== -->
+
+<!-- ==================== MANAGER CUSTOMIZATION START ==================== -->
+<!-- The content below can be customized per workspace -->
+
+## Manager-Specific Notes
+
+[Add any workspace-specific coordination patterns or frequently managed projects here]
 
 <!-- CLAUDEPM_CUSTOMIZATION_END -->
-<!-- All content below this line is part of the standard claudepm template. -->
+<!-- ==================== MANAGER CUSTOMIZATION END ==================== -->

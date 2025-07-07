@@ -1112,3 +1112,16 @@ Next: Update PR with completed implementation
 Notes: The new format successfully replaces CPM::TASK:: with markdown checkboxes and inline metadata
 
 ---
+
+
+### 2025-07-04 18:03 - Merged scope workflow and human-readable tasks
+Did:
+- MERGED: PR #7 - Scope → Setup → Execute workflow (v0.2.6.0)
+- MERGED: PR #6 - Human-readable task format (v0.2.7.0) with comprehensive tests
+- CLEANED: Removed all obsolete worktrees (clarify-notes-vs-log, git-safety, task-prompt-management, human-readable-tasks)
+- REVIEWED: Both PRs with detailed code reviews before merging
+- FIXED: All critical issues identified in reviews (input validation, error handling, migration removal)
+Next: Test v0.2.7 with actual Claude sessions and deploy to personal projects
+Notes: Major milestone - claudepm now has frictionless feature development AND human-readable tasks\!
+
+---
