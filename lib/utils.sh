@@ -35,6 +35,76 @@ safe_copy_template() {
     fi
 }
 
+# Ensure CLAUDE.md has proper fenced structure
+ensure_claude_md_structure() {
+    local type="${1:-project}"
+    
+    # Validate type parameter
+    if [[ "$type" != "project" && "$type" != "manager" ]]; then
+        echo "Error: Invalid type specified: $type" >&2
+        return 1
+    fi
+    
+    # Check if CLAUDE.md exists
+    if [[ ! -f "CLAUDE.md" ]]; then
+        # Create from template
+        safe_copy_template "$type/CLAUDE.md" "CLAUDE.md"
+        return
+    fi
+    
+    # Check if already has claudepm section
+    if grep -q "<!-- ==================== CLAUDEPM SECTION START" CLAUDE.md; then
+        echo "CLAUDE.md already has claudepm section"
+        return
+    fi
+    
+    echo "Updating CLAUDE.md with claudepm protocol..."
+    
+    # Extract the fenced section from template
+    local template_file="$CLAUDEPM_HOME/templates/$type/CLAUDE.md"
+    if [[ ! -f "$template_file" ]]; then
+        echo "Error: Template not found: $template_file" >&2
+        return 1
+    fi
+    
+    # Define markers for clarity
+    local start_marker="<!-- ==================== PROJECT CUSTOMIZATION START ==================== -->"
+    if [[ "$type" == "manager" ]]; then
+        start_marker="<!-- ==================== MANAGER CUSTOMIZATION START ==================== -->"
+    fi
+    
+    # Check that template has required marker
+    if ! grep -qF "$start_marker" "$template_file"; then
+        echo "Error: Template '$template_file' is missing the required start marker." >&2
+        return 1
+    fi
+    
+    # Create temp file with new structure
+    local temp_file=$(mktemp)
+    
+    # Use trap for robust cleanup
+    trap 'rm -f "$temp_file"' EXIT
+    
+    # 1. Extract header (from line 1 up to and including the start marker)
+    sed "/${start_marker}/q" "$template_file" > "$temp_file"
+    
+    # 2. Add a blank line for readability, then the original CLAUDE.md content
+    echo "" >> "$temp_file"
+    cat CLAUDE.md >> "$temp_file"
+    echo "" >> "$temp_file"
+    
+    # 3. Extract footer (from the line after the start marker to the end)
+    awk 'p; /'"$start_marker"'/ {p=1}' "$template_file" | tail -n +2 >> "$temp_file"
+    
+    # Replace original file
+    mv "$temp_file" CLAUDE.md
+    
+    # Remove trap
+    trap - EXIT
+    
+    echo "Updated: CLAUDE.md (wrapped with claudepm protocol)"
+}
+
 # Initialize project or manager
 init_project() {
     local type="${1:-project}"
@@ -55,7 +125,7 @@ EOF
     # Copy templates based on type
     case "$type" in
         project)
-            safe_copy_template "project/CLAUDE.md" "CLAUDE.md"
+            ensure_claude_md_structure "project"
             safe_copy_template "project/LOG.md" "LOG.md"
             safe_copy_template "project/ROADMAP.md" "ROADMAP.md"
             safe_copy_template "project/NOTES.md" "NOTES.md"
@@ -76,7 +146,7 @@ EOF
             fi
             ;;
         manager)
-            safe_copy_template "manager/CLAUDE.md" "CLAUDE.md"
+            ensure_claude_md_structure "manager"
             safe_copy_template "manager/LOG.md" "LOG.md"
             safe_copy_template "manager/ROADMAP.md" "ROADMAP.md"
             safe_copy_template "manager/NOTES.md" "NOTES.md"
@@ -107,6 +177,24 @@ EOF
         echo ".claudepm" >> .gitignore
         echo "Added .claudepm to .gitignore"
     fi
+    if ! grep -q "^\.claude$" .gitignore 2>/dev/null; then
+        echo ".claude" >> .gitignore
+        echo "Added .claude to .gitignore"
+    fi
+    
+    # Create .claude/commands directory and copy slash commands
+    if [[ -d "$CLAUDEPM_HOME/commands" ]]; then
+        mkdir -p .claude/commands
+        for cmd in "$CLAUDEPM_HOME/commands"/*.md; do
+            if [[ -f "$cmd" ]]; then
+                local cmd_name=$(basename "$cmd")
+                if [[ ! -f ".claude/commands/$cmd_name" ]]; then
+                    cp "$cmd" ".claude/commands/$cmd_name"
+                    echo "Created: .claude/commands/$cmd_name"
+                fi
+            fi
+        done
+    fi
     
     # Register project
     if [[ "$type" == "project" ]] && [[ ! -f "$CLAUDEPM_HOME/projects.list" ]] || ! grep -q "^$PWD$" "$CLAUDEPM_HOME/projects.list" 2>/dev/null; then
@@ -119,6 +207,16 @@ EOF
     echo "1. Edit ROADMAP.md with your project goals"
     echo "2. Start working and update LOG.md"
     echo "3. Capture insights in NOTES.md"
+    if [[ -d ".claude/commands" ]]; then
+        echo ""
+        echo "Slash commands available in this project:"
+        for cmd in .claude/commands/*.md; do
+            if [[ -f "$cmd" ]]; then
+                local cmd_name=$(basename "$cmd" .md)
+                echo "  /$cmd_name"
+            fi
+        done
+    fi
 }
 
 # Adopt existing project
@@ -159,9 +257,9 @@ adopt_project() {
     # Find TODOs
     local todo_count=0
     if command -v rg >/dev/null 2>&1; then
-        todo_count=$(rg -c "TODO|FIXME" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+        todo_count=$(rg "TODO|FIXME" 2>/dev/null | wc -l | tr -d '[:space:]' || echo 0)
     else
-        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+        todo_count=$(grep -r "TODO\|FIXME" . 2>/dev/null | wc -l | tr -d '[:space:]' || echo 0)
     fi
     
     if [[ "$dry_run" == "--dry-run" ]]; then
@@ -179,38 +277,7 @@ adopt_project() {
         exit 0
     fi
     
-    # Create CLAUDE.md
-    if [[ ! -f "CLAUDE.md" ]]; then
-        cat > CLAUDE.md << EOF
-# Project: $project_name
-
-## Start Every Session
-1. Read LOG.md - understand where we left off
-2. Run git status - see uncommitted work  
-3. Look for "Next:" in recent logs
-
-## After Each Work Block
-Add to LOG.md (use \`date '+%Y-%m-%d %H:%M'\` for timestamp):
-\`\`\`
-### YYYY-MM-DD HH:MM - [What you did]
-Did: [Specific accomplishments]
-Next: [Immediate next task]
-Blocked: [Any blockers, if none, omit this line]
-\`\`\`
-
-## Project Context
-Type: $project_type project
-Language: $(echo "$project_type" | sed 's/node/JavaScript/')
-Purpose: [Update with project purpose]
-
-## Discovered Commands
-EOF
-        [[ -n "$test_command" ]] && echo "- Test: \`$test_command\`" >> CLAUDE.md
-        [[ -n "$build_command" ]] && echo "- Build: \`$build_command\`" >> CLAUDE.md
-        [[ -n "$run_command" ]] && echo "- Run: \`$run_command\`" >> CLAUDE.md
-        echo -e "\nRemember: The log is our shared memory. Keep it updated." >> CLAUDE.md
-        echo "Created: CLAUDE.md"
-    fi
+    # CLAUDE.md will be handled by init_project with proper fenced structure
     
     # Create LOG.md with adoption entry
     if [[ ! -f "LOG.md" ]]; then

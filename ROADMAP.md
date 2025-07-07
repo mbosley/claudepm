@@ -22,10 +22,9 @@
 - [x] Test task [high] [#testing] [started:2025-07-04] [completed:2025-07-04]
   ID: test-123
 
-### User Experience Improvements (v0.2.7)
+### User Experience Improvements (v0.2.8)
 Based on real usage feedback:
-- [x] Make task format human-readable (markdown tasks instead of CPM::TASK)
-- [ ] Clarify NOTES.md vs LOG.md usage in templates
+- [ ] Clarify NOTES.md vs LOG.md usage in templates (worktree created)
 - [ ] Add Gemini PR review workflow (compare implementation to architectural plan)
 - [ ] Improve role boundaries between Manager and Project Lead Claude
 
@@ -297,6 +296,26 @@ Building on the scope workflow foundation:
 
 ## Completed
 
+### v0.2.7 - Human-Readable Tasks (2025-07-04)
+- [x] Complete rewrite of task management system
+- [x] Tasks now use markdown checkboxes with inline metadata
+- [x] Rich metadata support: [priority] [#tags] [due:date] [@assignee] [estimate]
+- [x] New commands: task start, task update with full options
+- [x] Parse-Mutate-Render architecture for robustness
+- [x] Comprehensive test suite (test_tasks.sh, test_tasks_simple.sh)
+- [x] Input validation and markdown escaping
+- [x] Error handling with proper temp file cleanup
+- [x] All existing commands updated for new format
+
+### v0.2.6 - Scope Workflow (2025-07-04)
+- [x] Implemented Scope → Setup → Execute pattern
+- [x] Created `/scope-feature` slash command
+- [x] Built lib/scope.sh for worktree integration
+- [x] Auto-generate TASK_PROMPT from scoping sessions
+- [x] Preserve scoping artifacts in .scoping/
+- [x] Integrated with existing worktree workflow
+- [x] Added `--dangerously-skip-permission` flag support
+
 ### v0.1 Development (2025-06-29)
 - [x] Initial templates created
 - [x] Install script working
@@ -519,4 +538,4 @@ This ensures consistency and prevents missing components. The full checklist liv
 claudepm now follows an 'architect-first' development model for non-trivial changes. Before writing code, we use the /architect-feature command to generate comprehensive implementation plans. This approach ensures changes are well-considered, aligned with project principles, and have a clear path to completion. The architect-first approach was validated during the v0.1.5 template reorganization and is now standard practice.
 
 ---
-Last updated: 2025-07-01 12:49
+Last updated: 2025-07-04 18:06
